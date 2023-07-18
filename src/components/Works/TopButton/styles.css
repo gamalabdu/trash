@@ -1,0 +1,12 @@
+
+
+.buttons {
+    cursor: pointer;
+    transition: color 300ms ease-in-out;
+}
+
+.buttons-clicked {
+    cursor: pointer;
+    color:#f93b3b;
+    transition: color 300ms ease-in-out;
+}

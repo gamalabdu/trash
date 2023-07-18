@@ -1,26 +1,44 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Enter from './components/Enter/Enter';
+import NavContainer from './components/NavContainer/NavContainer';
+import Home from './components/Home/Home';
+import About from './components/About/About';
+import ForArtist from './components/ForArtist/ForArtist';
+import ForClients from './components/ForClients/ForClients';
+import Works from './components/Works/Works';
+import Contact from './components/Contact/Contact';
+import InnerWork from './components/InnerWork/InnerWork';
 
 function App() {
+
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <BrowserRouter>
+        <Routes>
+            
+          <Route index element={<Enter />} />
+
+          <Route path="/" element={ <NavContainer /> }>
+              <Route path="home" element={ <Home /> } />
+              <Route path="about" element={ <About /> } />
+              <Route path="for-artist" element={ <ForArtist /> } />
+              <Route path="for-clients" element={ <ForClients /> } />
+              <Route path="works" element={ <Works /> } />
+              <Route path='innerworks' element={ <InnerWork /> } />
+              <Route path="contact" element={ <Contact /> } />
+          </Route>
+
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
 
 export default App;
+
+
+
+// #1b1c1e;

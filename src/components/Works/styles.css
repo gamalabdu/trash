@@ -1,0 +1,150 @@
+
+
+.works-container {
+    background-color: #F0EEF0;
+    transition: height 1s ease-in;
+    min-height: 100dvh;
+}
+
+.works-top-container {
+    height: 200px;
+    font-size: 3vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color:#202020;
+}
+
+
+.works-top-buttons-container {
+    color:#202020;
+}
+
+.everything-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    font-size: 2vw;
+    word-spacing: 50%;
+    animation: fadeInRight 700ms ease-in-out;
+}
+
+.everything-buttons-hide {
+    visibility: hidden;
+    animation: fadeInRight 700ms ease-in-out;
+}
+
+.show-me {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.everything-choice {
+    /* text-decoration: underline; */
+    cursor: pointer;
+}
+
+
+.everything-buttons-full {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 0 16px;
+    font-size: 2vw;
+    animation: fadeInRight 700ms ease-in-out;
+}
+
+.everything-buttons-full-hide {
+    visibility: hidden;
+    animation: fadeInRight 700ms ease-in-out;
+}
+
+.our-works-container {
+    /* display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    justify-self: center; */
+}
+
+
+
+.no-categories {
+    margin-top: 20px;
+    text-align: center;
+}
+
+
+@keyframes fadeInRight {
+    from {
+      opacity: 0;
+      transform: translateX(300px);
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+
+
+  @media (max-width: 800px) {
+    
+    .works-top-container {
+       height: 150px;
+       text-align: center;
+    }
+    .everything-buttons-full {
+        flex-direction: column;
+        font-size: 3vw;
+        gap: 5px;
+    }
+    .everything-buttons {
+        flex-direction: column;
+        font-size: 3vw;
+        gap: 10px;
+    }
+  }
+
+
+
+
+  @media (max-width: 414px) {
+    .works-top-container {
+       height: 150px;
+       text-align: center;
+    }
+    .everything-buttons-full {
+        flex-direction: column;
+        font-size: 3vw;
+        gap: 5px;
+    }
+    .everything-buttons {
+        flex-direction: column;
+        font-size: 3vw;
+        gap: 10px;
+    }
+  }
+
+
+
+
+@media (max-width: 375px) {
+    .works-top-container {
+       height: 100px;
+    }
+    .everything-buttons-full {
+        flex-direction: column;
+        font-size: 3vw;
+        gap: 5px;
+    }
+    .everything-buttons {
+        flex-direction: column;
+        font-size: 3vw;
+        gap: 10px;
+    }
+  }

@@ -1,0 +1,134 @@
+
+@keyframes grain {
+    0%, 100% { transform:translate(0, 0); }
+    10% { transform:translate(-5%, -10%); }
+    20% { transform:translate(-15%, 5%); }
+    30% { transform:translate(7%, -25%); }
+    40% { transform:translate(-5%, 25%); }
+    50% { transform:translate(-15%, 10%); }
+    60% { transform:translate(15%, 0%); }
+    70% { transform:translate(0%, 15%); }
+    80% { transform:translate(3%, 35%); }
+    90% { transform:translate(-10%, 10%); }
+  }
+
+  .footer-container {
+    /* height: 100dvh;
+    position: absolute;
+    bottom: 0;
+    width: 100%; */
+  }
+
+
+  .footer-black {
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    align-items: center;
+    /* font-size: 3em; */
+    color: rgb(222, 222, 222);
+    background-color: #202020;
+    overflow: hidden;
+    transform: translate3d(0, 0, 0);
+    padding: 0 2%;
+  }
+  .footer-black::after {
+    content: "";
+    background-image: url(../../assets/backgrounds/noise.png);
+    animation: grain 8s steps(10) infinite;
+    height: 300%;
+  left: -50%;
+  opacity: 0.6;
+  position: absolute;
+  top: -100%;
+  width: 300%;
+    z-index: -9999999;
+  }
+
+
+  .left-side {
+    height: 100%;
+    width: 40%;
+    padding: 3%;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+    text-align: left;
+  }
+
+  .left-links {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    font-size: 1.5vw;
+    gap: 10%;
+    text-decoration: none;
+    list-style-type: none;
+    text-align: left;
+    align-items: left;
+  }
+
+  .left-lower-links {
+    font-size: 1.2vw;
+    margin-top: 10px;
+    color: #4e4e4e;
+  }
+
+  .trash-can {
+    width: 10%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    fill: white;
+    /* filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(316deg) brightness(108%) contrast(103%); */
+    filter: invert(90%) sepia(53%) saturate(0%) hue-rotate(114deg) brightness(92%) contrast(90%);
+  }
+
+
+  .right-side {
+    height: 100%;
+    width: 40%;
+    padding: 3%;
+    display: flex;
+    flex-direction: column;
+    align-items: right;
+    justify-content: center;
+    text-align: right;
+  }
+
+  .right-links {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    font-size: 2vw;
+    gap: 10%;
+    text-decoration: none;
+    list-style-type: none;
+    text-align: right;
+    align-items: right;
+  }
+
+
+  .right-lower-links {
+    font-size: 1.2vw;
+    margin-top: 10px;
+    color: #4e4e4e;
+  }
+
+
+  .social-icons {
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+	transform: scale(1);
+  }
+
+  .social-icons:hover {
+    transition: all 0.5s ease-in-out;
+	transform: scale(1.3);
+  }

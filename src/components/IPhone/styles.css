@@ -1,0 +1,186 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap'); */
+
+
+.device {
+  aspect-ratio: 260 / 540;
+  width: 15rem;
+  
+  border: solid 0.7rem black;
+  border-radius: 2rem;
+  
+  position: relative;
+  overflow: hidden;
+  margin: 10px;
+}
+
+.status {
+  box-sizing: border-box;
+  width: 100%;
+  height: 2rem;
+  padding: 0 1rem;
+  
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  
+  user-select: none;
+}
+.status div {
+  flex: 1;
+  text-align: center;
+}
+.status .blank {
+  flex: 1.5;
+}
+
+.floating {
+  width: 5rem;
+  aspect-ratio: 300 / 90;
+  
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  
+  margin: 0.5rem 0;
+  
+  border-radius: 2rem; /* does not really matter */
+  background: black;
+}
+.camera {
+  box-sizing: border-box;
+  width: 1rem;
+  aspect-ratio: 1 / 1;
+  
+  position: absolute;
+  top: 50%;
+  right: calc(5rem / 300 * 90 * 0.25); /* center of border radius */
+  transform: translateY(-50%);
+  
+  border-radius: 2rem; /* does not really matter */
+  border: solid 0.1rem #121212;
+  background: #00021D;
+}
+.blob {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  
+  border-radius: 50%;
+}
+.white {
+  width: 0.5rem;
+  aspect-ratio: 14 / 6;
+  
+  top: 25%;
+  left: 50%;
+  
+  background: white;
+  filter: blur(0.1rem);
+  opacity: 0.7;
+}
+.bbg {
+  width: 0.5rem;
+  aspect-ratio: 15  / 10;
+  
+  top: 75%;
+  left: 50%;
+  
+  background: #151E9D;
+  filter: blur(0.1rem);
+}
+.green {
+  width: 0.2rem;
+  aspect-ratio: 7 / 4;
+  
+  top: 65%;
+  left: 65%;
+  
+  background: #0F7B3A;
+  filter: blur(0.05rem);
+}
+.red {
+  width: 0.17rem;
+  aspect-ratio: 7 / 4;
+  
+  top: 80%;
+  left: 50%;
+  
+  background: #D73838;
+  filter: blur(0.05rem);
+}
+
+.home {
+  width: 7rem;
+  aspect-ratio: 300 / 15;
+  
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  
+  margin: 0.3rem 0;
+  
+  border-radius: 2rem; /* does not really matter */
+  background: snow;
+  
+  z-index: 10;
+}
+
+.device {
+  /* box-shadow: offset-x offset-y blur spread color */
+  box-shadow: 1.5rem 1rem 4rem -2rem #000b;
+  
+  background: linear-gradient(120deg, #A1CBE4 0%, #E5E1D5 80%);
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  
+  /* background-size: 130%;
+  background-repeat: no-repeat;
+  background-position: 50% bottom;
+  
+  z-index: 0;
+  pointer-events: none; */
+}
+
+/* .phone-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+} */
+
+
+
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+
+
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* .swiper-button-next {
+  color: black;
+  cursor: pointer;
+}
+
+.swiper-button-prev {
+  color: black;
+  cursor: pointer;
+} */
+
