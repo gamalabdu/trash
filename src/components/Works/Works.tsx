@@ -151,8 +151,6 @@ const Works = () => {
 	  });
 	  
 
-	console.log(intersection)
-
 	useEffect(() => {
 		window.scrollTo(0, 0)
 	}, [])
