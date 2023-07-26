@@ -7,8 +7,6 @@ const About = () => {
 	useEffect(() => {
 		window.scrollTo(0, 0)
 	}, [])
-
-	// useEffect(() => {
 	// 	const toggleNav = () => {
 	// 	  const nav = document.getElementById('nav');
 	// 	  if (nav?.classList.contains('active')) {

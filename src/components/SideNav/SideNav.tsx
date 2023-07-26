@@ -8,19 +8,22 @@ const SideNav = () => {
 	useEffect(() => {
 
 		const toggleNav = () => {
-		  const nav = document.getElementById('nav');
+
+		  const nav = document.getElementById('nav') ?? null;
+
 		  if (nav?.classList.contains('active')) {
 			nav.classList.remove('active');
 		  } else {
 			nav?.classList.add('active');
 		  }
+
 		};
 	
 		const handleClick = () => {
 		  toggleNav();
 		};
 	
-		const navIcon = document.getElementById('nav-icon');
+		const navIcon = document.getElementById('nav-icon') ?? null;
 		if (navIcon) {
 		  navIcon.addEventListener('click', handleClick);
 		}
