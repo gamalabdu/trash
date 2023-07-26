@@ -95,7 +95,7 @@ const Works = () => {
 		{
 			image: require('../../assets/images/productionPic.png'),
 			type: ['Creative Direction','Photography','Film','Music Production'],
-			name: "Maria Alex - Wake Me Up (Offical Music Video)",
+			name: "Maria Alexa - Wake Me Up (Offical Music Video)",
 			statement: `TRASH was brought on to mix, master, produce, photograph, create social media assets, creative direct and film Maria Alexa's Offical Music Video for her song "Wake Me Up" `,
 			videos: [
 				require('../../assets/images/wakemeup/Maria Alexa - Wake me up [Official Music Video] (720p).mp4'),
