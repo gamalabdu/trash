@@ -116,7 +116,7 @@ const Contact = () => {
 											className='app-form-control' 
 											placeholder='EMAIL' 
 											value={email}
-											onInput={ (e) => setEmail(e.currentTarget.value)}
+											onInput={ (e) => isValidEmail(e.currentTarget.value) ?  setEmail( e.currentTarget.value) : setEmail('Not a valid Email')}
 										/>
 									</div>
 									<div className='app-form-group'>

@@ -1,4 +1,3 @@
-import { loadavg } from 'os'
 import React, { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import IPhone from '../IPhone/IPhone'
@@ -62,7 +61,7 @@ const InnerWork = () => {
 
                   assets.map( (asset, idx ) => {
                     return (
-                      <img key={idx} className="asset" src={asset} />
+                      <img key={idx} className="asset" src={asset} alt='asset' />
                     )
                   })
 
@@ -71,7 +70,7 @@ const InnerWork = () => {
 
               :
               
-              <img style={{width: "100%", height:"400px", objectFit:'cover'}} src={ state.item.image } />
+              <img style={{width: "100%", height:"400px", objectFit:'cover'}} alt='alt-idk' src={ state.item.image } />
 
             }
             <div style={{ color:"black", textAlign:"center", padding:'5%'}}> {state.item.statement} </div>
@@ -106,7 +105,7 @@ const InnerWork = () => {
                       images.map((photo, idx) => {
                       return (
                         <SwiperSlide key={idx}>
-                          <img className='phone-image' src={photo} />
+                          <img className='phone-image' src={photo} alt='idk' />
                         </SwiperSlide>
                       )
                     })}

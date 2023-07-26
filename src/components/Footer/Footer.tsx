@@ -45,7 +45,7 @@ const Footer = () => {
 
 
             <div className='trash-can'>
-               <img style={{ height:"8vw" }} src={burningTrash} />
+               <img style={{ height:"8vw" }} src={burningTrash} alt='trash-can'/>
             </div>
 
 

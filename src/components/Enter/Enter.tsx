@@ -10,10 +10,6 @@ const Enter = () => {
 		navigate('/home')
 	}
 
-	function resizeIframe(obj: any) {
-		obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px'
-	}
-
 	return (
 		<div id='/' className='enter'>
 

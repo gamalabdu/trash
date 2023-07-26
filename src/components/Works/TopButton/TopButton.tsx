@@ -31,7 +31,7 @@ const TopButton: React.FC<ITopButtonProps> = ({ buttonName, setCategories, categ
     }
 
   },
-  [allOtherButtonsHighlighted])
+  [allOtherButtonsHighlighted, categories.length, setCategories])
 
 
   ///////////

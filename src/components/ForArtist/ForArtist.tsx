@@ -23,7 +23,7 @@ const ForArtist = () => {
 		<div className='for-artist-container'>
 			<div className='top-container'>
 				<div className='artist-text'> TRASH FOR ARTIST </div>
-				<img className='trippie' src={trippie} />
+				<img className='trippie' src={trippie} alt='trippie' />
 			</div>
 
 			<div className='intro'>
@@ -84,7 +84,7 @@ const ForArtist = () => {
 			<div className='branding'>
 				<div className='left-branding'>
 					<div className='left-branding-picture'>
-						<img className='ellaGhost' src={isabellaGhost} />
+						<img className='ellaGhost' src={isabellaGhost} alt='isabella-ghost' />
 					</div>
 
 					<div className='left-branding-text'>
@@ -105,7 +105,7 @@ const ForArtist = () => {
 				</div>
 
 				<div className='right-branding'>
-					<img src={brandingPic} className='branding-pic' />
+					<img src={brandingPic} className='branding-pic' alt='branding-pic' />
 				</div>
 			</div>
 
@@ -114,7 +114,7 @@ const ForArtist = () => {
 			<div className='digital-black'>
 
 				<div className='left-digital-black'>
-					<img src={ellaSite} className='ella-site' />
+					<img src={ellaSite} className='ella-site' alt='ella-site' />
 				</div>
 
 				<div className='right-digital-black'>
@@ -156,7 +156,7 @@ const ForArtist = () => {
 					</div>
 
           <div className='left-branding-picture'>
-						<img className='ellaGhost' src={jazPic} />
+						<img className='ellaGhost' src={jazPic} alt='ellaGhost'/>
 					</div>
 
 				</div>
@@ -171,7 +171,7 @@ const ForArtist = () => {
 
 
       <div className='right-growth'>
-          <img src={artistGrowth} className='growth-pic' />
+          <img src={artistGrowth} className='growth-pic' alt='artistGrowth' />
 				</div>
 
         
@@ -193,7 +193,7 @@ const ForArtist = () => {
 					</div>
 
           <div className='left-branding-picture'>
-						<img className='ellaGhost' src={mariaPic} />
+						<img className='ellaGhost' src={mariaPic} alt='mariaPic' />
 					</div>
 
 				</div>

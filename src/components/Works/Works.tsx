@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import './styles.css'
 import { BsChevronUp } from 'react-icons/bs'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import TopButton from './TopButton/TopButton'
-import WorksGallery from '../WorksGallery/WorksGallery'
 import Gallery from '../Gallery/Gallery'
 
 const Works = () => {

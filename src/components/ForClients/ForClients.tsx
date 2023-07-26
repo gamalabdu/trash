@@ -3,11 +3,7 @@ import './styles.css'
 import startUp from '../../assets/images/startups.jpeg'
 import strategyTeam from '../../assets/images/teamstartup.jpeg'
 import badwillsite from '../../assets/images/badwillsitepic.png'
-import brandingPic from '../../assets/images/branding.png'
-import jazPic from '../../assets/images/3.png'
 import productionPic from '../../assets/images/productionPic.png'
-import artistGrowth from '../../assets/images/artistGrowth.jpeg'
-import mariaPic from '../../assets/images/1.png'
 import phoneLikeTrim from '../../assets/videos/phoneLikeTrim.mp4'
 import socialMediaGrowth from '../../assets/images/socialMediaGrowth.png'
 
@@ -26,7 +22,7 @@ const ForClients = () => {
 
 			<div className='top-container'>
 				<div className='artist-text'> TRASH FOR STARTUPS </div>
-				<img className='trippie' src={startUp} />
+				<img className='trippie' src={startUp} alt="trippie" />
 			</div>
 
 
@@ -61,7 +57,7 @@ const ForClients = () => {
 
 				<div className='left-branding'>
 					<div className='left-branding-picture'>
-						<img className='ellaGhost' src={strategyTeam} />
+						<img className='ellaGhost' src={strategyTeam} alt='strategyTeam' />
 					</div>
 
 					<div className='left-branding-text'>
@@ -87,7 +83,7 @@ const ForClients = () => {
 			<div className='digital-black'>
 
 				<div className='left-digital-black'>
-					<img src={badwillsite} className='ella-site' />
+					<img src={badwillsite} className='ella-site' alt='badwillSite' />
 				</div>
 
 				<div className='right-digital-black'>
@@ -128,7 +124,7 @@ const ForClients = () => {
 					</div>
 
                     <div className='left-branding-picture'>
-						<img className='ellaGhost' src={productionPic} />
+						<img className='ellaGhost' src={productionPic} alt='productionPic' />
 					</div>
 
 				</div>
@@ -165,7 +161,7 @@ const ForClients = () => {
 					</div>
 
           <div className='left-branding-picture'>
-						<img className='social-growth-pic' src={socialMediaGrowth} />
+						<img className='social-growth-pic' src={socialMediaGrowth} alt='socialMediaGrowth' />
 					</div>
 
 				</div>

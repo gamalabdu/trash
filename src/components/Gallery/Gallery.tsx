@@ -19,7 +19,8 @@ interface IGalleryProps {
 }
 
 const Gallery = (props: IGalleryProps) => {
-	const { categories, data } = props
+	
+	const { data } = props
 
 	const [galleryData, setGalleryData] = useState(data)
 

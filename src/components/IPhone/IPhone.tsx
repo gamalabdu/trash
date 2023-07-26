@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Icon } from '@iconify-icon/react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper'
@@ -11,6 +11,7 @@ interface IPhoneProps {
 }
 
 const IPhone = (props: IPhoneProps) => {
+
 	const { images } = props
 
 	return (
@@ -45,7 +46,7 @@ const IPhone = (props: IPhoneProps) => {
 					  images.map((photo, idx) => {
 						return (
 							<SwiperSlide key={idx}>
-									<img className='phone-image' src={photo} />
+									<img className='phone-image' src={photo} alt='iphone' />
 							</SwiperSlide>
 						)
 					})}
