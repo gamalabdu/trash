@@ -6,39 +6,31 @@ import { Link } from 'react-router-dom';
 const SideNav = () => {
 
 	useEffect(() => {
-
 		const toggleNav = () => {
-
-		  const nav = document?.getElementById('nav');
-
+		  const nav = document.getElementById('nav');
+	
 		  if (nav?.classList.contains('active')) {
 			nav.classList.remove('active');
 		  } else {
 			nav?.classList.add('active');
 		  }
-		
-
 		};
 	
 		const handleClick = () => {
 		  toggleNav();
 		};
 	
-		const navIcon = document?.getElementById('nav-icon');
+		const navIcon = document.getElementById('nav-icon');
 		if (navIcon) {
-		  navIcon?.addEventListener('click', handleClick);
+		  navIcon.addEventListener('click', handleClick);
 		}
 	
 		return () => {
 		  if (navIcon) {
-			navIcon?.removeEventListener('click', handleClick);
+			navIcon.removeEventListener('click', handleClick);
 		  }
-		}
-
-
-
-	  }, [])
-	
+		};
+	  }, []);
 
 	return (
 		<nav id='nav'>
