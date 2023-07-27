@@ -29,6 +29,9 @@
     "uglify-js": "^3.17.4",
     "web-vitals": "^3.4.0"
   },
+  "overrides": {
+    "typescript" : "^5.1.6"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -55,6 +58,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@rollup/plugin-terser": "^0.4.3"
+    "@rollup/plugin-terser": "^0.4.3",
+    "fork-ts-checker-webpack-plugin": "^6.5.3"
   }
 }
