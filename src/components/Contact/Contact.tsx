@@ -67,7 +67,7 @@ const Contact = () => {
 
 	return (
 			<div className='background'>
-				<div className='container'>
+				<div className='contact-container'>
 					<div className='screen'>
 						<div className='screen-header'>
 							<div className='screen-header-left'>
