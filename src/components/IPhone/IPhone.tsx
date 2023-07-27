@@ -1,7 +1,7 @@
 import React from 'react'
 import { Icon } from '@iconify-icon/react'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation } from 'swiper'
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules';
 import 'swiper/css'
 import 'swiper/css/navigation'
 import './styles.css'

@@ -23,9 +23,9 @@
     "react-native-web": "^0.19.5",
     "react-router-dom": "^6.14.2",
     "react-scripts": "^5.0.1",
-    "swiper": "^9.4.1",
+    "swiper": "^10.0.4",
     "terser": "^5.19.2",
-    "typescript": "^4",
+    "typescript": "^5.1.6",
     "uglify-js": "^3.17.4",
     "web-vitals": "^3.4.0"
   },
