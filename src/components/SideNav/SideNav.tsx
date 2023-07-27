@@ -8,8 +8,8 @@ const SideNav = () => {
 	useEffect(() => {
 
 		const toggleNav = () => {
-			
-		  const nav = document.getElementById('nav')!
+
+		  const nav = document!.getElementById('nav')
 	
 		  if (nav?.classList.contains('active')) {
 			nav.classList.remove('active')
@@ -22,7 +22,7 @@ const SideNav = () => {
 		  toggleNav()
 		}
 	
-		const navIcon = document.getElementById('nav-icon')!
+		const navIcon = document!.getElementById('nav-icon')
 		if (navIcon) {
 		  navIcon.addEventListener('click', handleClick)
 		}
