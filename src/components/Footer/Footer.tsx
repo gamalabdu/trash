@@ -2,7 +2,7 @@ import React from 'react'
 import { FaInstagram } from 'react-icons/fa'
 import { AiOutlineYoutube } from 'react-icons/ai'
 import { TbBrandSpotify } from 'react-icons/tb'
-import burningTrash from '../../assets/images/burningtrash.svg'
+import {burningTrash} from '../../assets/images';
 import './styles.css'
 import { Link } from 'react-router-dom'
 

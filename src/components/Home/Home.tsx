@@ -1,5 +1,5 @@
 import React from 'react'
-import burningTrash from '../../assets/images/burningtrash.svg'
+import { burningTrash } from '../../assets/images'
 import './styles.css'
 import { Link, useNavigate } from 'react-router-dom'
 
