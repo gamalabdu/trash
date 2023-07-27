@@ -115,7 +115,7 @@ const InnerWork = () => {
 
                   :
 
-                  <div></div>
+                  null
     
 
             }
@@ -140,7 +140,7 @@ const InnerWork = () => {
         </div>
         </>
         : 
-        <div></div>
+        null
         }
 
     </div>
