@@ -16,6 +16,7 @@ const SideNav = () => {
 		  } else {
 			nav?.classList.add('active');
 		  }
+		
 
 		};
 	
@@ -32,8 +33,11 @@ const SideNav = () => {
 		  if (navIcon) {
 			navIcon?.removeEventListener('click', handleClick);
 		  }
-		};
-	  }, []);
+		}
+
+
+
+	  }, [])
 	
 
 	return (
