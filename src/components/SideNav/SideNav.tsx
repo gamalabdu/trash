@@ -9,7 +9,7 @@ const SideNav = () => {
 
 		const toggleNav = () => {
 
-		  const nav = document.getElementById('nav') ?? null;
+		  const nav = document?.getElementById('nav');
 
 		  if (nav?.classList.contains('active')) {
 			nav.classList.remove('active');
@@ -23,14 +23,14 @@ const SideNav = () => {
 		  toggleNav();
 		};
 	
-		const navIcon = document.getElementById('nav-icon') ?? null;
+		const navIcon = document?.getElementById('nav-icon');
 		if (navIcon) {
-		  navIcon.addEventListener('click', handleClick);
+		  navIcon?.addEventListener('click', handleClick);
 		}
 	
 		return () => {
 		  if (navIcon) {
-			navIcon.removeEventListener('click', handleClick);
+			navIcon?.removeEventListener('click', handleClick);
 		  }
 		};
 	  }, []);

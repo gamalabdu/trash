@@ -7,30 +7,6 @@ const About = () => {
 	useEffect(() => {
 		window.scrollTo(0, 0)
 	}, [])
-	// 	const toggleNav = () => {
-	// 	  const nav = document.getElementById('nav');
-	// 	  if (nav?.classList.contains('active')) {
-	// 		nav.classList.remove('active');
-	// 	  } else {
-	// 		nav?.classList.add('active');
-	// 	  }
-	// 	};
-
-	// 	const handleClick = () => {
-	// 	  toggleNav();
-	// 	};
-
-	// 	const navIcon = document.getElementById('nav-icon');
-	// 	if (navIcon) {
-	// 	  navIcon.addEventListener('click', handleClick);
-	// 	}
-
-	// 	return () => {
-	// 	  if (navIcon) {
-	// 		navIcon.removeEventListener('click', handleClick);
-	// 	  }
-	// 	};
-	//   }, []);
 
 	return (
 		<div className='about-container'>
