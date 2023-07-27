@@ -5,39 +5,39 @@ import { Link } from 'react-router-dom';
 
 const SideNav = () => {
 
-	// useEffect(() => {
+	useEffect(() => {
 
-	// 	const toggleNav = () => {
+		const toggleNav = () => {
 
-	// 	  const nav = document?.getElementById('nav');
+		  const nav = document?.getElementById('nav');
 
-	// 	  if (nav?.classList.contains('active')) {
-	// 		nav.classList.remove('active');
-	// 	  } else {
-	// 		nav?.classList.add('active');
-	// 	  }
+		  if (nav?.classList.contains('active')) {
+			nav.classList.remove('active');
+		  } else {
+			nav?.classList.add('active');
+		  }
 		
 
-	// 	};
+		};
 	
-	// 	const handleClick = () => {
-	// 	  toggleNav();
-	// 	};
+		const handleClick = () => {
+		  toggleNav();
+		};
 	
-	// 	const navIcon = document?.getElementById('nav-icon');
-	// 	if (navIcon) {
-	// 	  navIcon?.addEventListener('click', handleClick);
-	// 	}
+		const navIcon = document?.getElementById('nav-icon');
+		if (navIcon) {
+		  navIcon?.addEventListener('click', handleClick);
+		}
 	
-	// 	return () => {
-	// 	  if (navIcon) {
-	// 		navIcon?.removeEventListener('click', handleClick);
-	// 	  }
-	// 	}
+		return () => {
+		  if (navIcon) {
+			navIcon?.removeEventListener('click', handleClick);
+		  }
+		}
 
 
 
-	//   }, [])
+	  }, [])
 	
 
 	return (
