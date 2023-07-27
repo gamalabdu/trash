@@ -16,17 +16,17 @@ const NavContainer = () => {
 		window?.scrollTo({
 			top: 100000000000,
 			behavior: 'smooth',
-		})
+		})!
 	}
 
 	useEffect(() => {
     
 		// Button is displayed after scrolling for 500 pixels
 		const toggleVisibility = () => {
+
+			const scrollHeight = document?.documentElement?.scrollHeight!
 			
-			const scrollHeight = document?.documentElement?.scrollHeight;
-			
-			if (window?.pageYOffset > 50 && !(window?.pageYOffset + 50 >= scrollHeight + 10 - window?.innerHeight + 10)) {
+			if (window?.pageYOffset! > 50 && !(window?.pageYOffset! + 50 >= scrollHeight + 10 - window?.innerHeight! + 10)) {
 			  setIsVisible(true);
 			} else {
 			  setIsVisible(false);
@@ -34,7 +34,7 @@ const NavContainer = () => {
 		  };
 		  
 
-		window?.addEventListener('scroll', toggleVisibility)
+		window?.addEventListener('scroll', toggleVisibility)!
 
 		return () => window?.removeEventListener('scroll', toggleVisibility)
 
