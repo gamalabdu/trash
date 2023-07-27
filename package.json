@@ -6,34 +6,26 @@
     "@emailjs/browser": "^3.11.0",
     "@fortawesome/fontawesome-free": "^6.4.0",
     "@iconify-icon/react": "^1.0.8",
-    "@jridgewell/sourcemap-codec": "^1.4.15",
     "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^14.0.0",
-    "@testing-library/user-event": "^14.4.3",
-    "@types/jest": "^29.5.3",
-    "@types/node": "^20.4.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^16.18.36",
     "@types/react": "^18.2.12",
     "@types/react-dom": "^18.2.5",
+    "emailjs": "^4.0.2",
     "font-awesome": "^4.7.0",
-    "fork-ts-checker-webpack-plugin": "^8.0.0",
-    "framer-motion": "^10.13.1",
+    "framer-motion": "^10.14.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.9.0",
-    "react-native": "^0.72.3",
+    "react-native": "^0.71.11",
     "react-native-web": "^0.19.5",
-    "react-router-dom": "^6.14.2",
-    "react-scripts": "^5.0.1",
-    "swiper": "^10.0.4",
-    "terser": "^5.19.2",
-    "typescript": "^5.1.6",
-    "uglify-js": "^3.17.4",
-    "web-vitals": "^3.4.0"
-  },
-  "overrides": {
-    "react-scripts": {
-      "typescript": "^5"
-    }
+    "react-router-dom": "^6.13.0",
+    "react-scripts": "5.0.1",
+    "swiper": "^9.4.1",
+    "typescript": "^4.9.5",
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -58,9 +50,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@rollup/plugin-terser": "^0.4.3"
   }
 }
