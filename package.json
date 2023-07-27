@@ -29,9 +29,6 @@
     "uglify-js": "^3.17.4",
     "web-vitals": "^3.4.0"
   },
-  "optionalDependencies": {
-    "fsevents": "*"
-  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
