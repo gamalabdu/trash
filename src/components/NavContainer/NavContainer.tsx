@@ -13,33 +13,14 @@ const NavContainer = () => {
 	// Top: 0 takes us all the way back to the top of the page
 	// Behavior: smooth keeps it smooth!
 
-	const scrollToTop = () => {
-		window?.scrollTo({
-			top: 100000000000,
+	const scrollToBottom = () => {
+		const scrollHeight = document.documentElement.scrollHeight;
+	
+		window.scrollTo({
+			top: scrollHeight,
 			behavior: 'smooth',
-		})!
-	}
-
-	// useEffect(() => {
-    
-	// 	// Button is displayed after scrolling for 500 pixels
-	// 	const toggleVisibility = () => {
-
-	// 		const scrollHeight = document?.documentElement?.scrollHeight!
-			
-	// 		if (window?.pageYOffset! > 50 && !(window?.pageYOffset! + 50 >= scrollHeight + 10 - window?.innerHeight! + 10)) {
-	// 		  setIsVisible(true);
-	// 		} else {
-	// 		  setIsVisible(false);
-	// 		}
-	// 	  };
-		  
-
-	// 	window?.addEventListener('scroll', toggleVisibility)!
-
-	// 	return () => window?.removeEventListener('scroll', toggleVisibility)
-
-	// }, [])
+		});
+	};
 
 	useEffect(() => {
 		const toggleVisibility = () => {
@@ -68,7 +49,7 @@ const NavContainer = () => {
 			<Outlet />
 				<div className={ isVisible ? 'scroll-to-top' : 'scroll-to-top-active'}>
 					<FiArrowDown size={20} 
-					onClick={() => scrollToTop() } 
+					onClick={() => scrollToBottom() } 
 					id='scrollToTopBtn' />
 					<Link to='/contact' style={{textDecoration:"none"}}>
 					  <IoChatboxOutline size={20} />
