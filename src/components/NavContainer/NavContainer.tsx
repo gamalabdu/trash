@@ -46,19 +46,19 @@ const NavContainer = () => {
 	
 
 	return (
-		<>
+		<div>
 			<SideNav />
 			<Outlet />
-				<div className={ isVisible ? 'scroll-to-top' : 'scroll-to-top-active'}>
+				{/* <div className={ isVisible ? 'scroll-to-top' : 'scroll-to-top-active'}>
 					<FiArrowDown size={20} 
 					onClick={() => scrollToBottom() } 
 					id='scrollToTopBtn' />
 					<Link to='/contact' style={{textDecoration:"none"}}>
 					  <IoChatboxOutline size={20} />
 				    </Link>
-				</div>
+				</div> */}
 			<Footer />
-		</>
+		</div>
 	)
 }
 
