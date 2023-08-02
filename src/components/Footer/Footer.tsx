@@ -26,7 +26,7 @@ const Footer = () => {
 
 
   return (
-    <div className='footer-container'>
+    <footer className='footer-container'>
 
         <div className='footer-black'>
 
@@ -66,7 +66,7 @@ const Footer = () => {
 
         </div>
 
-    </div>
+    </footer>
   )
 }
 

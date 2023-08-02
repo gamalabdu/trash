@@ -21,10 +21,8 @@ const rootElement = document.getElementById('root');
 if (rootElement instanceof HTMLElement) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
-    <React.StrictMode>
       <App />
-    </React.StrictMode>
-  );
+  )
 } else {
   console.error('Unable to find root element with id "root"');
 }
