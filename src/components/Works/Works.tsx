@@ -183,6 +183,7 @@ const Works = () => {
 						<div
 							style={{ cursor: 'pointer' }}
 							onClick={() => setButtons(false)}>
+								
 							<BsChevronUp size={18} />
 						</div>
 					</div>
