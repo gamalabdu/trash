@@ -20,26 +20,47 @@ const NavContainer = () => {
 		})!
 	}
 
-	useEffect(() => {
+	// useEffect(() => {
     
-		// Button is displayed after scrolling for 500 pixels
-		const toggleVisibility = () => {
+	// 	// Button is displayed after scrolling for 500 pixels
+	// 	const toggleVisibility = () => {
 
-			const scrollHeight = document?.documentElement?.scrollHeight!
+	// 		const scrollHeight = document?.documentElement?.scrollHeight!
 			
-			if (window?.pageYOffset! > 50 && !(window?.pageYOffset! + 50 >= scrollHeight + 10 - window?.innerHeight! + 10)) {
-			  setIsVisible(true);
-			} else {
-			  setIsVisible(false);
-			}
-		  };
+	// 		if (window?.pageYOffset! > 50 && !(window?.pageYOffset! + 50 >= scrollHeight + 10 - window?.innerHeight! + 10)) {
+	// 		  setIsVisible(true);
+	// 		} else {
+	// 		  setIsVisible(false);
+	// 		}
+	// 	  };
 		  
 
-		window?.addEventListener('scroll', toggleVisibility)!
+	// 	window?.addEventListener('scroll', toggleVisibility)!
 
-		return () => window?.removeEventListener('scroll', toggleVisibility)
+	// 	return () => window?.removeEventListener('scroll', toggleVisibility)
 
-	}, [])
+	// }, [])
+
+	useEffect(() => {
+		const toggleVisibility = () => {
+			const scrollHeight = document?.documentElement?.scrollHeight || 0;
+			const pageYOffset = window?.pageYOffset || 0;
+			const innerHeight = window?.innerHeight || 0;
+			
+			if (pageYOffset > 50 && !(pageYOffset + 50 >= scrollHeight + 10 - innerHeight + 10)) {
+				setIsVisible(true);
+			} else {
+				setIsVisible(false);
+			}
+		};
+	
+		window?.addEventListener('scroll', toggleVisibility);
+	
+		return () => {
+			window?.removeEventListener('scroll', toggleVisibility);
+		};
+	}, []);
+	
 
 	return (
 		<>
