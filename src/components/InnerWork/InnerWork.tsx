@@ -49,7 +49,7 @@ const InnerWork = () => {
 
   return (
     <div className='inner-work-container'>
-        {/* <div style={{ width:"100%", color:"white", textAlign:"right", fontSize:"3vw", marginTop:"24px", marginLeft:"-10px", cursor:"pointer"}} onClick={() => backToWork()}> Back </div> */}
+        <div style={{ width:"100%", color:"black", textAlign:"right", fontSize:"3vw", marginTop:"24px", marginLeft:"-30px", cursor:"pointer"}} onClick={() => backToWork()}> Back </div>
         <div className='inner-work-main'>
             <div style={{ color:"black", fontSize:"5vw"}}> {state.item.name} </div>
             {
