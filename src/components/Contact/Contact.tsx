@@ -7,6 +7,7 @@ const Contact = () => {
 	useEffect(() => {
 		window.scrollTo(0, 0)
 	}, [])
+	
 
 	const goToLink = () => {
 		return (window.location.href = 'https://www.instagram.com/trashdidthis/')

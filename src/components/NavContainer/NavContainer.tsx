@@ -14,12 +14,14 @@ const NavContainer = () => {
 	// Behavior: smooth keeps it smooth!
 
 	const scrollToBottom = () => {
-		const scrollHeight = document.documentElement.scrollHeight;
+		const scrollHeight = document.documentElement?.scrollHeight || 0;
 	
-		window.scrollTo({
-			top: scrollHeight,
-			behavior: 'smooth',
-		});
+		if (scrollHeight > 0) {
+			window.scrollTo({
+				top: scrollHeight,
+				behavior: 'smooth',
+			});
+		}
 	};
 
 	useEffect(() => {
