@@ -105,7 +105,7 @@ const SideNav = () => {
       }
     };
 
-    const navIcon = document.getElementById('nav-icon');
+    const navIcon = document.getElementById('nav-icon')
 
     if (navIcon) {
       navIcon.addEventListener('click', toggleNav);
