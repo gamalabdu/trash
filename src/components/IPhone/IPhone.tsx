@@ -52,21 +52,6 @@ const IPhone = (props: IPhoneProps) => {
 					})}
 				</Swiper>
 			</div>
-
-			{/* <div className='buttons'>
-				<div className='btn'>
-					<div className='icon'>
-						<Icon icon='tabler:message-circle-2-filled' />
-					</div>
-					<div className='label'>Message</div>
-				</div>
-				<div className='btn'>
-					<div className='icon'>
-						<Icon icon='ic:round-voicemail' />
-					</div>
-					<div className='label'>Voicemail</div>
-				</div>
-			</div> */}
 		</div>
 	)
 }
