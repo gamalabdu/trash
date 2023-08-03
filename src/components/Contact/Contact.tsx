@@ -7,8 +7,6 @@ const Contact = () => {
 	useEffect(() => {
 		window.scrollTo(0, 0)
 	}, [])
-
-	const x = 1
 	
 
 	const goToLink = () => {
