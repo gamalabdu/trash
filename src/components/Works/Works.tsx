@@ -54,12 +54,13 @@ const Works = () => {
 				require('../../assets/images/badwill/badwillmobile1.png'),
 				require('../../assets/images/badwill/badwillmobile2.png')
 				],
-			iphone: true,
+			canvas : [],
 			assets: [
 				require('../../assets/images/badwill/Balenciaga Speed 1x1.gif'),
 				require('../../assets/images/badwill/Yeezy Foam RNR 1x1.gif'),
 				require('../../assets/images/badwill/Yeezy Hoodie 1x1.gif')
-			]
+			],
+			iphone: true,
 		},
 		{
 			image: require('../../assets/images/ella-site.png'),
@@ -75,6 +76,8 @@ const Works = () => {
 				require('../../assets/images/ellaRossiSite/ellaSiteMain.png'),
 				require('../../assets/images/ellaRossiSite/ellaSiteGallery.png')
 			],
+			canvas : [],
+			assets : [],
 			iphone: true,
 		},
 		{
@@ -89,6 +92,8 @@ const Works = () => {
 				require('../../assets/images/royal/BnWRTFlag.jpg'),
 				require('../../assets/images/royal/royal 2.jpg')
 			],
+			canvas : [],
+			assets : [],
 			iphone: false,
 		},
 		{
@@ -101,6 +106,7 @@ const Works = () => {
 			],
 			images: [],
 			canvas: [  require('../../assets/images/wakemeup/FINALCANVAS1.mp4'), require('../../assets/images/wakemeup/WakeMeUpFinalCanvases2.mp4') ],
+			assets : [],
 			iphone: false
 		},
 		{
@@ -113,6 +119,7 @@ const Works = () => {
 			],
 			images: [],
 			canvas: [],
+			assets : [],
 			iphone: false
 		},
 		{
@@ -125,6 +132,7 @@ const Works = () => {
 			],
 			images: [],
 			canvas: [],
+			assets : [],
 			iphone: false
 		}
 	]
@@ -141,9 +149,6 @@ const Works = () => {
 	const [Buttons, setButtons] = useState(false)
 
 	const [categories, setCategories] =  useState<string[]>(['Everything'])
-
-	// const intersection = works.filter(work => categories.includes(work.type));
-
 
 	const intersection = works.filter(work => {
 		return work.type.some(item => categories.includes(item));
@@ -199,7 +204,6 @@ const Works = () => {
 								:
 								"Showing : "
 							}
-							{/* {' '} Show Me : {' '} */}
 							<div
 								className='everything-choice'
 								onClick={() => setButtons(true)}>
@@ -212,7 +216,6 @@ const Works = () => {
 									:
 									
 									categories.length + " categories"
-									// <div style={{ display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"center", textDecoration:"none"}}>Categories Selected : <div style={{color:"#f93b3b", textDecoration:"none"}}>{categories.length}</div></div>
 									
 								}	
 							</div>
@@ -229,36 +232,16 @@ const Works = () => {
         			{
 						categories.includes('Everything') ?
 
-						// works.map( (item, idx) => {
-
-						// 	return (
-						// 		<img key={idx} style={{ height:"100px", width:"100px"}} src={item.image} />
-						// 	)
-			
-						// })
-
-						// <WorksGallery categories={categories} data={works} />
-
 						<Gallery categories={categories} data={works} />
 
 
 						: 
-
-						// intersection.map( (item, idx) => {
-
-						// 	return (
-						// 		<img key={idx} style={{ height:"100px", width:"100px"}} src={item.image} />
-						// 	)
-			
-						// })
 
 						categories.length === 0 ? 
 
 						<div className='no-categories' style={{ color: "#202020", padding:"5%"}}> No Categories Selected </div>
 
 						:
-
-						// <WorksGallery categories={categories} data={intersection} />
 
 						<Gallery categories={categories} data={intersection} />
 					}
