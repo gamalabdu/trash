@@ -54,6 +54,16 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "ts-node": "^10.9.1",
-    "webpack": "^5.88.2"
+    "webpack": "^5.88.2",
+    "svgo": "3.0.2",
+    "nth-check": "2.1.1",
+    "uglify-js" :"3.17.4",
+    "@nrwl/rollup" :"16.6.0",
+    "postcss-svgo" :"6.0.0",
+    "cssnano-preset-default":"6.0.1",
+    "cssnano" :"6.0.1",
+    "rollup-plugin-postcss" :"4.0.2",
+    "@rollup/plugin-terser" :"0.4.3",
+    "resolve-url-loader":"5.0.0"
   }
 }
