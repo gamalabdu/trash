@@ -51,7 +51,7 @@ const Footer = () => {
 
             <div className='right-side'>
 
-              <ul className='right-links'>
+                    <ul className='right-links'>
                         <li className='social-icons' onClick={() => goToLink('instagram') }><FaInstagram/></li>
                         <li className='social-icons' onClick={() => goToLink('youtube') }><AiOutlineYoutube/></li>
                         <li className='social-icons' onClick={() => goToLink('spotify') }><TbBrandSpotify/></li>

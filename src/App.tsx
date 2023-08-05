@@ -19,9 +19,9 @@ function App() {
       <BrowserRouter>
         <Routes>
             
-          <Route path="/" element={<Enter />} />
+          <Route path="/enter" element={<Enter />} />
 
-          <Route   element={ <NavContainer /> }>
+              <Route path="/" element={ <NavContainer /> }>
               <Route index path="home" element={ <Home /> } />
               <Route path="about" element={ <About /> } />
               <Route path="for-artist" element={ <ForArtist /> } />
