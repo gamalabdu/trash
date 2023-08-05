@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import IPhone from '../IPhone/IPhone'
-// import { Swiper, SwiperSlide } from 'swiper/react'
-// import { Navigation } from "swiper";
-// import 'swiper/css'
-// import 'swiper/css/navigation'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation } from "swiper";
+import 'swiper/css'
+import 'swiper/css/navigation'
 import './styles.css'
 
 
@@ -95,7 +95,7 @@ const InnerWork = () => {
 
                   <div>
                     <div className='inner-work-gallery'>
-                    {/* <Swiper
+                    <Swiper
                     modules={[Navigation]}
                     spaceBetween={100}
                     slidesPerView={1}
@@ -109,7 +109,7 @@ const InnerWork = () => {
                         </SwiperSlide>
                       )
                     })}
-                  </Swiper> */}
+                  </Swiper>
                     </div>
                     </div>
 

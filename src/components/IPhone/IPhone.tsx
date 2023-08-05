@@ -1,9 +1,9 @@
 import React from 'react'
 import { Icon } from '@iconify-icon/react'
-// import { Swiper, SwiperSlide } from 'swiper/react';
-// import { Navigation } from "swiper";
-// import 'swiper/css'
-// import 'swiper/css/navigation'
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from "swiper";
+import 'swiper/css'
+import 'swiper/css/navigation'
 import './styles.css'
 
 interface IPhoneProps {
@@ -36,7 +36,7 @@ const IPhone = (props: IPhoneProps) => {
 			<div className='home'></div>
 
 			<div className='avatar' style={{ backgroundImage: `${images}` }}>
-				{/* <Swiper
+				<Swiper
 					modules={[Navigation]}
 					spaceBetween={100}
 					slidesPerView={1}
@@ -50,7 +50,7 @@ const IPhone = (props: IPhoneProps) => {
 							</SwiperSlide>
 						)
 					})}
-				</Swiper> */}
+				</Swiper>
 			</div>
 		</div>
 	)
