@@ -19,7 +19,7 @@ function App() {
       <BrowserRouter>
         <Routes>
             
-          <Route path="/enter" element={<Enter />} />
+          <Route path="/" element={<Enter />} />
 
               <Route path="/" element={ <NavContainer /> }>
               <Route index path="home" element={ <Home /> } />
