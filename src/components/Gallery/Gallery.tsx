@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import './styles.css'
 import GalleryItem from './GalleryItem/GalleryItem'
@@ -19,26 +18,22 @@ interface IGalleryProps {
 }
 
 const Gallery = (props: IGalleryProps) => {
-	
 	const { data } = props
 
-	const [galleryData, setGalleryData] = useState(data)
-
-	useEffect(() => {
-		setGalleryData(data)
-	}, [data])
-
 	return (
-		<motion.div layout className='gallery-container'>
+		<div className='gallery-container'>
 			<AnimatePresence>
-				{galleryData.map((item, i) => (
+				{data.map((item, i) => (
 					<Link key={i} to='/innerworks' state={{ item }}>
-						<GalleryItem item={item} />
+						<motion.div layout>
+							<GalleryItem item={item} />
+						</motion.div>
 					</Link>
 				))}
 			</AnimatePresence>
-		</motion.div>
+		</div>
 	)
 }
 
 export default Gallery
+
