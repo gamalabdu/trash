@@ -10,10 +10,10 @@ interface IGalleryProps {
 		type: string[]
 		name: string
 		videos: string[]
-		images?: string[]
+		images: string[]
 		iphone: boolean
-		assets?: string[]
-		canvas?: string[]
+		assets: string[]
+		canvas: string[]
 	}[]
 }
 
