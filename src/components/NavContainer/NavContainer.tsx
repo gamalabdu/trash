@@ -72,6 +72,8 @@ import { FiArrowDown } from 'react-icons/fi'
 import { IoChatboxOutline } from 'react-icons/io5'
 import './styles.css'
 
+
+
 const NavContainer = () => {
 
 	const [isVisible, setIsVisible] = useState(false)
