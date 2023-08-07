@@ -107,16 +107,16 @@ const SideNav = () => {
           </Link>
         </li>
         <li>
-          <Link to='/for-artist'>For Artist</Link>
+          <Link to='/for-artist' preventScrollReset={true} reloadDocument>For Artist</Link>
         </li>
         <li>
-          <Link to='/for-clients'>For Startups</Link>
+          <Link to='/for-clients' preventScrollReset={true} reloadDocument>For Startups</Link>
         </li>
         <li>
-          <Link to='/works'>Our Work</Link>
+          <Link to='/works' preventScrollReset={true} reloadDocument>Our Work</Link>
         </li>
         <li>
-          <Link to='/contact'>Contact</Link>
+          <Link to='/contact' preventScrollReset={true} reloadDocument>Contact</Link>
         </li>
         {/* <li>
           <a href="#growth">Growth</a>
