@@ -18,6 +18,7 @@ interface IGalleryProps {
 }
 
 const Gallery = (props: IGalleryProps) => {
+	
 	const { data } = props
 
 	return (
