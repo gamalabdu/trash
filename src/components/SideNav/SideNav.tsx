@@ -3,7 +3,7 @@
 // import { Link } from 'react-router-dom';
 
 // const SideNav = () => {
-  
+
 //   const navRef = useRef<HTMLDivElement | null>(null); // Specify the type of the ref
 
 //   const navIconRef = useRef<HTMLButtonElement | null>(null);
@@ -33,7 +33,6 @@
 //       }
 //     };
 //   }, []);
-
 
 //   return (
 //     <nav id='nav' ref={navRef}>
@@ -78,56 +77,63 @@
 
 // export default SideNav;
 
-
-import React, { useState } from 'react';
-import './styles.css';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react'
+import './styles.css'
+import { Link } from 'react-router-dom'
 
 const SideNav = () => {
-  const [isNavActive, setIsNavActive] = useState(false);
+  
+	const [isNavActive, setIsNavActive] = useState(false)
 
-  const toggleNav = () => {
-    setIsNavActive((prev) => !prev);
-  };
+	const toggleNav = () => {
+		setIsNavActive((prev) => !prev)
+	}
 
-  return (
-    <nav id='nav' className={isNavActive ? 'active' : ''}>
-      <button className='nav-icon' id='nav-icon' onClick={toggleNav}>
-        <span></span>
-      </button>
-      <ul>
-        <li>
-          <Link to='/home' preventScrollReset={true} reloadDocument>
-            Home
-          </Link>
-        </li>
-        <li>
-          <Link to='/about' preventScrollReset={true} reloadDocument>
-            About
-          </Link>
-        </li>
-        <li>
-          <Link to='/for-artist' preventScrollReset={true} reloadDocument>For Artist</Link>
-        </li>
-        <li>
-          <Link to='/for-clients' preventScrollReset={true} reloadDocument>For Startups</Link>
-        </li>
-        <li>
-          <Link to='/works' preventScrollReset={true} reloadDocument>Our Work</Link>
-        </li>
-        <li>
-          <Link to='/contact' preventScrollReset={true} reloadDocument>Contact</Link>
-        </li>
-        {/* <li>
+	return (
+		<nav id='nav' className={isNavActive ? 'active' : ''}>
+			<button className='nav-icon' id='nav-icon' onClick={toggleNav}>
+				<span></span>
+			</button>
+			<ul>
+				<li>
+					<Link to='/home' preventScrollReset={true} reloadDocument>
+						Home
+					</Link>
+				</li>
+				<li>
+					<Link to='/about' preventScrollReset={true} reloadDocument>
+						About
+					</Link>
+				</li>
+				<li>
+					<Link to='/for-artist' preventScrollReset={true} reloadDocument>
+						For Artist
+					</Link>
+				</li>
+				<li>
+					<Link to='/for-clients' preventScrollReset={true} reloadDocument>
+						For Startups
+					</Link>
+				</li>
+				<li>
+					<Link to='/works' preventScrollReset={true} reloadDocument>
+						Our Work
+					</Link>
+				</li>
+				<li>
+					<Link to='/contact' preventScrollReset={true} reloadDocument>
+						Contact
+					</Link>
+				</li>
+				{/* <li>
           <a href="#growth">Growth</a>
         </li>
         <li>
           <a href="#end">Ending</a>
         </li> */}
-      </ul>
-    </nav>
-  );
-};
+			</ul>
+		</nav>
+	)
+}
 
-export default SideNav;
-
+export default SideNav

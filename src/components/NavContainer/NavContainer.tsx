@@ -81,8 +81,9 @@ const NavContainer = () => {
 	// Top: 0 takes us all the way back to the top of the page
 	// Behavior: smooth keeps it smooth!
 
+	const scrollHeight = document.documentElement?.scrollHeight || 0;
+
 	const scrollToBottom = () => {
-		const scrollHeight = document.documentElement?.scrollHeight || 0;
 	
 		if (scrollHeight > 0) {
 			window.scrollTo({
@@ -95,8 +96,9 @@ const NavContainer = () => {
 
 
 	useEffect(() => {
+
 		const toggleVisibility = () => {
-			const scrollHeight = document?.documentElement?.scrollHeight || 0;
+
 			const pageYOffset = window?.pageYOffset || 0;
 			const innerHeight = window?.innerHeight || 0;
 			
