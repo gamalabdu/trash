@@ -23,6 +23,7 @@ p {
 a {
   color: inherit;
   text-decoration: none;
+  display: flex;
 }
 
 h2 {
