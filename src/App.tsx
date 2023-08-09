@@ -21,7 +21,7 @@ function App() {
             
           <Route path="/" element={<Enter />} />
 
-              <Route element={ <NavContainer /> }>
+              {/* <Route element={ <NavContainer /> }>
 
                   <Route path="home" element={ <Home /> } />
                   <Route path="about" element={ <About /> } />
@@ -31,7 +31,7 @@ function App() {
                   <Route path='innerworks' element={ <InnerWork /> } />
                   <Route path="contact" element={ <Contact /> } />
 
-              </Route>
+              </Route> */}
 
         </Routes>
       </BrowserRouter>
