@@ -21,17 +21,17 @@ function App() {
             
           <Route path="/" element={<Enter />} />
 
-              {/* <Route element={ <NavContainer /> }>
+              <Route element={ <NavContainer /> }>
 
-                  <Route path="home" element={ <Home /> } />
-                  <Route path="about" element={ <About /> } />
-                  <Route path="for-artist" element={ <ForArtist /> } />
-                  <Route path="for-clients" element={ <ForClients /> } />
-                  <Route path="works" element={ <Works /> } />
-                  <Route path='innerworks' element={ <InnerWork /> } />
-                  <Route path="contact" element={ <Contact /> } />
+                  <Route path="/home" element={ <Home /> } />
+                  <Route path="/about" element={ <About /> } />
+                  <Route path="/for-artist" element={ <ForArtist /> } />
+                  <Route path="/for-clients" element={ <ForClients /> } />
+                  <Route path="/works" element={ <Works /> } />
+                  <Route path='/innerworks' element={ <InnerWork /> } />
+                  <Route path="/contact" element={ <Contact /> } />
 
-              </Route> */}
+              </Route>
 
         </Routes>
       </BrowserRouter>
