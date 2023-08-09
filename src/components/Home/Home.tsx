@@ -18,6 +18,9 @@ const Home = () => {
 		}
 	}
 
+
+	console.log(mike)
+
 	return (
 		<div className='home-container'>
 
