@@ -36,7 +36,7 @@ const Home = () => {
 				MARKETING & CONTENT CREATION.
 			</div>
 
-			{/* <div className='client-offers'>
+			<div className='client-offers'>
 				<div onClick={() => handleClick('for-artist')} className='for-artist'>
 					<div className='inside-text'> for artist </div>
 					<Link to='/for-artist' style={{ textDecoration: 'none' }}>
@@ -61,7 +61,7 @@ const Home = () => {
 						/>{' '}
 					</Link>
 				</div>
-			</div> */}
+			</div>
 
 		</div>
 	)
