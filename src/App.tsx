@@ -21,6 +21,8 @@ function App() {
 
              <Route path="/" element={<Enter />} />
 
+             <Route path="about" element={ <About /> } />
+
 
               {/* <Route element={ <NavContainer /> }>
 
