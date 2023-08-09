@@ -79,7 +79,7 @@
 
 import React, { useState } from 'react'
 import './styles.css'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
 const SideNav = () => {
   
@@ -90,15 +90,20 @@ const SideNav = () => {
 	}
 
 	return (
-		<nav id='nav' className={isNavActive ? 'active' : ''}>
+		<nav id='nav' className={ isNavActive ? 'active' : ''}>
+
 			<button className='nav-icon' id='nav-icon' onClick={toggleNav}>
 				<span></span>
+				
 			</button>
 			<ul>
 				<li>
 					<Link to='/home' preventScrollReset={true} reloadDocument>
 						Home
 					</Link>
+					{/* <NavLink style={ ({isActive}) => { return isActive ? {color:"red"} : {} }} to='/home' preventScrollReset={true} reloadDocument>
+						Home
+					</NavLink> */}
 				</li>
 				<li>
 					<Link to='/about' preventScrollReset={true} reloadDocument>

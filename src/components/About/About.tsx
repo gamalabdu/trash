@@ -5,11 +5,11 @@ import { Link } from 'react-router-dom'
 
 const About = () => {
 
-	useEffect(() => {
-		if (typeof window !== 'undefined') {
-			window.scrollTo(0, 0);
-		}
-	}, []);
+	// useEffect(() => {
+	// 	if (typeof window !== 'undefined') {
+	// 		window.scrollTo(0, 0);
+	// 	}
+	// }, []);
 
 	return (
 		<div className='about-container'>

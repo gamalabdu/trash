@@ -1,7 +1,7 @@
 import React from 'react'
-import { burningTrash } from '../../assets/images'
-import mike  from '../../assets/images/mike.jpg'
+import  burningTrash  from '../../assets/images/burningtrash.svg'
 import joe from '../../assets/images/joe.jpg'
+import mike from '../../assets/images/mike.jpg'
 import './styles.css'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -18,19 +18,21 @@ const Home = () => {
 		}
 	}
 
+
+	console.log(mike)
+
 	return (
 		<div className='home-container'>
-			{/* <div className='title'> TRASH </div> */}
 
 			<div className='we-are-text'>
-				<img style={{ height: '70px' }} src={burningTrash} alt='burningTrash' />
-				​​WE ARE THE CREATIVE POWERHOUSE BEHIND EMERGING ARTISTS, STARTUPS AND
+				{/* <img style={{ height: '70px' }} src={burningTrash} alt='burningTrash' /> */}
+	            WE ARE THE CREATIVE POWERHOUSE BEHIND EMERGING ARTISTS, STARTUPS AND
 				BRANDS.
 			</div>
 
 			<div id='process' className='music-production-text'>
 				HERE AT TRASH WE LOOK TO HELP YOU BRING YOUR ART, BUSINESS OR IDEAS TO
-				LIFE. &nbsp;
+				LIFE.
 				<br />
 				TRASH IS A FULL IN-HOUSE CREATIVE AGENCY OFFERING MUSIC PRODUCTION,
 				AUDIO ENGINEERING, PHOTOGRAPHY, CREATIVE DIRECTION, GRAPHIC DESIGN,
@@ -43,7 +45,7 @@ const Home = () => {
 					<Link to='/for-artist' style={{ textDecoration: 'none' }}>
 						<img
 							className='artist'
-							src={joe}
+							src={ joe }
 							alt='joe'
 						/>
 					</Link>
@@ -63,6 +65,7 @@ const Home = () => {
 					</Link>
 				</div>
 			</div>
+
 		</div>
 	)
 }

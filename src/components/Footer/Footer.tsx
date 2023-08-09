@@ -2,7 +2,7 @@ import React from 'react'
 import { FaInstagram } from 'react-icons/fa'
 import { AiOutlineYoutube } from 'react-icons/ai'
 import { TbBrandSpotify } from 'react-icons/tb'
-import {burningTrash} from '../../assets/images';
+import burningTrash from '../../assets/images/burningtrash.svg';
 import './styles.css'
 import { Link } from 'react-router-dom'
 
@@ -45,7 +45,7 @@ const Footer = () => {
 
 
             <div className='trash-can'>
-               <img style={{ height:"8vw" }} src={burningTrash} alt='trash-can'/>
+               {/* <img style={{ height:"8vw" }} src={burningTrash} alt='trash-can'/> */}
             </div>
 
 
