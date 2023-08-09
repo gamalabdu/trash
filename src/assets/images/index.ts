@@ -1,1 +1,0 @@
-export { default as burningTrash } from './burningtrash.svg';
