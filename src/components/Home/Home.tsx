@@ -1,5 +1,5 @@
 import React from 'react'
-import  burningTrash  from '../../assets/images/mike.jpg'
+import  burningTrash  from '../../assets/images/burningtrash.svg'
 import mike  from '../../assets/images/mike.jpg'
 import joe from '../../assets/images/joe.jpg'
 import './styles.css'
@@ -21,11 +21,11 @@ const Home = () => {
 	return (
 		<div className='home-container'>
 
-			{/* <div className='we-are-text'>
+			<div className='we-are-text'>
 				<img style={{ height: '70px' }} src={burningTrash} alt='burningTrash' />
 	            WE ARE THE CREATIVE POWERHOUSE BEHIND EMERGING ARTISTS, STARTUPS AND
 				BRANDS.
-			</div> */}
+			</div>
 
 			<div id='process' className='music-production-text'>
 				HERE AT TRASH WE LOOK TO HELP YOU BRING YOUR ART, BUSINESS OR IDEAS TO
