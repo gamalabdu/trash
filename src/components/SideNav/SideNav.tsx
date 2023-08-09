@@ -98,37 +98,37 @@ const SideNav = () => {
 			</button>
 			<ul>
 				<li>
-					<Link to='/home' preventScrollReset={true} reloadDocument>
+					{/* <Link to='/home' preventScrollReset={true} reloadDocument>
 						Home
-					</Link>
-					{/* <NavLink style={ ({isActive}) => { return isActive ? {color:"red"} : {} }} to='/home' preventScrollReset={true} reloadDocument>
+					</Link> */}
+					<NavLink style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/home' preventScrollReset={true} reloadDocument>
 						Home
-					</NavLink> */}
+					</NavLink>
 				</li>
 				<li>
-					<Link to='/about' preventScrollReset={true} reloadDocument>
+					<NavLink style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/about' preventScrollReset={true} reloadDocument>
 						About
-					</Link>
+					</NavLink>
 				</li>
 				<li>
-					<Link to='/for-artist' preventScrollReset={true} reloadDocument>
+					<NavLink style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/for-artist' preventScrollReset={true} reloadDocument>
 						For Artist
-					</Link>
+					</NavLink>
 				</li>
 				<li>
-					<Link to='/for-clients' preventScrollReset={true} reloadDocument>
+					<NavLink style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/for-clients' preventScrollReset={true} reloadDocument>
 						For Startups
-					</Link>
+					</NavLink>
 				</li>
 				<li>
-					<Link to='/works' preventScrollReset={true} reloadDocument>
+					<NavLink style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/works' preventScrollReset={true} reloadDocument>
 						Our Work
-					</Link>
+					</NavLink>
 				</li>
 				<li>
-					<Link to='/contact' preventScrollReset={true} reloadDocument>
+					<NavLink style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/contact' preventScrollReset={true} reloadDocument>
 						Contact
-					</Link>
+					</NavLink>
 				</li>
 				{/* <li>
           <a href="#growth">Growth</a>
