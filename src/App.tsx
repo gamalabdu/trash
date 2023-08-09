@@ -40,6 +40,3 @@ function App() {
 
 export default App;
 
-
-
-// #1b1c1e;
