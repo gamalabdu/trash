@@ -1,5 +1,5 @@
 import React from 'react'
-import { burningTrash } from '../../assets/images'
+import  burningTrash  from '../../assets/images/mike.jpg'
 import mike  from '../../assets/images/mike.jpg'
 import joe from '../../assets/images/joe.jpg'
 import './styles.css'
