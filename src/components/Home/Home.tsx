@@ -1,5 +1,7 @@
 import React from 'react'
 import  burningTrash  from '../../assets/images/burningtrash.svg'
+import joe from '../../assets/images/joe.jpg'
+import mike from '../../assets/images/mike.jpg'
 import './styles.css'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -40,7 +42,7 @@ const Home = () => {
 					<Link to='/for-artist' style={{ textDecoration: 'none' }}>
 						<img
 							className='artist'
-							src={require('../../assets/images/joe.jpg')}
+							src={ joe }
 							alt='joe'
 						/>
 					</Link>
@@ -54,7 +56,7 @@ const Home = () => {
 						{' '}
 						<img
 							className='client'
-							src={require('../../assets/images/mike.jpg')}
+							src={mike}
 							alt='mike'
 						/>{' '}
 					</Link>
