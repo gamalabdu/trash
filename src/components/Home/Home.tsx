@@ -27,14 +27,14 @@ const Home = () => {
 				BRANDS.
 			</div> */}
 
-			{/* <div id='process' className='music-production-text'>
+			<div id='process' className='music-production-text'>
 				HERE AT TRASH WE LOOK TO HELP YOU BRING YOUR ART, BUSINESS OR IDEAS TO
 				LIFE.
 				<br />
 				TRASH IS A FULL IN-HOUSE CREATIVE AGENCY OFFERING MUSIC PRODUCTION,
 				AUDIO ENGINEERING, PHOTOGRAPHY, CREATIVE DIRECTION, GRAPHIC DESIGN,
 				MARKETING & CONTENT CREATION.
-			</div> */}
+			</div>
 
 			{/* <div className='client-offers'>
 				<div onClick={() => handleClick('for-artist')} className='for-artist'>
