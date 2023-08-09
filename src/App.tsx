@@ -21,7 +21,6 @@ function App() {
 
              <Route path="/" element={<Enter />} />
 
-             <Route path="home" element={ <Home /> } />
 
               {/* <Route element={ <NavContainer /> }>
 
