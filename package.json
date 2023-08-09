@@ -61,7 +61,6 @@
     "cssnano-preset-default":"6.0.1",
     "cssnano" :"6.0.1",
     "rollup-plugin-postcss" :"4.0.2",
-    "@rollup/plugin-terser" :"0.4.3",
-    "resolve-url-loader":"5.0.0"
+    "@rollup/plugin-terser" :"0.4.3"
   }
 }
