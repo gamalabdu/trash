@@ -22,7 +22,7 @@ const Home = () => {
 		<div className='home-container'>
 
 			<div className='we-are-text'>
-				<img style={{ height: '70px' }} src={burningTrash} alt='burningTrash' />
+				{/* <img style={{ height: '70px' }} src={burningTrash} alt='burningTrash' /> */}
 	            WE ARE THE CREATIVE POWERHOUSE BEHIND EMERGING ARTISTS, STARTUPS AND
 				BRANDS.
 			</div>
