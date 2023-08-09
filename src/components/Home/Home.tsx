@@ -20,17 +20,16 @@ const Home = () => {
 
 	return (
 		<div className='home-container'>
-			{/* <div className='title'> TRASH </div> */}
 
 			<div className='we-are-text'>
 				<img style={{ height: '70px' }} src={burningTrash} alt='burningTrash' />
-				​​WE ARE THE CREATIVE POWERHOUSE BEHIND EMERGING ARTISTS, STARTUPS AND
+	            WE ARE THE CREATIVE POWERHOUSE BEHIND EMERGING ARTISTS, STARTUPS AND
 				BRANDS.
 			</div>
 
 			<div id='process' className='music-production-text'>
 				HERE AT TRASH WE LOOK TO HELP YOU BRING YOUR ART, BUSINESS OR IDEAS TO
-				LIFE. &nbsp;
+				LIFE.
 				<br />
 				TRASH IS A FULL IN-HOUSE CREATIVE AGENCY OFFERING MUSIC PRODUCTION,
 				AUDIO ENGINEERING, PHOTOGRAPHY, CREATIVE DIRECTION, GRAPHIC DESIGN,
