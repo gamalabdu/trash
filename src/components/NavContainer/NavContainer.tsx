@@ -120,7 +120,6 @@ const NavContainer = () => {
 	return (
 		<div>
 			<SideNav />
-			<Outlet />
 				<div className={ isVisible ? 'scroll-to-top' : 'scroll-to-top-active'}>
 					<FiArrowDown size={20} 
 					onClick={() => scrollToBottom() } 
@@ -129,6 +128,7 @@ const NavContainer = () => {
 					  <IoChatboxOutline size={20} />
 				    </Link>
 				</div>
+			<Outlet />
 			<Footer />
 		</div>
 	)
