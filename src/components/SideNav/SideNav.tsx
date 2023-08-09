@@ -90,9 +90,11 @@ const SideNav = () => {
 	}
 
 	return (
-		<nav id='nav' className={isNavActive ? 'active' : ''}>
+		<nav id='nav' className={ isNavActive ? 'active' : ''}>
+
 			<button className='nav-icon' id='nav-icon' onClick={toggleNav}>
 				<span></span>
+				
 			</button>
 			<ul>
 				<li>
