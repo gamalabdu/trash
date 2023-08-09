@@ -26,6 +26,7 @@ function App() {
              <Route path="for-artist" element={ <ForArtist /> } />
              <Route path="for-clients" element={ <ForClients /> } />
              <Route path="works" element={ <Works /> } />
+             <Route path='innerworks' element={ <InnerWork /> } />
 
 
               {/* <Route element={ <NavContainer /> }>
