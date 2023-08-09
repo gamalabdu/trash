@@ -54,7 +54,7 @@ const Home = () => {
 						{' '}
 						<img
 							className='client'
-							src={'../../assets/images/mike.jpg'}
+							src={require('../../assets/images/mike.jpg')}
 							alt='mike'
 						/>{' '}
 					</Link>

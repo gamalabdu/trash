@@ -29,7 +29,7 @@ const GalleryItem = (props : IGalleryItemProps) => {
     exit={{ opacity: 0 }}
     className='image-container'
     >
-        <img id='artistImg' className='gallery-image' src={require(item.image.toString())} alt='pic' />
+        <img id='artistImg' className='gallery-image' src={item.image} alt='pic' />
         <div className='title'><span style={{ color:"#535353"}}>{ item.type.map(type => type ).join('/') }</span><br/><span>{item.name}</span></div>
     </motion.div>
   )
