@@ -21,8 +21,9 @@ function App() {
 
              <Route path="/" element={<Enter />} />
 
-             <Route path="home" element={ <Home /> } />
+             {/* <Route path="home" element={ <Home /> } /> */}
              <Route path="about" element={ <About /> } />
+             <Route path="for-artist" element={ <ForArtist /> } />
 
 
               {/* <Route element={ <NavContainer /> }>
