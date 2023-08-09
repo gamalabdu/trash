@@ -27,6 +27,7 @@ function App() {
              <Route path="for-clients" element={ <ForClients /> } />
              <Route path="works" element={ <Works /> } />
              <Route path='innerworks' element={ <InnerWork /> } />
+             <Route path="contact" element={ <Contact /> } />
 
 
               {/* <Route element={ <NavContainer /> }>
