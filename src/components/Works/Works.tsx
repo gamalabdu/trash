@@ -82,7 +82,7 @@ const Works = () => {
 		},
 		{
 			image: require('../../assets/images/royal/BNWBACKFLAG.jpg'),
-			type: ['Design','Creative Direction','Branding','Photography','Film'],
+			type: ['Creative Direction','Branding','Photography','Film'],
 			name: "Royal Triumph Campaign",
 			statement: 'TRASH was commissioned by Royal Triumph to photography, creative direct and film Royal Triumphs Campaign Visual',
 			videos: [
@@ -132,6 +132,20 @@ const Works = () => {
 			],
 			images: [],
 			canvas: [],
+			assets : [],
+			iphone: false
+		},
+		{
+			image: require('../../assets/images/stanajHead.jpg'),
+			type: ['Creative Direction','Photography','Film'],
+			name: "Stanaj - Stranger",
+			statement: `TRASH was brought on to creative direct, film and direct a visual for Stanaj's single "Stanger"`,
+			videos: [],
+			images: [],
+			canvas: [
+				require('../../assets/videos/stanaj/stranger2.mp4'),
+				require('../../assets/videos/stanaj/strangerextended.mp4'),
+			],
 			assets : [],
 			iphone: false
 		}
