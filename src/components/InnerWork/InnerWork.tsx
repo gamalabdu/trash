@@ -96,6 +96,7 @@ const InnerWork = () => {
 									loop
 									autoPlay
 									muted
+									controls
 								/>
 							)
 						})}
@@ -151,6 +152,7 @@ const InnerWork = () => {
 										muted
 										loop
 										autoPlay
+										controls
 									/>
 								)
 							})}

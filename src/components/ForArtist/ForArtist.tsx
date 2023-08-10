@@ -134,7 +134,7 @@ const ForArtist = () => {
       <div className='content'>
 
 				<div className='right-content'>
-					<video className='jaz-canvas' src={jazCanvas} loop muted autoPlay></video>
+					<video className='jaz-canvas' src={jazCanvas} loop muted autoPlay={true}></video>
 				</div>
         
 
