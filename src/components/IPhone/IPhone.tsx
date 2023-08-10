@@ -35,7 +35,7 @@ const IPhone = (props: IPhoneProps) => {
 			</div>
 			<div className='home'></div>
 
-			<div className='avatar' style={{ backgroundImage: `${images}` }}>
+			<div className='avatar'>
 				<Swiper
 					modules={[Navigation]}
 					spaceBetween={100}
