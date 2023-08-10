@@ -93,7 +93,7 @@ const InnerWork = () => {
 									key={idx}
 									style={{ width: '90%', padding: '2%' }}
 									src={video}
-									autoPlay
+									loop
 									controls
 									muted
 								/>
@@ -148,7 +148,6 @@ const InnerWork = () => {
 											margin: '0 5px',
 										}}
 										src={canva}
-										autoPlay
 										controls
 										muted
 										loop
