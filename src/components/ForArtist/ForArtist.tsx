@@ -39,15 +39,16 @@ const ForArtist = () => {
 							<div> 1 </div>
 							{' '}Create{' '}
 						</div>
-						Focus on making music and perfecting your craft. We’ll focus on
+						Focus on making music and perfecting your craft. We'll focus on
 						making sure it sounds & looks great.
 					</div>
 				</div>
 
 				<div className='right-intro'>
 					Our dedicated team of creatives works with new and established artists
-					to grow fanbases through culturally-relevant branding. We handle press
-					kits, stage visuals, distribution strategies and everything in
+					to help develop, produce, mix and master your music.
+					After the hits are made we help grow your fanbase through culturally-relevant branding. 
+					We handle press kits, EPK's, distribution strategies and everything in
 					between.
 				</div>
 			</div>
@@ -121,8 +122,8 @@ const ForArtist = () => {
 					<div>
             <div> 4 </div>
 						<div style={{ textDecoration:"underline"}}>DIGITAL</div> 
-            Artist Website, Advertising, Campaign
-						Microsites, Mobile Apps, Messenger Bots, and more.
+                        Artist Website, Advertising, Campaign
+						Microsites, Web Apps and more.
 					</div>
 				</div>
 
