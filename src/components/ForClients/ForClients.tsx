@@ -102,7 +102,12 @@ const ForClients = () => {
       <div className='production'>
 
 				<div className='right-production'>
-				<video className='alex-canvas' src={phoneLikeTrim} loop muted autoPlay={true}></video>
+				<video className='alex-canvas' src={phoneLikeTrim} 
+				loop
+				autoPlay
+				muted
+				playsInline
+				></video>
 				</div>
         
 
