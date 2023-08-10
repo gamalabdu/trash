@@ -8,6 +8,7 @@ import 'swiper/css/navigation'
 import './styles.css'
 
 const InnerWork = () => {
+	
 	useEffect(() => {
 		window.scrollTo(0, 0)
 	}, [])
