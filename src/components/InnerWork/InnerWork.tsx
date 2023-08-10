@@ -95,6 +95,7 @@ const InnerWork = () => {
 									src={video}
 									loop
 									controls
+									autoPlay
 									muted
 								/>
 							)
@@ -151,6 +152,7 @@ const InnerWork = () => {
 										controls
 										muted
 										loop
+										autoPlay
 									/>
 								)
 							})}
