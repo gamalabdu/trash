@@ -126,6 +126,11 @@ const SideNav = () => {
 					</NavLink>
 				</li>
 				<li>
+					<NavLink style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/press' preventScrollReset={true} reloadDocument>
+						Press
+					</NavLink>
+				</li>
+				<li>
 					<NavLink style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/contact' preventScrollReset={true} reloadDocument>
 						Contact
 					</NavLink>

@@ -1,0 +1,38 @@
+
+.press-container {
+    background-color: black;
+    height: 100dvh;
+    overflow: scroll;
+}
+
+.press-links {
+    margin: 0 5%;
+    /* border: solid red 2px; */
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 2em;
+}
+
+.item-container {
+
+}
+
+.item-link {
+    /* width: 100px;
+    height: auto;
+    aspect-ratio: 16 / 9; */
+    width: 10em;
+    aspect-ratio: 3/2;
+    object-fit: contain;
+    cursor: pointer;
+}
+
+.anr {
+    width: 10em;
+    aspect-ratio: 3/2;
+    object-fit: contain;
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(314deg) brightness(102%) contrast(103%);
+    cursor: pointer;
+}

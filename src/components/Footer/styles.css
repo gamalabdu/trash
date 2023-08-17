@@ -21,7 +21,7 @@
 
 
   .footer-black {
-    height: 100px;
+    height: 15vh;
     display: flex;
     flex-direction: row;
     align-items: center;

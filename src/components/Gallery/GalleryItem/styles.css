@@ -4,7 +4,7 @@
 }
 
 .gallery-image {
-    border-radius: 1rem;
+    border-radius: .5rem;
     margin-bottom: 1rem;
 
     width: 250px;

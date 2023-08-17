@@ -10,6 +10,7 @@ import ForClients from './components/ForClients/ForClients';
 import Works from './components/Works/Works';
 import Contact from './components/Contact/Contact';
 import InnerWork from './components/InnerWork/InnerWork';
+import Press from './components/Press/Press';
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
                 <Route path="for-clients" element={ <ForClients /> } />
                 <Route path="works" element={ <Works /> } />
                 <Route path='innerworks' element={ <InnerWork /> } />
+                <Route path='press' element={ <Press /> } />
                 <Route path="contact" element={ <Contact /> } />
 
               </Route>
