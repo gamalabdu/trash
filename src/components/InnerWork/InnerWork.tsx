@@ -26,6 +26,8 @@ const InnerWork = () => {
 
 	const images = [...state.item.images]
 
+	const artworks = [...state.item.artworks]
+
 	const iphone = state.item.iphone
 
 	let assets: string[] = []
@@ -126,9 +128,39 @@ const InnerWork = () => {
 				) : null}
 			</div>
 
+
+
+			{
+				artworks.length > 0 ? 
+
+				<>
+
+				<div style={{ color: 'black', fontSize:"5vw"}}> ArtWorks </div>
+			
+				<div className='artworks-container'>
+				{
+						artworks.map( (artwork, key) => {
+							return (
+								
+									<img key={key} className='artwork' src={artwork} />
+							
+							)
+						})
+			    }
+				</div>
+
+				</>
+
+				: 
+				
+				null
+			}
+			
+
 			{canvas.length > 0 ? (
 				<>
-					<div style={{ color: 'black' }}> Canvas </div>
+					<div style={{ color: 'black', fontSize:"5vw"}}> Canvas </div>
+
 					<div
 						style={{
 							padding: '2%',

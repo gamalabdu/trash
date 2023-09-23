@@ -2,12 +2,10 @@ import React from 'react'
 import { FaInstagram } from 'react-icons/fa'
 import { AiOutlineYoutube } from 'react-icons/ai'
 import { TbBrandSpotify } from 'react-icons/tb'
-import burningTrash from '../../assets/images/burningtrash.svg';
 import './styles.css'
 import { Link } from 'react-router-dom'
 
 const Footer = () => {
-
 
     const goToLink = (linkType: string) => {
 		switch (linkType) {
@@ -45,7 +43,7 @@ const Footer = () => {
 
 
             <div className='trash-can'>
-               <img style={{ height:"8vw" }} src={burningTrash} alt='trash-can'/>
+               <img style={{ height:"8vw" }} src={'https://drive.google.com/uc?id=13NFKppPpdsXM81vNdJdkRYJLfCJME-Dj'} alt='trash-can'/>
             </div>
 
 

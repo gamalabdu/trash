@@ -1,18 +1,14 @@
 import React from 'react'
 import './styles.css'
-import trippie from '../../assets/images/trippie.jpg'
-import isabellaGhost from '../../assets/images/2.png'
-import ellaSite from '../../assets/images/whitestudio.jpg'
-import brandingPic from '../../assets/images/branding.png'
-import jazPic from '../../assets/images/3.png'
-import jazCanvas from '../../assets/videos/JazCanvas.mp4'
-import artistGrowth from '../../assets/images/artistGrowth.jpeg'
-import mariaPic from '../../assets/images/1.png'
 
 import { useEffect } from 'react'
 
 const ForArtist = () => {
 
+
+	const googleDriveUrl = 'uc?id='
+
+	const googleUrl = 'uc?export=view&id='
 
 	useEffect(() => {
 		window.scrollTo(0, 0)
@@ -23,7 +19,7 @@ const ForArtist = () => {
 		<div className='for-artist-container'>
 			<div className='top-container'>
 				<div className='artist-text'> TRASH FOR ARTIST </div>
-				<img className='trippie' src={trippie} alt='trippie' />
+				<img className='trippie' src={'https://drive.google.com/uc?id=1PkMiKPXIUWt0SUszfr7QsQwLzmek_S3f'} alt='trippie' />
 			</div>
 
 			<div className='intro'>
@@ -85,7 +81,7 @@ const ForArtist = () => {
 			<div className='branding'>
 				<div className='left-branding'>
 					<div className='left-branding-picture'>
-						<img className='ellaGhost' src={isabellaGhost} alt='isabella-ghost' />
+						<img className='ellaGhost' src={'https://drive.google.com/uc?id=1mRkoZskdzDMXeaQr79HwEyzuO_Hl24EA'} alt='isabella-ghost' />
 					</div>
 
 					<div className='left-branding-text'>
@@ -106,7 +102,7 @@ const ForArtist = () => {
 				</div>
 
 				<div className='right-branding'>
-					<img src={brandingPic} className='branding-pic' alt='branding-pic' />
+					<img src={'https://drive.google.com/uc?id=1anSI8o8T6fJUGLf35DNfaucqqyeITAzP'} className='branding-pic' alt='branding-pic' />
 				</div>
 			</div>
 
@@ -115,7 +111,7 @@ const ForArtist = () => {
 			<div className='digital-black'>
 
 				<div className='left-digital-black'>
-					<img src={ellaSite} className='ella-site' alt='ella-site' />
+					<img src={'https://drive.google.com/uc?id=1RtRTmR9VEx_qXI8dtwIpU6njPOwuHJX0'} className='ella-site' alt='ella-site' />
 				</div>
 
 				<div className='right-digital-black'>
@@ -135,7 +131,7 @@ const ForArtist = () => {
       <div className='content'>
 
 				<div className='right-content'>
-					<video className='jaz-canvas' src={jazCanvas} 
+					<video className='jaz-canvas' src={'https://drive.google.com/uc?id=1usYOFrF7Of1isuAtXPb5yQb5slY6dQjO'} 
 					loop
 					autoPlay
 					muted
@@ -163,7 +159,7 @@ const ForArtist = () => {
 					</div>
 
           <div className='left-branding-picture'>
-						<img className='ellaGhost' src={jazPic} alt='ellaGhost'/>
+						<img className='ellaGhost' src={'https://drive.google.com/uc?id=1gCkxnSLAT1VIA0opLXVzZjFfmeEB8wLN'} alt='ellaGhost'/>
 					</div>
 
 				</div>
@@ -178,7 +174,7 @@ const ForArtist = () => {
 
 
       <div className='right-growth'>
-          <img src={artistGrowth} className='growth-pic' alt='artistGrowth' />
+          <img src={'https://drive.google.com/uc?id=1K6-IsUiYAWP_fodrJwGLS6cMAeDPeCus'} className='growth-pic' alt='artistGrowth' />
 				</div>
 
         
@@ -200,7 +196,7 @@ const ForArtist = () => {
 					</div>
 
           <div className='left-branding-picture'>
-						<img className='ellaGhost' src={mariaPic} alt='mariaPic' />
+						<img className='ellaGhost' src={'https://drive.google.com/uc?id=1dt2kkAbfY9JlaO0uYfljgT40aYO-jO5M'} alt='mariaPic' />
 					</div>
 
 				</div>

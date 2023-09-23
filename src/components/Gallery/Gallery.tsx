@@ -14,6 +14,7 @@ interface IGalleryProps {
 		iphone: boolean
 		assets: string[]
 		canvas: string[]
+		artworks: string[]
 	}[]
 }
 

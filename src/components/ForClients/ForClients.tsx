@@ -1,15 +1,15 @@
 import React from 'react'
 import './styles.css'
-import startUp from '../../assets/images/startups.jpeg'
-import strategyTeam from '../../assets/images/teamstartup.jpeg'
-import badwillsite from '../../assets/images/badwillsitepic.png'
-import productionPic from '../../assets/images/productionPic.png'
-import phoneLikeTrim from '../../assets/videos/phoneLikeTrim.mp4'
-import socialMediaGrowth from '../../assets/images/socialMediaGrowth.png'
 
 import { useEffect } from 'react'
 
 const ForClients = () => {
+
+
+
+	const googleDriveUrl = 'uc?id='
+
+	const googleUrl = 'uc?export=view&id='
 
 
 	useEffect(() => {
@@ -22,7 +22,7 @@ const ForClients = () => {
 
 			<div className='top-container'>
 				<div className='artist-text'> TRASH FOR STARTUPS </div>
-				<img className='trippie' src={startUp} alt="trippie" />
+				<img className='trippie' src={'https://drive.google.com/uc?id=1e5zssB5ugbjCVvskVVe9sjTA_OoFaLJ4'} alt="trippie" />
 			</div>
 
 
@@ -57,7 +57,7 @@ const ForClients = () => {
 
 				<div className='left-branding'>
 					<div className='left-branding-picture'>
-						<img className='ellaGhost' src={strategyTeam} alt='strategyTeam' />
+						<img className='ellaGhost' src={'https://drive.google.com/uc?id=1Z39YCg210t8pjLtUaogYzyxD_ts64A_o'} alt='strategyTeam' />
 					</div>
 
 					<div className='left-branding-text'>
@@ -83,7 +83,7 @@ const ForClients = () => {
 			<div className='digital-black'>
 
 				<div className='left-digital-black'>
-					<img src={badwillsite} className='ella-site' alt='badwillSite' />
+					<img src={'https://drive.google.com/uc?id=1EcYBfG50ouOShPfPyXkTPJMVGCcf1PqO'} className='ella-site' alt='badwillSite' />
 				</div>
 
 				<div className='right-digital-black'>
@@ -102,7 +102,7 @@ const ForClients = () => {
       <div className='production'>
 
 				<div className='right-production'>
-				<video className='alex-canvas' src={phoneLikeTrim} 
+				<video className='alex-canvas' src={'https://drive.google.com/uc?id=1taomtmKSuCUEJoVvNIhfdoePGdTdU4fm'} 
 				loop
 				autoPlay
 				muted
@@ -129,7 +129,7 @@ const ForClients = () => {
 					</div>
 
                     <div className='left-branding-picture'>
-						<img className='ellaGhost' src={productionPic} alt='productionPic' />
+						<img className='ellaGhost' src={'https://drive.google.com/uc?id=1xRz-Y2D00ZiGFF_UkvoHJv5JuR3040QX'} alt='productionPic' />
 					</div>
 
 				</div>
@@ -166,7 +166,7 @@ const ForClients = () => {
 					</div>
 
           <div className='left-branding-picture'>
-						<img className='social-growth-pic' src={socialMediaGrowth} alt='socialMediaGrowth' />
+						<img className='social-growth-pic' src={'https://drive.google.com/uc?id=1o6CPXQ7_q9-s-dKJnMyRQa2LA1_74FpU'} alt='socialMediaGrowth' />
 					</div>
 
 				</div>

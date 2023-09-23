@@ -1,7 +1,4 @@
 import React from 'react'
-import  burningTrash  from '../../assets/images/burningtrash.svg'
-import joe from '../../assets/images/joe.jpg'
-import mike from '../../assets/images/mike.jpg'
 import './styles.css'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -19,13 +16,11 @@ const Home = () => {
 	}
 
 
-	console.log(mike)
-
 	return (
 		<div className='home-container'>
 
 			<div className='we-are-text'>
-				<img style={{ height: '70px' }} src={burningTrash} alt='burningTrash' />
+				<img style={{ height: '70px' }} src={'https://drive.google.com/uc?id=13NFKppPpdsXM81vNdJdkRYJLfCJME-Dj'} alt='burningTrash' />
 	            WE ARE THE CREATIVE POWERHOUSE BEHIND EMERGING ARTISTS, STARTUPS AND
 				BRANDS.
 			</div>
@@ -45,7 +40,7 @@ const Home = () => {
 					<Link to='/for-artist' style={{ textDecoration: 'none' }}>
 						<img
 							className='artist'
-							src={ joe }
+							src={'https://drive.google.com/uc?id=1No6jQZ5OYqTDExdvWF0C3mY8HCMWJmZz'}
 							alt='joe'
 						/>
 					</Link>
@@ -59,7 +54,7 @@ const Home = () => {
 						{' '}
 						<img
 							className='client'
-							src={mike}
+							src={'https://drive.google.com/uc?id=1IVNSl0GJZ3xtCoBMEGr1SHjfKXBTl9px'}
 							alt='mike'
 						/>{' '}
 					</Link>
