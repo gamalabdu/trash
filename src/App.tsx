@@ -43,7 +43,7 @@ function App() {
 
         </Routes>
 
-        <Footer/>
+        {/* <Footer/> */}
 
       </AnimatePresence>
 

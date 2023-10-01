@@ -131,7 +131,7 @@ const NavContainer = () => {
 					  <IoChatboxOutline size={20} />
 				    </Link>
 				</div>
-			{/* <Footer /> */}
+			<Footer />
 		</>
 	)
 }
