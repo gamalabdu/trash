@@ -4,9 +4,10 @@ import { BsChevronUp } from 'react-icons/bs'
 import { useNavigate } from 'react-router-dom'
 import TopButton from './TopButton/TopButton'
 import Gallery from '../Gallery/Gallery'
+import { RoughNotation } from "react-rough-notation";
+import { motion} from 'framer-motion'
 
 const Works = () => {
-
 
 	const buttonChoices = [
 		{
@@ -215,6 +216,9 @@ const Works = () => {
 			videos: [],
 			images: [],
 			canvas: [
+				'https://drive.google.com/uc?id=13IRi9D3qJ4Oek2jW830Cag37hoqW5uBH',
+				'https://drive.google.com/uc?id=1jM3YEKmaHn0FyoZb2PAwmgHKO7T9LG67',
+				'https://drive.google.com/uc?id=1OpHvj2AT2CXmWXeMN-QRdShp53ViSLar'
 			],
 			assets : [],
 			iphone: false,
@@ -245,6 +249,7 @@ const Works = () => {
     
 	}
 
+	const [filteredWorks, setFilteredWorks] = useState(works);
 
 	const [Buttons, setButtons] = useState(false)
 
@@ -252,11 +257,25 @@ const Works = () => {
 
 	const intersection = works.filter(work => {
 		return ( 
-			work.type.some( item => 
+			work.type.some(item => 
 				categories.includes(item) 
 			)
 		)
 	  });
+
+
+	  useEffect(() => {
+		if (categories.includes('Everything')) {
+		  // If 'Everything' is selected, show all items
+		  setFilteredWorks(works);
+		} else {
+		  // Otherwise, filter items based on selected categories
+		  const filteredItems = intersection.filter((work) =>
+			work.type.some((item) => categories.includes(item))
+		  );
+		  setFilteredWorks(filteredItems);
+		}
+	  }, [categories]);
 	  
 
 	useEffect(() => {
@@ -264,27 +283,73 @@ const Works = () => {
 	}, [])
 
 
+	const fadeOut = {
+		hidden: {
+          	opacity: 0,
+	        y: 200,
+		},
+		show : {
+      		opacity: 1,
+			y: 0,
+			transition: {
+				ease : 'easeInOut',
+				duration: 1.6,
+			}
+		},
+		exit : {
+            opacity: 0,
+			y: -200,
+			transition : {
+				ease : 'easeInOut',
+				duration: 1.6,
+			}
+		}
+	} 
+
+	const galleryVariants = {
+		hidden: {
+		  opacity: 0,
+		},
+		show: {
+		  opacity: 1,
+		  transition: {
+			ease: 'easeInOut',
+			duration: 1.6,
+		  },
+		},
+		exit: {
+		  opacity: 0,
+		  transition: {
+			ease: 'easeInOut',
+			duration: 1.6,
+		  },
+		},
+	  };
+    
+
+
+
+
+
 
 	return (
-		<div className='works-container'>
-
+		<motion.div
+			className='works-container'
+			initial='hidden'
+			animate='show'
+			exit='exit'
+			variants={fadeOut}>
 			<div className='works-top-container'> Our Work </div>
 
 			<div className='works-top-buttons-container'>
-				{
-				
-				Buttons ? 
-
-				(
+				{Buttons ? (
 					<div key={'12'} className='everything-buttons-full'>
-
 						<div>Show Me : </div>
 
-						   {
-						     buttonChoices.map((button, idx) => {
+						{buttonChoices.map((button, idx) => {
 							return (
 								<TopButton
-								    key={idx}
+									key={idx}
 									categories={categories}
 									setCategories={setCategories}
 									buttonName={button.type}
@@ -294,69 +359,87 @@ const Works = () => {
 						<div
 							style={{ cursor: 'pointer' }}
 							onClick={() => setButtons(false)}>
-								
-							<BsChevronUp size={18} />
+							<BsChevronUp size={24} />
 						</div>
 					</div>
 				) : (
 					<div key={'13'} className='everything-buttons'>
-
-						<div style={{ cursor:"pointer"}} onClick={() => handleClick('/contact')}> Work With Us </div>
+						<div
+							style={{ cursor: 'pointer' }}
+							onClick={() => handleClick('/contact')}>
+							{' '}
+							<RoughNotation
+								type='highlight'
+								color='#f93b3b'
+								animationDelay={3000}
+								padding={15}
+								strokeWidth={2}
+								animationDuration={3000}
+								show={true}>
+								{' '}
+								Work With Us{' '}
+							</RoughNotation>{' '}
+						</div>
 
 						<div className='show-me'>
-							{
-								categories.includes("Everything") || categories.length === 0 ? 
-								"Show Me : "
-								:
-								"Showing : "
-							}
+							{categories.includes('Everything') || categories.length === 0
+								? 'Show Me : '
+								: 'Showing : '}
 							<div
 								className='everything-choice'
 								onClick={() => setButtons(true)}>
-							<div style={{ marginLeft:"5px", display:'flex', flexDirection:"row", verticalAlign:"middle", alignContent:"center", justifyContent:"center", alignItems:"center", textDecoration:"underline"}}>
-								{
-									categories.includes("Everything") || categories.length === 0 ? 
-
-									"Everything"
-
-									:
-									
-									categories.length + " categories"
-									
-								}	
-							</div>
+								<div
+									style={{
+										marginLeft: '5px',
+										display: 'flex',
+										flexDirection: 'row',
+										verticalAlign: 'middle',
+										alignContent: 'center',
+										justifyContent: 'center',
+										alignItems: 'center',
+										textDecoration: 'underline',
+									}}>
+									{categories.includes('Everything') || categories.length === 0
+										? 'Everything'
+										: categories.length + ' categories'}
+								</div>
 							</div>
 						</div>
 					</div>
 				)}
 			</div>
 
-
-
-
-			<div className='our-works-container'>
-        			{
-						categories.includes('Everything') ?
-
-						<Gallery categories={categories} data={works} />
-
-
-						: 
-
-						categories.length === 0 ? 
-
-						<div className='no-categories' style={{ color: "#202020", padding:"5%"}}> No Categories Selected </div>
-
-						:
-
-						<Gallery categories={categories} data={intersection} />
-					}
-            </div>
-
-
-
-		</div>
+			<motion.div
+				className='our-works-container'
+				variants={galleryVariants}
+				initial='hidden'
+				animate='show'
+				exit='exit'
+				>
+				<Gallery categories={categories} data={filteredWorks} />
+			</motion.div>
+		</motion.div>
 	)
 }
 
 export default Works
+
+
+
+
+
+
+// {
+// 	categories.includes('Everything') ?
+	
+// 	 <Gallery categories={categories} data={works} />
+//   : 
+// 	 // :
+
+// 	 // categories.length === 0 ?
+
+// 	 // <div className='no-categories' style={{ color: "#202020", padding:"5%"}}> No Categories Selected </div>
+
+// 	 <Gallery categories={categories} data={intersection} />
+ 
+//  }

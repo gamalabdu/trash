@@ -8,7 +8,6 @@
     /* margin-top: calc(var(--offset)); */
     display: flex;
     justify-content: space-between;
-
     white-space: nowrap;
     mix-blend-mode: difference;
     margin-left: 20px;

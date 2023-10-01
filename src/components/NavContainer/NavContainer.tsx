@@ -120,7 +120,7 @@ const NavContainer = () => {
 	
 
 	return (
-		<div>
+		<>
 			<SideNav />
 			<Outlet />
 				<div className={ isVisible ? 'scroll-to-top' : 'scroll-to-top-active'}>
@@ -131,8 +131,8 @@ const NavContainer = () => {
 					  <IoChatboxOutline size={20} />
 				    </Link>
 				</div>
-			<Footer />
-		</div>
+			{/* <Footer /> */}
+		</>
 	)
 }
 

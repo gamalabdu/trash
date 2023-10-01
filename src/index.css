@@ -19,17 +19,10 @@
   width: 100dvw;
   height: 100dvh;
   padding-bottom: env(safe-area-inset-bottom);
-  /* overflow-x: hidden; */
   min-height: -webkit-fill-available;
   min-height: 100svh; 
   scroll-behavior: smooth;
+  /* overflow: hidden; */
 }
 
-/* @media (max-width: 768px) {
 
-  #root, html, body {
-      margin-top: 0px;
-      overflow-x: hidden;
-  }
-
-} */

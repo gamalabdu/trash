@@ -101,37 +101,42 @@ const SideNav = () => {
 					{/* <Link to='/home' preventScrollReset={true} reloadDocument>
 						Home
 					</Link> */}
-					<NavLink style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/home' preventScrollReset={true} reloadDocument>
+					<NavLink key={'home'} style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/home'>
 						Home
 					</NavLink>
 				</li>
 				<li>
-					<NavLink style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/about' preventScrollReset={true} reloadDocument>
+					<NavLink key={'about'} style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/about'>
 						About
 					</NavLink>
 				</li>
 				<li>
-					<NavLink style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/for-artist' preventScrollReset={true} reloadDocument>
+					<NavLink key={'for-artist'} style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/for-artist'>
 						For Artist
 					</NavLink>
 				</li>
 				<li>
-					<NavLink style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/for-clients' preventScrollReset={true} reloadDocument>
+					<NavLink key={'for-clients'} style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/for-clients'>
 						For Startups
 					</NavLink>
 				</li>
 				<li>
-					<NavLink style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/works' preventScrollReset={true} reloadDocument>
+					<NavLink key={'our-work'} style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/works'>
 						Our Work
 					</NavLink>
 				</li>
 				<li>
-					<NavLink style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/press' preventScrollReset={true} reloadDocument>
+					<NavLink key={'press'} style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/press'>
 						Press
 					</NavLink>
 				</li>
 				<li>
-					<NavLink style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/contact' preventScrollReset={true} reloadDocument>
+					<NavLink 
+					key={'contact'} 
+					style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/contact' 
+					// preventScrollReset={true} 
+					// reloadDocument
+					>
 						Contact
 					</NavLink>
 				</li>

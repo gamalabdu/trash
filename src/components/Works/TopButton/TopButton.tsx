@@ -24,7 +24,7 @@ const TopButton: React.FC<ITopButtonProps> = ({ buttonName, setCategories, categ
 
   useEffect (() => {
 
-    if ( categories.length >= 7 ) {
+    if ( categories.length >= 7 || categories.length === 0 ) {
 
       setCategories(['Everything'])
 

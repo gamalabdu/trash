@@ -1,6 +1,7 @@
 import React from 'react'
 import './styles.css'
 import { Link, useNavigate } from 'react-router-dom'
+import { motion} from 'framer-motion'
 
 const Home = () => {
   
@@ -16,8 +17,39 @@ const Home = () => {
 	}
 
 
+
+
+	const fadeOut = {
+		hidden: {
+          	opacity: 0,
+	        // y: 200,
+		},
+		show : {
+      		opacity: 1,
+			// y: 0,
+			transition: {
+				ease : 'easeInOut',
+				duration: 1.6,
+			}
+		},
+		exit : {
+            opacity: 0,
+			// y: -200,
+			transition : {
+				ease : 'easeInOut',
+				duration: 1.6,
+			}
+		}
+	} 
+
+
 	return (
-		<div className='home-container'>
+		<motion.div className='home-container'
+		initial='hidden'
+		animate='show'
+		exit='exit'
+		variants={fadeOut}
+		>
 
 			<div className='we-are-text'>
 				<img style={{ height: '70px' }} src={'https://drive.google.com/uc?id=13NFKppPpdsXM81vNdJdkRYJLfCJME-Dj'} alt='burningTrash' />
@@ -61,7 +93,7 @@ const Home = () => {
 				</div>
 			</div>
 
-		</div>
+		</motion.div>
 	)
 }
 

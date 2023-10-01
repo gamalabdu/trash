@@ -6,6 +6,7 @@ import { Navigation } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import './styles.css'
+import {motion} from 'framer-motion'
 
 const InnerWork = () => {
 	
@@ -42,8 +43,44 @@ const InnerWork = () => {
 		canvas = [...state.item.canvas]
 	}
 
+
+
+
+	const fadeOut = {
+		hidden: {
+          	opacity: 0,
+	        y: 200,
+		},
+		show : {
+      		opacity: 1,
+			y: 0,
+			transition: {
+				ease : 'easeInOut',
+				duration: 1.6,
+			}
+		},
+		exit : {
+            opacity: 0,
+			y: -200,
+			transition : {
+				ease : 'easeInOut',
+				duration: 1.6,
+			}
+		}
+	} 
+
+
+
+
+
+
 	return (
-		<div className='inner-work-container'>
+		<motion.div className='inner-work-container'
+		initial='hidden'
+		animate='show'
+		exit='exit'
+		variants={fadeOut}
+		>
 			<div
 				style={{
 					width: '100%',
@@ -66,7 +103,7 @@ const InnerWork = () => {
 				{assets.length > 0 ? (
 					<div className='assets'>
 						{assets.map((asset, idx) => {
-							return <img key={idx} className='asset' src={asset} alt='asset' />
+							return <img key={idx} className='asset' src={asset} alt='asset' loading='lazy' />
 						})}
 					</div>
 				) : (
@@ -142,7 +179,7 @@ const InnerWork = () => {
 						artworks.map( (artwork, key) => {
 							return (
 								
-									<img key={key} className='artwork' src={artwork} />
+									<img key={key} className='artwork' loading='lazy' src={artwork} />
 							
 							)
 						})
@@ -193,7 +230,7 @@ const InnerWork = () => {
 					</div>
 				</>
 			) : null}
-		</div>
+		</motion.div>
 	)
 }
 

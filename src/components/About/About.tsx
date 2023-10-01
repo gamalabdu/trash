@@ -2,17 +2,43 @@ import React from 'react'
 import './styles.css'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import {AnimatePresence, motion} from 'framer-motion'
 
 const About = () => {
 
-	// useEffect(() => {
-	// 	if (typeof window !== 'undefined') {
-	// 		window.scrollTo(0, 0);
-	// 	}
-	// }, []);
+
+	const fadeOut = {
+		hidden: {
+          opacity: 0,
+	        y: 200,
+		},
+		show : {
+      	opacity: 1,
+			y: 0,
+			transition: {
+				ease : 'easeInOut',
+				duration: 1.6,
+			}
+		},
+		exit : {
+            opacity: 0,
+			y: -200,
+			transition : {
+				ease : 'easeInOut',
+				duration: 1.6,
+			}
+		}
+	} 
 
 	return (
-		<div className='about-container'>
+		<AnimatePresence mode='wait'>
+		<motion.div className='about-container'
+		initial='hidden'
+		animate='show'
+		exit='exit'
+		variants={fadeOut}
+		key={'about-container'}
+		>
 			<section className='section' id='mission'>
 				<div className='about-title'>Our Mission</div>
 				<p>
@@ -149,7 +175,8 @@ const About = () => {
 					cursus eget felis.
 				</p>
 			</section> */}
-		</div>
+		</motion.div>
+		</AnimatePresence>
 	)
 }
 

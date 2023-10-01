@@ -51,7 +51,7 @@ nav {
     width: 35px;
   }
   nav ul li {
-    font: bold .7rem "Work Sans", "Arial Black", Gadget, sans-serif;
+    font: bold 1.4vh "Work Sans", "Arial Black", Gadget, sans-serif;
     text-transform: uppercase;
     letter-spacing: 2px;
     padding: 0.75em 0;

@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
 import './styles.css'
 import GalleryItem from './GalleryItem/GalleryItem'
 import { Link } from 'react-router-dom'
@@ -18,22 +18,40 @@ interface IGalleryProps {
 	}[]
 }
 
+
+
 const Gallery = (props: IGalleryProps) => {
 	
 	const { data } = props
 
 	return (
-		<div className='gallery-container'>
-			<AnimatePresence>
-				{data.map((item, i) => (
+		<AnimatePresence>
+			<LayoutGroup>
+			<motion.div
+				className='gallery-container'
+				key={'gallery-container'}
+				// initial={{ opacity: 0 }}
+				// animate={{ opacity: 1 }}
+				// exit={{ opacity: 0 }}
+			    // layout
+				>
+				{
+				data.map((item, i) => (
 					<Link key={i} to='/innerworks' state={{ item }}>
-						<motion.div layout>
+						<motion.div
+							key={i}
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
+							layout
+							>
 							<GalleryItem item={item} />
 						</motion.div>
 					</Link>
 				))}
-			</AnimatePresence>
-		</div>
+			</motion.div>
+			</LayoutGroup>
+		</AnimatePresence>
 	)
 }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Enter from './components/Enter/Enter';
 import NavContainer from './components/NavContainer/NavContainer';
 import Home from './components/Home/Home';
@@ -11,19 +11,25 @@ import Works from './components/Works/Works';
 import Contact from './components/Contact/Contact';
 import InnerWork from './components/InnerWork/InnerWork';
 import Press from './components/Press/Press';
+import { AnimatePresence } from 'framer-motion';
+import Footer from './components/Footer/Footer';
 
 function App() {
 
+  const location = useLocation();
   
   return (
     <div className="App">
-      <BrowserRouter>
-        <Routes>
+
+      <AnimatePresence initial={true} mode='wait'>
+
+        <Routes location={location} key={location.pathname}>
 
              <Route path="/" element={<Enter />} />
 
              <Route element={ <NavContainer /> }>
 
+                <Route index element={<Home/>} />
                 <Route path="home" element={ <Home /> } />
                 <Route path="about" element={ <About /> } />
                 <Route path="for-artist" element={ <ForArtist /> } />
@@ -36,7 +42,11 @@ function App() {
               </Route>
 
         </Routes>
-      </BrowserRouter>
+
+        <Footer/>
+
+      </AnimatePresence>
+
     </div>
   );
 }

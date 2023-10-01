@@ -1,7 +1,7 @@
 import React from 'react'
 import './styles.css'
-
 import { useEffect } from 'react'
+import {motion} from 'framer-motion'
 
 const ForArtist = () => {
 
@@ -15,8 +15,37 @@ const ForArtist = () => {
 	}, [])
 
 
+	const fadeOut = {
+		hidden: {
+          	opacity: 0,
+	        y: 200,
+		},
+		show : {
+      		opacity: 1,
+			y: 0,
+			transition: {
+				ease : 'easeInOut',
+				duration: 1.6,
+			}
+		},
+		exit : {
+            opacity: 0,
+			y: -200,
+			transition : {
+				ease : 'easeInOut',
+				duration: 1.6,
+			}
+		}
+	} 
+
+
 	return (
-		<div className='for-artist-container'>
+		<motion.div className='for-artist-container'
+		initial='hidden'
+		animate='show'
+		exit='exit'
+		variants={fadeOut}
+		>
 			<div className='top-container'>
 				<div className='artist-text'> TRASH FOR ARTIST </div>
 				<img className='trippie' src={'https://drive.google.com/uc?id=1PkMiKPXIUWt0SUszfr7QsQwLzmek_S3f'} alt='trippie' />
@@ -213,7 +242,7 @@ const ForArtist = () => {
 
 
 
-		</div>
+		</motion.div>
 	)
 }
 

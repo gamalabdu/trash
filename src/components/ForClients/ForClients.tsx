@@ -1,6 +1,6 @@
 import React from 'react'
 import './styles.css'
-
+import {motion} from 'framer-motion'
 import { useEffect } from 'react'
 
 const ForClients = () => {
@@ -17,8 +17,37 @@ const ForClients = () => {
 	}, [])
 
 
+	const fadeOut = {
+		hidden: {
+          opacity: 0,
+	        y: 200,
+		},
+		show : {
+      opacity: 1,
+			y: 0,
+			transition: {
+				ease : 'easeInOut',
+				duration: 1.6,
+			}
+		},
+		exit : {
+            opacity: 0,
+			y: -200,
+			transition : {
+				ease : 'easeInOut',
+				duration: 1.6,
+			}
+		}
+	} 
+
+
 	return (
-		<div className='for-clients-container'>
+		<motion.div  className='for-clients-container'
+			initial='hidden'
+			animate='show'
+			exit='exit'
+			variants={fadeOut}
+			>
 
 			<div className='top-container'>
 				<div className='artist-text'> TRASH FOR STARTUPS </div>
@@ -183,7 +212,7 @@ const ForClients = () => {
 
 
 
-		</div>
+		</motion.div>
 	)
 }
 

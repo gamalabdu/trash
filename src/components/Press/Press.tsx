@@ -1,5 +1,6 @@
 import React from 'react'
 import './styles.css'
+import {motion} from 'framer-motion'
 
 const Press = () => {
 
@@ -99,8 +100,38 @@ const Press = () => {
 
 	]
 
+
+
+	const fadeOut = {
+		hidden: {
+          	opacity: 0,
+	        y: 200,
+		},
+		show : {
+      		opacity: 1,
+			y: 0,
+			transition: {
+				ease : 'easeInOut',
+				duration: 1.6,
+			}
+		},
+		exit : {
+            opacity: 0,
+			y: -200,
+			transition : {
+				ease : 'easeInOut',
+				duration: 1.6,
+			}
+		}
+	} 
+
 	return (
-		<div className='press-container'>
+		<motion.div className='press-container'
+		initial='hidden'
+		animate='show'
+		exit='exit'
+		variants={fadeOut}
+		>
 			<h1 style={{ textAlign: 'center', padding: '1em', fontSize:"5vw" }}> PRESS </h1>
 
 			<div className='press-links'>
@@ -117,7 +148,7 @@ const Press = () => {
 
 			</div>
 
-		</div>
+		</motion.div>
 	)
 }
 

@@ -43,7 +43,7 @@ const Footer = () => {
 
 
             <div className='trash-can'>
-               <img style={{ height:"8vw" }} src={'https://drive.google.com/uc?id=13NFKppPpdsXM81vNdJdkRYJLfCJME-Dj'} alt='trash-can'/>
+               <img style={{ height:"7vw" }} src={'https://drive.google.com/uc?id=13NFKppPpdsXM81vNdJdkRYJLfCJME-Dj'} alt='trash-can'/>
             </div>
 
 

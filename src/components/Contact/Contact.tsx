@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import emailjs from '@emailjs/browser';
 import './styles.css'
+import {motion} from 'framer-motion'
 
 const Contact = () => {
 	
@@ -64,10 +65,38 @@ const Contact = () => {
 	// 	const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	// 	return regex.test(String(email).toLowerCase());
 	// };
+
+	const fadeOut = {
+		hidden: {
+          opacity: 0,
+	        y: 200,
+		},
+		show : {
+      opacity: 1,
+			y: 0,
+			transition: {
+				ease : 'easeInOut',
+				duration: 1.6,
+			}
+		},
+		exit : {
+            opacity: 0,
+			y: -200,
+			transition : {
+				ease : 'easeInOut',
+				duration: 1.6,
+			}
+		}
+	} 
     
 
 	return (
-			<div className='background'>
+			<motion.div className='background'
+			initial='hidden'
+			animate='show'
+			exit='exit'
+			variants={fadeOut}
+			>
 				<div className='contact-container'>
 					<div className='screen'>
 						<div className='screen-header'>
@@ -148,7 +177,7 @@ const Contact = () => {
 					</div>
 				</div>
 
-			</div>
+			</motion.div>
 	)
 }
 

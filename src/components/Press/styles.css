@@ -1,13 +1,12 @@
 
 .press-container {
-    background-color: black;
+    /* background-color: black; */
     height: 100dvh;
     overflow: scroll;
 }
 
 .press-links {
     margin: 0 5%;
-    /* border: solid red 2px; */
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -27,31 +26,33 @@
     aspect-ratio: 3/2;
     object-fit: contain;
     cursor: pointer;
-    transition: width 300ms ease-in-out;
+    transition: scale 300ms ease-in-out;
+    scale:calc(1);
 }
 
 .item-link:hover {
-    width: 12em;
+    scale: calc(1.1);
     aspect-ratio: 3/2;
     object-fit: contain;
     cursor: pointer;
-    transition: width 300ms ease-in-out;
+    transition: scale 300ms ease-in-out;
 }
 
 .anr {
     width: 10em;
+    scale:calc(1);
     aspect-ratio: 3/2;
     object-fit: contain;
     filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(314deg) brightness(102%) contrast(103%);
     cursor: pointer;
-    transition: width 300ms ease-in-out;
+    transition: scale 300ms ease-in-out;
 }
 
 .anr:hover {
-    width: 12em;
+    scale:calc(1.1);
     aspect-ratio: 3/2;
     object-fit: contain;
     filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(314deg) brightness(102%) contrast(103%);
     cursor: pointer;
-    transition: width 300ms ease-in-out;
+    transition: scale 300ms ease-in-out;
 }
