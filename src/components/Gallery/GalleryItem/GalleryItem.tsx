@@ -30,7 +30,7 @@ const GalleryItem = (props : IGalleryItemProps) => {
     className='image-container'
     >
         <img id='artistImg' className='gallery-image' src={item.image} alt='pic' loading='lazy' />
-        <div className='title'>
+        <div className='gallery-item-title'>
           <span id='type' style={{ color:"#535353"}}>{ item.type.map(type => type ).join('/') }</span>
           <br/>
           <span>

@@ -8,7 +8,7 @@
     row-gap: 2.5rem;
     padding: 5%;
     width: 100%;
-    overflow: scroll;
+    /* overflow: scroll; */
 }
 
 /* .image {
