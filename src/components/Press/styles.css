@@ -11,10 +11,11 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 2em;
+    gap: 5em;
 }
 
 .item-container {
+
 
 }
 
@@ -22,7 +23,7 @@
     /* width: 100px;
     height: auto;
     aspect-ratio: 16 / 9; */
-    width: 10em;
+    width: 30em;
     aspect-ratio: 3/2;
     object-fit: contain;
     cursor: pointer;
@@ -39,7 +40,7 @@
 }
 
 .anr {
-    width: 10em;
+    width: 30em;
     scale:calc(1);
     aspect-ratio: 3/2;
     object-fit: contain;

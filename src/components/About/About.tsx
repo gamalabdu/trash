@@ -1,10 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './styles.css'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import {AnimatePresence, motion} from 'framer-motion'
+import {BsChevronDown} from 'react-icons/bs'
+
 
 const About = () => {
+
+	const [services, setServices] = useState(false)
+
+	const [founders, setFounders] = useState(false)
+
+	const [clients, setClients] = useState(false)
 
 
 	const fadeOut = {
@@ -32,16 +40,16 @@ const About = () => {
 
 	return (
 		<AnimatePresence mode='wait'>
-		<motion.div className='about-container'
-		initial='hidden'
-		animate='show'
-		exit='exit'
-		variants={fadeOut}
-		key={'about-container'}
-		>
-			<section className='section' id='mission'>
-				<div className='about-title'>Our Mission</div>
-				<p>
+			<motion.div
+				className='about-container'
+				initial='hidden'
+				animate='show'
+				exit='exit'
+				variants={fadeOut}
+				key={'about-container'}>
+				<section className='section' id='mission'>
+					<div className='about-title'>Our Mission</div>
+					<p>
 					Our mission at <span style={{color:"#f93b3b"}}>TRASH</span> is to empower artists and creatives by providing
 					comprehensive and innovative solutions that enhance their artistic
 					vision and amplify their impact. We are a dynamic creative agency
@@ -58,7 +66,7 @@ const About = () => {
 					We collaborate closely with our clients, fostering a supportive
 					environment where their ideas can thrive and evolve.
 				</p>
-				<p>
+				{/* <p>
 					By offering services such as music writing, recording, production,
 					mixing, and mastering, we enable artists to bring their sonic visions
 					to life with precision and excellence. We also specialize in creating
@@ -81,101 +89,62 @@ const About = () => {
 					creative project at a time. Join us on this artistic journey as we
 					empower artists, shape culture, and create experiences that captivate
 					and inspire."
-				</p>
-			</section>
-			<div style={{ display:"flex", justifyContent:"center", alignItems:"center"}}>
-			<Link to="/contact">
-			<div className='about-lower-title'> Work With Us </div>
-			</Link>
-			</div>
-			{/* <section className='section' id='process'>
-				<h2>The Process</h2>
-				<p>
-					Click on the hamburger menu icon to see the vertical popout menu.
-					Scroll down to see how it adapts to the background color. The menu
-					icon is created using pure CSS, and the color of the menu adapts to
-					the background color of the page by setting mix-blend-mode to
-					"difference". The toggle animation only needs a tiny bit of
-					JavaScript. This demo was tested in the latest versions of Chrome,
-					Firefox and Safari. It also works on mobile.
-				</p>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nunc
-					tellus, tempor vitae elit ac, ornare aliquet elit. Vivamus ac
-					tincidunt est, vehicula semper neque. Aliquam eu velit mi. Mauris vel
-					lorem sollicitudin, sollicitudin sem vel, pulvinar risus. Pellentesque
-					ac pulvinar erat, quis aliquet lectus. Integer diam odio, auctor non
-					ullamcorper scelerisque, imperdiet non est. Sed vulputate porttitor
-					lorem, sit amet feugiat tortor pretium tristique. Lorem ipsum dolor
-					sit amet, consectetur adipiscing elit. Sed ultrices, lectus at
-					ultricies tempus, massa lorem tincidunt urna, at porta nulla massa ac
-					est. Aliquam commodo auctor tempus. In molestie nisl eget diam
-					scelerisque, vel porta metus euismod. Praesent venenatis augue
-					dignissim, vestibulum ex eget, vestibulum sem. In varius est leo. Nam
-					id lobortis erat. Etiam et metus sit amet justo consectetur lacinia
-					faucibus in elit. Aenean elit lorem, pellentesque sed pellentesque at,
-					cursus eget felis.
-				</p>
-			</section>
-			<section className='section' id='growth'>
-				<h2>Growth</h2>
-				<p>
-					Click on the hamburger menu icon to see the vertical popout menu.
-					Scroll down to see how it adapts to the background color. The menu
-					icon is created using pure CSS, and the color of the menu adapts to
-					the background color of the page by setting mix-blend-mode to
-					"difference". The toggle animation only needs a tiny bit of
-					JavaScript. This demo was tested in the latest versions of Chrome,
-					Firefox and Safari. It also works on mobile.
-				</p>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nunc
-					tellus, tempor vitae elit ac, ornare aliquet elit. Vivamus ac
-					tincidunt est, vehicula semper neque. Aliquam eu velit mi. Mauris vel
-					lorem sollicitudin, sollicitudin sem vel, pulvinar risus. Pellentesque
-					ac pulvinar erat, quis aliquet lectus. Integer diam odio, auctor non
-					ullamcorper scelerisque, imperdiet non est. Sed vulputate porttitor
-					lorem, sit amet feugiat tortor pretium tristique. Lorem ipsum dolor
-					sit amet, consectetur adipiscing elit. Sed ultrices, lectus at
-					ultricies tempus, massa lorem tincidunt urna, at porta nulla massa ac
-					est. Aliquam commodo auctor tempus. In molestie nisl eget diam
-					scelerisque, vel porta metus euismod. Praesent venenatis augue
-					dignissim, vestibulum ex eget, vestibulum sem. In varius est leo. Nam
-					id lobortis erat. Etiam et metus sit amet justo consectetur lacinia
-					faucibus in elit. Aenean elit lorem, pellentesque sed pellentesque at,
-					cursus eget felis.
-				</p>
-			</section>
-			<section className='section' id='end'>
-				<h2>Ending Statement</h2>
-				<p>
-					Click on the hamburger menu icon to see the vertical popout menu.
-					Scroll down to see how it adapts to the background color. The menu
-					icon is created using pure CSS, and the color of the menu adapts to
-					the background color of the page by setting mix-blend-mode to
-					"difference". The toggle animation only needs a tiny bit of
-					JavaScript. This demo was tested in the latest versions of Chrome,
-					Firefox and Safari. It also works on mobile.
-				</p>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nunc
-					tellus, tempor vitae elit ac, ornare aliquet elit. Vivamus ac
-					tincidunt est, vehicula semper neque. Aliquam eu velit mi. Mauris vel
-					lorem sollicitudin, sollicitudin sem vel, pulvinar risus. Pellentesque
-					ac pulvinar erat, quis aliquet lectus. Integer diam odio, auctor non
-					ullamcorper scelerisque, imperdiet non est. Sed vulputate porttitor
-					lorem, sit amet feugiat tortor pretium tristique. Lorem ipsum dolor
-					sit amet, consectetur adipiscing elit. Sed ultrices, lectus at
-					ultricies tempus, massa lorem tincidunt urna, at porta nulla massa ac
-					est. Aliquam commodo auctor tempus. In molestie nisl eget diam
-					scelerisque, vel porta metus euismod. Praesent venenatis augue
-					dignissim, vestibulum ex eget, vestibulum sem. In varius est leo. Nam
-					id lobortis erat. Etiam et metus sit amet justo consectetur lacinia
-					faucibus in elit. Aenean elit lorem, pellentesque sed pellentesque at,
-					cursus eget felis.
-				</p>
-			</section> */}
-		</motion.div>
+				</p> */}
+
+					<div className='title-head'>
+						<div className='title-icon'> Services   <BsChevronDown className={ services ? 'chevron-down' : 'chevron-up'} size={45} onClick={() => setServices(!services)} /> </div>
+						<hr />
+
+							<ul className={services ? 'list': 'list-hidden'}>
+								<li className='list-item'>Music Production</li>
+								<li className='list-item'>Music Promotion</li>
+								<li className='list-item'>Content Creation</li>
+								<li className='list-item'>Creative Direction</li>
+							</ul>
+						
+					</div>
+
+					<div className='title-head'>
+
+						<div className='title-icon'> Founders <BsChevronDown className={ founders ? 'chevron-down' : 'chevron-up'} size={50} onClick={() => setFounders(!founders)} /> </div>
+						<hr />
+
+							<ul className={founders ? 'list': 'list-hidden'}>
+
+								<div style={{ display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-evenly", padding:"1%"}}>
+
+									<div style={{ display:"flex", flexDirection:"column",justifyContent:"center"}}>
+										<img className='founder' src='https://drive.google.com/uc?id=1KY10Ha4OWjkIPj5dBVd0Qc2qH9hvcC5H' />
+										<div style={{ fontSize:"1vw", textAlign:"center", padding:"10px"}}> Gamal Abdu - Music Producer - Co Founder </div>
+									</div>
+
+									<div style={{ display:"flex", flexDirection:"column",justifyContent:"center"}}>
+										<img className='founder' src='https://drive.google.com/uc?id=1rBfTFdzfwxP8DNO2moMZ6MltAvxXIC_P' />
+										<div style={{ fontSize:"1vw", textAlign:"center", padding:"10px"}}> Alejandro Rodriguez - Creative Director - Co Founder </div>
+									</div>
+
+								</div>
+							</ul>
+						
+					</div>
+
+
+
+				</section>
+				
+				<div
+					style={{
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'center',
+					}}>
+					<Link to='/contact'>
+						<div className='about-lower-title'> Work With Us </div>
+					</Link>
+				</div>
+
+			</motion.div>
+
 		</AnimatePresence>
 	)
 }

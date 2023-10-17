@@ -97,6 +97,11 @@ const Press = () => {
 			link: "https://earmilk.com/2023/07/22/ella-rossi-delivers-a-stunning-sound-with-her-single-linen/",
 			image: "https://static.wixstatic.com/media/63f51d_5a24899498cc450381d11a1d189d68de~mv2.png/v1/fill/w_602,h_126,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/earmilk-logo-2.png"
 		},
+		{
+			name: "PitchFork",
+			link: "https://pitchfork.com/reviews/albums/21378-5-oclock-shadow/",
+			image: "https://drive.google.com/uc?id=1KJOIjZUOnpL-Ndat4RF_E7cRTFd3E7Rf"
+		},
 
 	]
 
