@@ -13,6 +13,36 @@ const Press = () => {
 
 	const pressLinks = [
 		{
+			name: "Medium",
+			link: "https://medium.com/offthercrd/now-playing-sweet-sour-971798e57fee",
+			image: "https://s3-alpha.figma.com/hub/file/3791871911/a9b9bab0-3908-4bed-a280-40803374c25d-cover.png"
+		},
+		{
+			name: "Complex",
+			link: "https://www.complex.com/music/a/lauren-nostro/jay-bel-new-song-transeuro-feat-jimi-tents",
+			image: "https://partner.complex.com/ig-vote-submissions/assets/images/complex-logo-white.png"
+		},
+		{
+			name: "BillBoard",
+			link: "https://www.billboard.com/music/rb-hip-hop/jimi-tents-elmer-fudd-exclusive-song-premiere-6457868/",
+			image: "https://thehellogroup.com/wp-content/uploads/2023/04/234-2341310_billboard-logo-png-clip-black-and-white-2018.png"
+		},
+		{
+			name: "The Fader",
+			link: "https://www.thefader.com/2015/10/30/listen-jimi-tents-new-album-",
+			image: "https://upload.wikimedia.org/wikipedia/commons/c/c9/FADER-logo.jpg"
+		},
+		{
+			name: "EarMilk",
+			link: "https://earmilk.com/2023/07/22/ella-rossi-delivers-a-stunning-sound-with-her-single-linen/",
+			image: "https://static.wixstatic.com/media/63f51d_5a24899498cc450381d11a1d189d68de~mv2.png/v1/fill/w_602,h_126,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/earmilk-logo-2.png"
+		},
+		{
+			name: "PitchFork",
+			link: "https://pitchfork.com/reviews/albums/21378-5-oclock-shadow/",
+			image: "https://drive.google.com/uc?id=1KJOIjZUOnpL-Ndat4RF_E7cRTFd3E7Rf"
+		},
+		{
 			name: "Vents Magazine",
 			link: "https://ventsmagazine.com/2023/07/14/interview-ella-rossi/",
 			image: "https://amu.education/wp-content/uploads/2022/01/vents-magazine-logo-1-1024x413.png"
@@ -48,11 +78,6 @@ const Press = () => {
 			image: "https://images.squarespace-cdn.com/content/v1/5a444d5bace864a5558b1050/1517955235516-5Z2ROIYQIJB9CL0G74UQ/Earhart+logo.jpg"
 		},
 		{
-			name: "Medium",
-			link: "https://medium.com/offthercrd/now-playing-sweet-sour-971798e57fee",
-			image: "https://s3-alpha.figma.com/hub/file/3791871911/a9b9bab0-3908-4bed-a280-40803374c25d-cover.png"
-		},
-		{
 			name: "The Hype Magazine",
 			link: "https://www.thehypemagazine.com/2022/02/la-rodriguez-makes-major-waves-with-his-latest-visual-phone-line/",
 			image: "https://www.universenetwork.tv/public/files/shows/2/2794/126-800x450-FFFFFF.jpg"
@@ -86,21 +111,6 @@ const Press = () => {
 			name: "BillBoard",
 			link: "https://www.billboard.com/music/rb-hip-hop/jimi-tents-elmer-fudd-exclusive-song-premiere-6457868/",
 			image: "https://thehellogroup.com/wp-content/uploads/2023/04/234-2341310_billboard-logo-png-clip-black-and-white-2018.png"
-		},
-		{
-			name: "The Fader",
-			link: "https://www.thefader.com/2015/10/30/listen-jimi-tents-new-album-",
-			image: "https://upload.wikimedia.org/wikipedia/commons/c/c9/FADER-logo.jpg"
-		},
-		{
-			name: "EarMilk",
-			link: "https://earmilk.com/2023/07/22/ella-rossi-delivers-a-stunning-sound-with-her-single-linen/",
-			image: "https://static.wixstatic.com/media/63f51d_5a24899498cc450381d11a1d189d68de~mv2.png/v1/fill/w_602,h_126,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/earmilk-logo-2.png"
-		},
-		{
-			name: "PitchFork",
-			link: "https://pitchfork.com/reviews/albums/21378-5-oclock-shadow/",
-			image: "https://drive.google.com/uc?id=1KJOIjZUOnpL-Ndat4RF_E7cRTFd3E7Rf"
 		},
 
 	]

@@ -78,7 +78,7 @@ const Home = () => {
 					</Link>
 				</div>
 
-				{/* <div
+				<div
 					onClick={() => handleClick('for-clients')}
 					className='for-startups'>
 					<div className='inside-text'> for startups </div>
@@ -90,7 +90,7 @@ const Home = () => {
 							alt='mike'
 						/>{' '}
 					</Link>
-				</div> */}
+				</div>
 			</div>
 
 		</motion.div>

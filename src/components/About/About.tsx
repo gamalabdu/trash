@@ -15,6 +15,29 @@ const About = () => {
 	const [clients, setClients] = useState(false)
 
 
+const serviceList = [
+'DIGITAL CONSULTATION',
+'MUSIC PRODUCTION',
+'ARTIST DEVELOPMENT',
+"AUDIO ENGINEERING",
+"CREATIVE DIRECTION",
+"ASSET CREATION",
+"GRAPHIC DESIGN",
+"ART DIRECTION",
+"WEB DESIGN",
+"BRAND STRATEGY",
+"CAMPAIGN DEVELOPMENT",
+"SOCIAL MEDIA MANAGEMENT",
+"INFLUENCER OUTREACH",
+"PRESS PLACEMENTS",
+"PLAYLISTING",
+"ADVERTISING",
+"DIGITAL MARKETING",
+"PUBLIC RELATIONS",
+"BESPOKE BRAND DEVELOPMENT"
+]
+
+
 	const fadeOut = {
 		hidden: {
           opacity: 0,
@@ -96,10 +119,14 @@ const About = () => {
 						<hr />
 
 							<ul className={services ? 'list': 'list-hidden'}>
-								<li className='list-item'>Music Production</li>
-								<li className='list-item'>Music Promotion</li>
-								<li className='list-item'>Content Creation</li>
-								<li className='list-item'>Creative Direction</li>
+								{
+									serviceList.map(service => {
+										return (
+											<li className='list-item'>{service}</li>
+										)
+									})						
+								}
+							
 							</ul>
 						
 					</div>

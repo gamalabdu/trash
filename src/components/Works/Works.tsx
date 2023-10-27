@@ -236,6 +236,34 @@ const Works = () => {
 			assets : [],
 			iphone: false,
 			artworks:[]
+		},
+		{
+			image: 'https://drive.google.com/uc?id=1hD_z9XjwofWXz6s0G7PILF0GUffc6PCr',
+			type: ['Photography', 'Creative Direction'],
+			name: "Rulez - NO RULEZ Campaign",
+			statement: `TRASH was brought on to shoot a campaign for Fall 2015 No Rulez season`,
+			videos: [
+				'https://drive.google.com/uc?id=1_LaAWuiLlwGI7Vs-eg2DgBpihf6AbUTX'
+			],
+			images: [
+				"https://drive.google.com/uc?id=152mNhny5I0oj5xV4VCFDNpKRBNIwk1Js",
+				"https://drive.google.com/uc?id=1j97zuAPZ2PFwAsJIF_bGzowNELCMnbnm",
+				"https://drive.google.com/uc?id=1LJ1oG3aLOQLRyKyVc3HxqNBVfa96eXER",
+				"https://drive.google.com/uc?id=1g_-U12L8U17uf47mY3HAJrff3kobgQhG",
+				"https://drive.google.com/uc?id=1CJq8IF7-2g_-yR0fwCUnV4AzAA0gua0P",
+				"https://drive.google.com/uc?id=1hD_z9XjwofWXz6s0G7PILF0GUffc6PCr",
+				"https://drive.google.com/uc?id=1NvZsHWxK7YOzw6Ncmm8WEnt4oCap-oi8",
+				"https://drive.google.com/uc?id=1jXp_USLbr49yD_TyYPkO4FSXffp52nxH",
+				"https://drive.google.com/uc?id=1jXp_USLbr49yD_TyYPkO4FSXffp52nxH",
+				"https://drive.google.com/uc?id=16tIEURzlsk6K5j7cHZLmRWKgBUAjIpcA",
+				"https://drive.google.com/uc?id=1oQ3kQDqgdz8M_1kfUvgZwMnJhYX5Ceck",
+				"https://drive.google.com/uc?id=1cjMHczTJrShM9TYhN4UwY-a5AI-BbuXx",
+			],
+			canvas: [
+			],
+			assets : [],
+			iphone: false,
+			artworks:[]
 		}
 
 		

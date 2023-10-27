@@ -88,7 +88,7 @@ const InnerWork = () => {
 					textAlign: 'right',
 					fontSize: '3vw',
 					marginTop: '24px',
-					marginLeft: '-30px',
+					marginLeft: '-70px',
 					cursor: 'pointer',
 				}}
 				onClick={() => backToWork()}>
@@ -109,11 +109,12 @@ const InnerWork = () => {
 				) : (
 					<img
 						style={{ width: '100%', height: '400px', objectFit: 'cover' }}
+						loading="lazy"
 						alt='alt-idk'
 						src={state.item.image}
 					/>
 				)}
-				<div style={{ color: 'black', textAlign: 'center', padding: '5%' }}>
+				<div style={{ color: 'black', textAlign: 'center', padding: '5%', fontSize: "3vw" }}>
 					{' '}
 					{state.item.statement}{' '}
 				</div>

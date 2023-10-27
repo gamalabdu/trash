@@ -46,6 +46,10 @@ const Footer = () => {
                <img style={{ height:"7vw" }} src={'https://drive.google.com/uc?id=13NFKppPpdsXM81vNdJdkRYJLfCJME-Dj'} alt='trash-can'/>
             </div>
 
+            {/* <div style={{ fontSize:"5vmin"}}>
+                TRASH 
+            </div> */}
+
 
             <div className='right-side'>
 
