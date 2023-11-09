@@ -5,6 +5,15 @@ import { useEffect } from 'react'
 
 const ForClients = () => {
 
+	const title = 'For Clients'
+
+	const DynamicPage = ( title : string ) => {
+		useEffect(() => {
+		  document.title = `TRASH - ${title}`; // Update the document title
+		}, [title]);
+	  }
+  
+	  DynamicPage(title)
 
 
 	const googleDriveUrl = 'uc?id='

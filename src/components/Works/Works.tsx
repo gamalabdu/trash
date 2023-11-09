@@ -9,6 +9,16 @@ import { motion} from 'framer-motion'
 
 const Works = () => {
 
+	const title = 'Explore our work'
+
+	const DynamicPage = ( title : string ) => {
+		useEffect(() => {
+		  document.title = `TRASH - ${title}`; // Update the document title
+		}, [title]);
+	  }
+  
+	  DynamicPage(title)
+
 	const buttonChoices = [
 		{
 			type: 'Everything',

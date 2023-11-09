@@ -1,8 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './styles.css'
 import {motion} from 'framer-motion'
 
 const Press = () => {
+
+	const title = 'Press'
+
+	const DynamicPage = ( title : string ) => {
+		useEffect(() => {
+		  document.title = `TRASH - ${title}`; // Update the document title
+		}, [title]);
+	  }
+  
+	  DynamicPage(title)
 
 
 	const goToLink = (link : string) => {

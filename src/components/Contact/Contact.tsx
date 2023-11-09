@@ -4,6 +4,16 @@ import './styles.css'
 import {motion} from 'framer-motion'
 
 const Contact = () => {
+
+	const title = 'Contact'
+
+	const DynamicPage = ( title : string ) => {
+		useEffect(() => {
+		  document.title = `TRASH - ${title}`; // Update the document title
+		}, [title]);
+	  }
+  
+	  DynamicPage(title)
 	
 	useEffect(() => {
 		window.scrollTo(0, 0)

@@ -5,6 +5,16 @@ import { motion } from 'framer-motion'
 
 const ForArtist = () => {
 
+	const title = 'For Artist'
+
+	const DynamicPage = ( title : string ) => {
+		useEffect(() => {
+		  document.title = `TRASH - ${title}`; // Update the document title
+		}, [title]);
+	  }
+  
+	  DynamicPage(title)
+
 	const googleDriveUrl = 'uc?id='
 
 	const googleUrl = 'uc?export=view&id='

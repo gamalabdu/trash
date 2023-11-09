@@ -14,6 +14,16 @@ const About = () => {
 
 	const [clients, setClients] = useState(false)
 
+	const title = 'About'
+
+	const DynamicPage = ( title : string ) => {
+		useEffect(() => {
+		  document.title = `TRASH - ${title}`; // Update the document title
+		}, [title]);
+	  }
+  
+	  DynamicPage(title)
+
 
 const serviceList = [
 'DIGITAL CONSULTATION',

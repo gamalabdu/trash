@@ -1,9 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './styles.css'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion} from 'framer-motion'
 
 const Home = () => {
+
+	const title = 'Home'
+
+	const DynamicPage = ( title : string ) => {
+		useEffect(() => {
+		  document.title = `TRASH - ${title}`; // Update the document title
+		}, [title]);
+	  }
+  
+	  DynamicPage(title)
   
 	const navigate = useNavigate()
 
