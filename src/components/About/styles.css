@@ -72,21 +72,30 @@ hr {
 }
 
 .list {
-  max-height: 500px;
-  padding: 10px;
+  padding: 2% 0;
+  max-height: 900px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2%;
+  justify-content: space-between;
   overflow: hidden;
-  transition: all .5s ease-in-out;
+  transition: all .500ms ease-in-out;
 }
 
 .list-hidden {
-  max-height: 0;
+  max-height: 0px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: space-between;
+  padding: 0px;
   overflow: hidden;
-  transition: all .5s ease-in-out;
+  transition: all .500ms ease-in-out;
 }
 
 .list-item {
-  font-size: 3vh;
-  list-style-type: none;
+  font-size: 3vw;
+  /* list-style-type: none; */
 }
 
 .chevron-up {
@@ -110,4 +119,22 @@ hr {
   width: 300px;
   height: 300px;
   object-fit: cover;
+}
+
+.founder-div {
+  width: 50%;
+}
+
+.founders {
+  max-height: auto;
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  transition: all .500ms ease-in-out;
+}
+
+.founders-hidden {
+  max-height: 0px;
+  overflow: hidden;
+  transition: all .500ms ease-in-out;
 }

@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 
 const ForArtist = () => {
+
 	const googleDriveUrl = 'uc?id='
 
 	const googleUrl = 'uc?export=view&id='
@@ -55,7 +56,6 @@ const ForArtist = () => {
 
 			<div className='intro'>
 				<div className='left-intro'>
-					{/* <div style={{ alignContent: 'left', width: '10%' }}> 1 </div> */}
 					<div style={{ width: '100%', padding: '10px', fontSize: '2.5vw' }}>
 						<div
 							style={{
@@ -77,9 +77,6 @@ const ForArtist = () => {
 
 			<div className='intro-black'>
 				<div className='left-intro-black'>
-					{/* <div style={{ alignContent: 'left', width: '10%', fontSize: '3vw' }}>
-						{' '}2{' '}
-					</div> */}
 					<div style={{ width: '100%', padding: '10px', fontSize: '2.5vw' }}>
 						<div
 							style={{

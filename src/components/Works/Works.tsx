@@ -209,20 +209,22 @@ const Works = () => {
 			]
 		},
 		{
-			image: 'https://drive.google.com/uc?id=1KSjXGT4Hk4J_g1ZteUShQp9ILCd73lKP',
+			image: 'https://drive.google.com/uc?id=1DaAdAwotG4-3lxIu-osu8aCLB8Ph4cs1',
 			type: ['All Included'],
 			name: "La Rodriguez - Don't Drive Drunk",
 			statement: `TRASH was brought on to exectutive produce, curate and release LA Rodriguez's 3rd Studio Project, 'Don't Drive Drunk'`,
 			videos: [],
 			images: [],
-			canvas: [
-				'https://drive.google.com/uc?id=13IRi9D3qJ4Oek2jW830Cag37hoqW5uBH',
-				'https://drive.google.com/uc?id=1jM3YEKmaHn0FyoZb2PAwmgHKO7T9LG67',
-				'https://drive.google.com/uc?id=1OpHvj2AT2CXmWXeMN-QRdShp53ViSLar'
-			],
+			canvas: [],
 			assets : [],
 			iphone: false,
-			artworks:[]
+			artworks:[
+				"https://drive.google.com/uc?id=1T-KRRIPlzjbNVJzec-Pw7v3_uvekpiF0",
+				"https://drive.google.com/uc?id=1Dua-jjcnYvW0aInef_I-uUHzbuUFlTT2",
+				"https://drive.google.com/uc?id=1pQjcHj12FqjyfS9ZXkAGa48WpEIFU_rV",
+				"https://drive.google.com/uc?id=1l2jgZGyP2N558ST3gBd4UHP-GpNzYE6d",
+				"https://drive.google.com/uc?id=1WtZGnakWheWsbNPJltkd4AU2F5rdZTLO"
+			]
 		},
 		{
 			image: 'https://drive.google.com/uc?id=1uOK4TWwvER89iEKXfgz1ZebQ8cd6KFSF',

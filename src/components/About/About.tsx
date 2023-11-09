@@ -89,30 +89,7 @@ const serviceList = [
 					We collaborate closely with our clients, fostering a supportive
 					environment where their ideas can thrive and evolve.
 				</p>
-				{/* <p>
-					By offering services such as music writing, recording, production,
-					mixing, and mastering, we enable artists to bring their sonic visions
-					to life with precision and excellence. We also specialize in creating
-					captivating visuals, developing engaging social media strategies, and
-					designing striking graphics that resonate with audiences. Furthermore,
-					we take pride in our ability to develop comprehensive rollouts for
-					singles and projects, ensuring strategic planning and seamless
-					execution at every stage. Our expertise in creative direction and
-					branding allows us to craft cohesive and compelling narratives that
-					align with the artists' vision and resonate with their target
-					audience. Through our unwavering commitment to excellence and our
-					passion for artistic expression, we aim to be a trusted partner and a
-					driving force behind the success of our clients. We are dedicated to
-					delivering exceptional results that exceed expectations, foster
-					meaningful connections, and leave a lasting impact on the artistic
-					landscape.
-				</p>
-				<p>
-					At <span style={{color:"#f93b3b"}}>TRASH</span>, we are dedicated to transforming dreams into reality, one
-					creative project at a time. Join us on this artistic journey as we
-					empower artists, shape culture, and create experiences that captivate
-					and inspire."
-				</p> */}
+
 
 					<div className='title-head'>
 						<div className='title-icon'> Services   <BsChevronDown className={ services ? 'chevron-down' : 'chevron-up'} size={45} onClick={() => setServices(!services)} /> </div>
@@ -136,22 +113,25 @@ const serviceList = [
 						<div className='title-icon'> Founders <BsChevronDown className={ founders ? 'chevron-down' : 'chevron-up'} size={50} onClick={() => setFounders(!founders)} /> </div>
 						<hr />
 
-							<ul className={founders ? 'list': 'list-hidden'}>
+							
 
-								<div style={{ display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-evenly", padding:"1%"}}>
+								<div 
+								className={founders ? 'founders': 'founders-hidden'}
+								style={{ display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"center"}}
+								>
 
-									<div style={{ display:"flex", flexDirection:"column",justifyContent:"center"}}>
+									<div className='founder-div' style={{ display:"flex", flexDirection:"column",justifyContent:"center", alignItems:"center" }}>
 										<img className='founder' src='https://drive.google.com/uc?id=1KY10Ha4OWjkIPj5dBVd0Qc2qH9hvcC5H' />
-										<div style={{ fontSize:"1vw", textAlign:"center", padding:"10px"}}> Gamal Abdu - Music Producer - Co Founder </div>
+										<div style={{ fontSize:"2vmin", textAlign:"center", padding:"10px"}}> Gamal Abdu - Music Producer - Co Founder </div>
 									</div>
 
-									<div style={{ display:"flex", flexDirection:"column",justifyContent:"center"}}>
+									<div className='founder-div' style={{ display:"flex", flexDirection:"column",justifyContent:"center", alignItems:"center" }}>
 										<img className='founder' src='https://drive.google.com/uc?id=1rBfTFdzfwxP8DNO2moMZ6MltAvxXIC_P' />
-										<div style={{ fontSize:"1vw", textAlign:"center", padding:"10px"}}> Alejandro Rodriguez - Creative Director - Co Founder </div>
+										<div style={{ fontSize:"2vmin", textAlign:"center", padding:"10px"}}> Alejandro Rodriguez - Creative Director - Co Founder </div>
 									</div>
 
 								</div>
-							</ul>
+							
 						
 					</div>
 
