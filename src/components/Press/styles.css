@@ -21,8 +21,9 @@
     /* width: 100px;
     height: auto;
     aspect-ratio: 16 / 9; */
-    width: 30em;
+    width: 20em;
     aspect-ratio: 3/2;
+    /* aspect-ratio: 16 / 9; */
     object-fit: contain;
     cursor: pointer;
     transition: scale 300ms ease-in-out;
@@ -31,14 +32,15 @@
 
 .item-link:hover {
     scale: calc(1.1);
-    aspect-ratio: 3/2;
+    /* aspect-ratio: 3/2; */
+    aspect-ratio: 16 / 9;
     object-fit: contain;
     cursor: pointer;
     transition: scale 300ms ease-in-out;
 }
 
 .anr {
-    width: 30em;
+    width: 20em;
     scale:calc(1);
     aspect-ratio: 3/2;
     object-fit: contain;

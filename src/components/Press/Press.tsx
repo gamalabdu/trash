@@ -25,7 +25,7 @@ const Press = () => {
 		{
 			name: "Medium",
 			link: "https://medium.com/offthercrd/now-playing-sweet-sour-971798e57fee",
-			image: "https://s3-alpha.figma.com/hub/file/3791871911/a9b9bab0-3908-4bed-a280-40803374c25d-cover.png"
+			image: "https://drive.google.com/uc?id=1VorNJ8kGpaNfZrBjPkrSaMtIce0ldJkl"
 		},
 		{
 			name: "Complex",
@@ -60,7 +60,7 @@ const Press = () => {
 		{
 			name: "Press Party",
 			link: "https://www.pressparty.com/pg/newsdesk/anrfactory/view/334709/",
-			image: "https://images.squarespace-cdn.com/content/v1/5d45e2509b91490001751691/ffe64873-975b-4403-8c39-c7ae1d2e91ab/logo_hr.png"
+			image: "https://drive.google.com/uc?id=1a_PMdQBcGb91cf3fEHvzSoA8JgeQH_fO"
 		},
 		{
 			name: "Celeb Mix",
@@ -75,7 +75,7 @@ const Press = () => {
 		{
 			name: "Buzz Music",
 			link: "https://www.buzz-music.com/post/maria-alexa-asks-for-a-sign-in-a-new-single-wake-me-up",
-			image: "https://d10j3mvrs1suex.cloudfront.net/s:bzglfiles/u/41884/27d0535a2a80bc21e2a88b81cfa63c454df48a44/original/buzzmusic.jpg/!!/meta%3AeyJzcmNCdWNrZXQiOiJiemdsZmlsZXMifQ%3D%3D.jpg"
+			image: "https://drive.google.com/uc?id=1FnS-sNaBzj-BwpQyC-l-Pbomfx-FtH4X"
 		},
 		{
 			name: "Wonderland",
@@ -85,12 +85,12 @@ const Press = () => {
 		{
 			name: "ThisIsEarhart",
 			link: "https://thisisearhart.com/independent-artist-features/alex-mali-2",
-			image: "https://images.squarespace-cdn.com/content/v1/5a444d5bace864a5558b1050/1517955235516-5Z2ROIYQIJB9CL0G74UQ/Earhart+logo.jpg"
+			image: "https://drive.google.com/uc?id=1PqaWFsJWJpX0thXFBvTckHbMFAuwxSzh"
 		},
 		{
 			name: "The Hype Magazine",
 			link: "https://www.thehypemagazine.com/2022/02/la-rodriguez-makes-major-waves-with-his-latest-visual-phone-line/",
-			image: "https://www.universenetwork.tv/public/files/shows/2/2794/126-800x450-FFFFFF.jpg"
+			image: "https://drive.google.com/uc?id=14KfhWJXyoP11CYhHBCKemT391GDoKKu_"
 		},
 		{
 			name: "TwoDopeBoyz",

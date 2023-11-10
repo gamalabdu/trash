@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaInstagram } from 'react-icons/fa'
 import { AiOutlineYoutube } from 'react-icons/ai'
 import { TbBrandSpotify } from 'react-icons/tb'
@@ -22,9 +22,49 @@ const Footer = () => {
 
 
 
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+
+
 
   return (
     <footer className='footer-container'>
+
+    {
+        
+        isMobile ? 
+
+        <div className='footer-black'>
+
+            <div className={'left-side-mobile'}>
+
+                    <ul className='left-links-mobile'>
+                        <Link to='/home'><li onClick={() => window.scrollTo(0, 0)}>Services</li></Link>
+                        <Link to='/works'><li>Work</li></Link>
+                        <Link to='/about'><li>About Us</li></Link>
+                        <Link to='/contact'><li>Contact</li></Link>
+                    </ul>
+
+                <div className='left-lower-links-mobile'>TRASH | CREATIVE AGENCY | ARTISTS, STARTUPS, BRANDS</div>
+
+            </div>
+
+
+        </div>
+
+        :
 
         <div className='footer-black'>
 
@@ -67,6 +107,8 @@ const Footer = () => {
 
 
         </div>
+    
+    }
 
     </footer>
   )
