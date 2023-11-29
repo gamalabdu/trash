@@ -53,6 +53,9 @@ const ForArtist = () => {
 			animate='show'
 			exit='exit'
 			variants={fadeOut}>
+
+
+
 			<div className='top-container'>
 				<div className='artist-text'> TRASH FOR ARTIST </div>
 				<img
@@ -73,10 +76,9 @@ const ForArtist = () => {
 								marginBottom: '16px',
 								textDecoration: 'underline',
 							}}>
-							<div> 1 </div> Create{' '}
+							<div> 1 </div> MUSIC CREATION
 						</div>
-						Focus on making music and perfecting your craft. We'll focus on
-						making sure it sounds great.
+						Focus on making the music and perfecting your craft. We'll focus on making sure it sounds innovative.
 					</div>
 				</div>
 
@@ -94,18 +96,15 @@ const ForArtist = () => {
 								marginBottom: '16px',
 								textDecoration: 'underline',
 							}}>
-							<div> 2 </div> Strategy{' '}
+							<div> 2 </div> ASSET CREATION
 						</div>
-						Exceptional projects begin with a solid strategy. Research, trend
-						exploration, and audience insights help us create a custom strategy
-						to captivate your listeners.
+						Our in-house creative team have created artworks, canvases, music videos, digital booklets, press photos, banners, avatars, and graphics that have been seen by millions. 
 					</div>
 				</div>
 
 				<div className='right-intro-black'>
 					<div>
-						Trend Analysis, Cultural Insights, Creative Direction, Campaign
-						Strategy, Marketing Plans, and more.
+					TRASH prides itself on helping artists find their style while also showcasing our own
 					</div>
 				</div>
 			</div>
@@ -133,8 +132,7 @@ const ForArtist = () => {
 							BRANDING
 						</div>
 						<div>
-							Logo Design, Identity Development, Cover Artwork, Curation,
-							Rebranding, and more.{' '}
+						   Research, trend exploration, and audience insights help us create a custom strategy to captivate your listeners. Oftentimes rebranding an already established image but occasionally creating a brand from scratch.
 						</div>
 					</div>
 				</div>
@@ -165,7 +163,7 @@ const ForArtist = () => {
 					<div>
 						<div> 4 </div>
 						<div style={{ textDecoration: 'underline' }}>DIGITAL</div>
-						Artist Website, Advertising, Campaign Microsites, Web Apps and more.
+						Social Media Management, EPK Development, Artist Website Design, Digital Advertising, Campaign Microsites, Web App. Devo and more...
 					</div>
 				</div>
 			</div>
@@ -192,25 +190,23 @@ const ForArtist = () => {
 								marginBottom: '16px',
 								textDecoration: 'underline',
 							}}>
-							CONTENT
+							OUTREACH
 						</div>
-						<div>
-							Social Content, Video Production, Photography, Copywriting, Email
-							Marketing, Press Releases, and more.{' '}
-						</div>
+						Access premier opportunities effortlessly through our robust network, thriving since 2009.
 					</div>
 
 					<div className='left-branding-picture'>
 						<img
 							className='ellaGhost'
 							src={
-								'https://drive.google.com/uc?id=1CKQ13fWGgilWzYVUyZmNQCqdjnuMxs75'
+								'https://drive.google.com/uc?id=1tnNNOIeB2J9VuBqBRmy2fBcxy-NqUBj-'
 							}
 							alt='ellaGhost'
 						/>
 					</div>
 				</div>
 			</div>
+
 
 			<div className='growth'>
 				
@@ -237,8 +233,7 @@ const ForArtist = () => {
 							GROWTH
 						</div>
 						<div>
-							Influencer Marketing, Social Promotion, Social Automation, Email
-							Marketing, Monitoring & Analysis, and more.{' '}
+						Completing our cycle, your product is fully polished and released into the world. We'll ensure that we maximize not only our efforts but our value as well. 
 						</div>
 					</div>
 
@@ -253,7 +248,14 @@ const ForArtist = () => {
 					</div>
 
 				</div>
+
+
+
 			</div>
+
+
+
+
 		</motion.div>
 	)
 }

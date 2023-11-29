@@ -50,7 +50,7 @@ const Press = () => {
 		{
 			name: "PitchFork",
 			link: "https://pitchfork.com/reviews/albums/21378-5-oclock-shadow/",
-			image: "https://drive.google.com/uc?id=1KJOIjZUOnpL-Ndat4RF_E7cRTFd3E7Rf"
+			image: "https://drive.google.com/uc?id=1oac4F1O4RWvOGtS1h9NNOP2YACj3Q-6P"
 		},
 		{
 			name: "Vents Magazine",
@@ -111,16 +111,6 @@ const Press = () => {
 			name: "The Source",
 			link: "https://thesource.com/2015/04/08/listen-to-jay-bels-transeuro-featuring-jimi-tents/",
 			image: "https://thesource.com/wp-content/uploads/2021/02/TheSource-scaled.jpg"
-		},
-		{
-			name: "Complex",
-			link: "https://www.complex.com/music/a/lauren-nostro/jay-bel-new-song-transeuro-feat-jimi-tents",
-			image: "https://partner.complex.com/ig-vote-submissions/assets/images/complex-logo-white.png"
-		},
-		{
-			name: "BillBoard",
-			link: "https://www.billboard.com/music/rb-hip-hop/jimi-tents-elmer-fudd-exclusive-song-premiere-6457868/",
-			image: "https://thehellogroup.com/wp-content/uploads/2023/04/234-2341310_billboard-logo-png-clip-black-and-white-2018.png"
 		},
 
 	]

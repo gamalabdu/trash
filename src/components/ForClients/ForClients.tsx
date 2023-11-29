@@ -140,7 +140,8 @@ const ForClients = () => {
       <div className='production'>
 
 				<div className='right-production'>
-				<video className='alex-canvas' src={'https://drive.google.com/uc?id=1taomtmKSuCUEJoVvNIhfdoePGdTdU4fm'} 
+				<video className='alex-canvas' src={'https://drive.google.com/uc?id=11I0qeiGAQw13u5rgCghs7f8mSvHt9drR'} 
+														
 				loop
 				autoPlay
 				muted
@@ -167,7 +168,7 @@ const ForClients = () => {
 					</div>
 
                     <div className='left-branding-picture'>
-						<img className='ellaGhost' src={'https://drive.google.com/uc?id=1xRz-Y2D00ZiGFF_UkvoHJv5JuR3040QX'} alt='productionPic' />
+						<img className='ellaGhost' src={'https://drive.google.com/uc?id=1cPX7Kh_mG9ni_5BUvASUUKSkpbVOMFFe'} alt='productionPic' />
 					</div>
 
 				</div>

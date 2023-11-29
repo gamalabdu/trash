@@ -18,8 +18,8 @@ const Home = () => {
 	const navigate = useNavigate()
 
 	const handleClick = (link: string) => {
-		if (link === 'for-artist') {
-			navigate('/for-artist')
+		if (link === 'for-artists') {
+			navigate('/for-artists')
 		}
 		if (link === 'for-clients') {
 			navigate('/for-clients')
@@ -77,9 +77,9 @@ const Home = () => {
 			</div>
 
 			<div className='client-offers'>
-				<div onClick={() => handleClick('for-artist')} className='for-artist'>
-					<div className='inside-text'> for artist </div>
-					<Link to='/for-artist' style={{ textDecoration: 'none' }}>
+				<div onClick={() => handleClick('for-artists')} className='for-artist'>
+					<div className='inside-text'> for artists </div>
+					<Link to='/for-artists' style={{ textDecoration: 'none' }}>
 						<img
 							className='artist'
 							src={'https://drive.google.com/uc?id=1No6jQZ5OYqTDExdvWF0C3mY8HCMWJmZz'}
