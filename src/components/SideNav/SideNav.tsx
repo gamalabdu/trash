@@ -111,7 +111,7 @@ const SideNav = () => {
 					</NavLink>
 				</li>
 				<li>
-					<NavLink key={'for-artist'} style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/for-artist'>
+					<NavLink key={'for-artists'} style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/for-artist'>
 						For Artist
 					</NavLink>
 				</li>
