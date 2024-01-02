@@ -101,22 +101,22 @@ const SideNav = () => {
 					{/* <Link to='/home' preventScrollReset={true} reloadDocument>
 						Home
 					</Link> */}
-					<NavLink key={'home'} style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/home'>
+					<NavLink key={'/home'} style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/home'>
 						Home
 					</NavLink>
 				</li>
 				<li>
-					<NavLink key={'about'} style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/about'>
+					<NavLink key={'/about'} style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/about'>
 						About
 					</NavLink>
 				</li>
 				<li>
-					<NavLink key={'for-artists'} style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/for-artist'>
+					<NavLink key={'/for-artists'} style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/for-artists'>
 						For Artist
 					</NavLink>
 				</li>
 				<li>
-					<NavLink key={'for-clients'} style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/for-clients'>
+					<NavLink key={'/for-clients'} style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/for-clients'>
 						For Startups
 					</NavLink>
 				</li>
@@ -126,13 +126,13 @@ const SideNav = () => {
 					</NavLink>
 				</li>
 				<li>
-					<NavLink key={'press'} style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/press'>
+					<NavLink key={'/press'} style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/press'>
 						Press
 					</NavLink>
 				</li>
 				<li>
 					<NavLink 
-					key={'contact'} 
+					key={'/contact'} 
 					style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/contact' 
 					// preventScrollReset={true} 
 					// reloadDocument

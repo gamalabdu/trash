@@ -55,7 +55,7 @@ const Press = () => {
 		{
 			name: "Vents Magazine",
 			link: "https://ventsmagazine.com/2023/07/14/interview-ella-rossi/",
-			image: "https://amu.education/wp-content/uploads/2022/01/vents-magazine-logo-1-1024x413.png"
+			image: "https://jeffbluemedia.com/wp-content/uploads/2021/09/VentsMag-pub-1.png"
 		},
 		{
 			name: "Press Party",
@@ -105,7 +105,7 @@ const Press = () => {
 		{
 			name: "Respect Magazine",
 			link: "https://respect-mag.com/2015/04/sleeper-camps-not-sleeping-jay-bel-feat-jimi-tents-transeuro/",
-			image: "https://respectmag.shop/cdn/shop/files/RESPECT_RED_Logo-R_2550x.png?v=1616815397"
+			image: "https://respect-mag.com/wp-content/uploads/2022/09/respectlogo1.png"
 		},
 		{
 			name: "The Source",

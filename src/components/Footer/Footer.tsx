@@ -82,9 +82,9 @@ const Footer = () => {
             </div>
 
 
-            <div className='trash-can'>
+            {/* <div className='trash-can'>
                <img style={{ height:"7vw" }} src={'https://drive.google.com/uc?id=13NFKppPpdsXM81vNdJdkRYJLfCJME-Dj'} alt='trash-can'/>
-            </div>
+            </div> */}
 
             {/* <div style={{ fontSize:"5vmin"}}>
                 TRASH 
