@@ -13,6 +13,7 @@ import Contact from './components/Contact/Contact';
 import InnerWork from './components/InnerWork/InnerWork';
 import Press from './components/Press/Press';
 import { AnimatePresence } from 'framer-motion';
+import Portfolio from './components/Portfoliio/Portfolio';
 
 
 
@@ -38,6 +39,7 @@ function App() {
             <Route path='innerworks' element={<InnerWork />} />
             <Route path='press' element={<Press />} />
             <Route path="contact" element={<Contact />} />
+            <Route path="/gamal-portfolio" element={<Portfolio />} />
           </Route>
         </Routes>
 
