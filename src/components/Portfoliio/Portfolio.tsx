@@ -9,19 +9,10 @@ import WaveSurfer from 'wavesurfer.js'
 import { useWavesurfer } from '@wavesurfer/react'
 import WavesurferPlayer from '@wavesurfer/react'
 import PasswordPage from './PasswordPage/PasswordPage';
+import {createClient} from '@sanity/client'
 
 const Portfolio = () => {
-
-
-    const contentful = require('contentful')
-
-    const client = contentful.createClient({
-        space: process.env.REACT_APP_CONTENTFUL_SPACE,
-        environment: process.env.REACT_APP_CONTENTFUL_ENVIRONMENT,
-        accessToken: process.env.REACT_APP_CONTENTFUL_ACCESS_TOKEN,
-      })
-
-      
+   
 
     type SongEntry = {
         title: string,
@@ -84,58 +75,70 @@ const Portfolio = () => {
 
 
 
+    const sanityClient = createClient({
+		projectId: 'evyv39pq',
+		dataset: 'production',
+		useCdn: true, // set to `false` to bypass the edge cache
+		apiVersion: '2024-01-14', // use current date (YYYY-MM-DD) to target the latest API version
+		token: process.env.REACT_APP_SANITY_TOKEN
+	  })
+
+
+
+
 
     useEffect(() => {
 
 
         const getMusic = async () => {
 
-            try {
+
+            const musicData = await sanityClient.fetch(`
+				  *[_type == "song"]{
+					title,
+					artist,
+					coverArt{
+						asset->{
+							url
+						}
+					},
+					music{
+                        asset->{
+							url
+						}
+                    },
+					
+				}
+				`)
+
+            if ( musicData ) {
+
+                let musicDataTemp = musicData
+
+                let musicEntries : SongEntry[] = musicDataTemp.map( (song : any) => ({
+
+                    title : song.title ,
+                    artist : song.artist,
+                    image : song.coverArt.asset.url,
+                    music : song.music.asset.url,
+
+                }))
+
+
+                setSongs(musicEntries)
                 
-                client.getEntries({
-                    content_type: "song",
-                    select: 'fields.title,fields.artist,fields.coverArt,fields.music,fields.id',
-                  })
-
-                .then( (entry: any) => {
-
-                    let myResponse = entry.items;
-
-                    myResponse.sort((a : any, b : any ) => a.fields.id - b.fields.id);
-
-                    // console.log(myResponse)
-
-                    let songEntries: SongEntry[] = myResponse.map((entry : any) => ({
-                                title: entry.fields.title,
-                                artist: entry.fields.artist,
-                                image: entry.fields.coverArt.fields.file.url,
-                                music: entry.fields.music.fields.file.url,
-                                id: entry.fields.id
-                            }));
-            
-                            setSongs(songEntries);
-
-
-                })
-
-                .catch(console.error)
-    
-                setLoading(true);
-    
-
-            } catch (error) {
-
-                console.error("Error fetching music:", error);
-
-            } finally {
-                
-                setLoading(false);
             }
+
         }
+
+
+
+
+
 
         getMusic()
         
-    }, []);
+    }, [])
 
 
 

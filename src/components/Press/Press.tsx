@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import './styles.css'
 import {motion} from 'framer-motion'
+import { createClient } from '@sanity/client'
 
 const Press = () => {
 
@@ -139,6 +140,9 @@ const Press = () => {
 			}
 		}
 	} 
+
+
+
 
 	return (
 		<motion.div className='press-container'

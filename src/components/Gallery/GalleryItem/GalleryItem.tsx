@@ -1,20 +1,11 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import './styles.css'
+import { IWork } from '../../../models/IWork'
 
 
 interface IGalleryItemProps {
-	item: {
-		image: string
-		type: string[]
-		name: string
-    videos: string[]
-    images: string[]
-    iphone: boolean
-    assets: string[]
-    canvas: string[]
-    artworks: string[]
-	}
+	item: IWork
 }
 
 const GalleryItem = (props : IGalleryItemProps) => {
@@ -29,7 +20,7 @@ const GalleryItem = (props : IGalleryItemProps) => {
     exit={{ opacity: 0 }}
     className='image-container'
     >
-        <img id='artistImg' className='gallery-image' src={item.image} alt='pic' loading='lazy' />
+        <img id='artistImg' className='gallery-image' src={item.image.asset.url} alt='pic' loading='lazy' />
         <div className='gallery-item-title'>
           <span id='type' style={{ color:"#535353"}}>{ item.type.map(type => type ).join('/') }</span>
           <br/>

@@ -5,9 +5,10 @@ import { Navigation } from "swiper";
 import 'swiper/css'
 import 'swiper/css/navigation'
 import './styles.css'
+import { IAsset } from '../../models/IAsset';
 
 interface IPhoneProps {
-	images: string[]
+	images: IAsset[]
 }
 
 const IPhone = (props: IPhoneProps) => {
@@ -46,7 +47,7 @@ const IPhone = (props: IPhoneProps) => {
 					  images.map((photo, idx) => {
 						return (
 							<SwiperSlide key={idx}>
-									<img className='phone-image' src={photo} alt='iphone' />
+									<img className='phone-image' src={photo.asset.url} alt='iphone' />
 							</SwiperSlide>
 						)
 					})}

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import IPhone from '../IPhone/IPhone'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -7,41 +7,90 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import './styles.css'
 import {motion} from 'framer-motion'
+import { IWork } from '../../models/IWork'
+import { IAsset } from '../../models/IAsset'
 
 const InnerWork = () => {
 	
 	useEffect(() => {
+
 		window.scrollTo(0, 0)
+
 	}, [])
 
 	const location = useLocation()
+
 	const state = location.state
 
 	const navigate = useNavigate()
 
+	const [ selectedWork, setSelectedWork ] = useState<IWork>()
+
 	const backToWork = () => {
+
 		navigate('/works')
-	}
 
-	const videos = [...state.item.videos]
+	}  
 
-	const images = [...state.item.images]
 
-	const artworks = [...state.item.artworks]
+	useEffect(() => {
+		if (state && state.item) {
+		  setSelectedWork(state.item);
+		}
+	  }, [state]);
+	
+	  if (!selectedWork) {
+		return null; // or display loading, error, or a placeholder component
+	  }
 
-	const iphone = state.item.iphone
 
-	let assets: string[] = []
 
-	let canvas: string[] = []
 
-	if (state.item.assets) {
-		assets = [...state.item.assets]
-	}
 
-	if (state.item.canvas) {
-		canvas = [...state.item.canvas]
-	}
+	// let selectedWork: IWork = {
+
+	// 	image: state.item.image.asset.url,
+	// 	type: [],
+	// 	name: state.item.name,
+	// 	statement: state.item.statement,
+	// 	videos: [...state.item.videos],
+	// 	images: (state.item.images && state.item.images.map((image: IAsset) => image.asset.url || '')) || [],
+	// 	canvas: (state.item.canvas && state.item.canvas.map((canvas: IAsset) => canvas.asset.url || '')) || [],
+	// 	assets: (state.item.assets && state.item.assets.map((asset: IAsset) => asset.asset.url || '')) || [],
+	// 	iphone: false,
+	// 	artworks: (state.item.artworks && state.item.artworks.map((artwork: IAsset) => artwork.asset.url || '')) || [],
+
+	// }
+
+
+	// console.log(selectedWork)
+
+
+	// const videos = [...state.item.videos]
+
+	// let artworks: any[] = []
+
+	// const images = [...state.item.images]
+
+	// const iphone = state.item.iphone
+
+	// let assets: any[] = []
+
+	// let canvas: string[] = []
+
+	// if (state.item.assets) {
+	// 	assets = [...state.item.assets]
+	// }
+
+	// if (state.item.artworks) {
+	// 	assets = [...state.item.artworks]
+	// }
+
+	// if (state.item.canvas) {
+	// 	canvas = [...state.item.canvas]
+	// }
+
+
 
 
 
@@ -75,6 +124,7 @@ const InnerWork = () => {
 
 
 	return (
+		
 		<motion.div className='inner-work-container'
 		initial='hidden'
 		animate='show'
@@ -95,29 +145,41 @@ const InnerWork = () => {
 				{' '}
 				Back{' '}
 			</div>
+
+
+
 			<div className='inner-work-main'>
-				<div style={{ color: 'black', fontSize: '5vw' }}>
-					{' '}
-					{state.item.name}{' '}
-				</div>
-				{assets.length > 0 ? (
+
+
+				<div style={{ color: 'black', fontSize: '5vw' }}> {selectedWork?.name}  </div>
+
+
+				{ 
+				
+				selectedWork.assets ? 
+				
+				
 					<div className='assets'>
-						{assets.map((asset, idx) => {
-							return <img key={idx} className='asset' src={asset} alt='asset' loading='lazy' />
+						{selectedWork.assets.map((asset, idx) => {
+							return <img key={idx} className='asset' src={asset.asset.url} alt='asset' loading='lazy' />
 						})}
 					</div>
-				) : (
+
+
+				 : 
+					
 					<img
 						style={{ width: '100%', height: '400px', objectFit: 'cover' }}
 						loading="lazy"
 						alt='alt-idk'
-						src={state.item.image}
+						src={selectedWork.image.asset.url}
 					/>
-				)}
-				<div style={{ color: 'black', textAlign: 'center', padding: '5%', fontSize: "3vw" }}>
-					{' '}
-					{state.item.statement}{' '}
-				</div>
+				
+				}
+
+
+
+				<div style={{ color: 'black', textAlign: 'center', padding: '5%', fontSize: "3vw" }}> {state.item.statement}  </div>
 
 				<div
 					style={{
@@ -127,24 +189,42 @@ const InnerWork = () => {
 						alignItems: 'center',
 						justifyContent: 'center',
 					}}>
-					{videos &&
-						videos.map((video, idx) => {
+
+
+					{ 
+					
+					selectedWork.videos &&
+
+						selectedWork.videos.map((video, idx) => {
 							return (
 								<video
 									key={idx}
 									style={{ width: '90%', padding: '2%' }}
-									src={video}
+									src={video.asset.url ?? ""}
 									loop
 									autoPlay
 									muted
 									playsInline
 								/>
 							)
-						})}
+						})
+					}
+
+
 				</div>
-				{iphone ? (
-					<IPhone images={images} />
-				) : !iphone && images.length > 0 ? (
+
+
+
+				{ 
+				
+				selectedWork && selectedWork.iphone ? 
+				
+					<IPhone images={selectedWork.images} />
+
+				    : 
+				 
+				    selectedWork && !selectedWork.iphone && selectedWork.images.length > 0 ?
+
 					<div>
 						<div className='inner-work-gallery'>
 							<Swiper
@@ -153,23 +233,31 @@ const InnerWork = () => {
 								slidesPerView={1}
 								navigation={true}
 								className='mySwiper'>
-								{images.map((photo, idx) => {
+								{selectedWork.images.map((photo, idx) => {
 									return (
 										<SwiperSlide key={idx}>
-											<img className='phone-image' src={photo} alt='idk' />
+											<img className='phone-image' src={photo.asset.url ?? ""} alt='idk' />
 										</SwiperSlide>
 									)
 								})}
 							</Swiper>
 						</div>
 					</div>
-				) : null}
+				
+				
+				: null
+				
+				}
+
+
+
+
 			</div>
 
 
 
 			{
-				artworks.length > 0 ? 
+				selectedWork.artworks ? 
 
 				<>
 
@@ -177,10 +265,10 @@ const InnerWork = () => {
 			
 				<div className='artworks-container'>
 				{
-						artworks.map( (artwork, key) => {
+						selectedWork.artworks.map( (artwork, key) => {
 							return (
 								
-									<img key={key} className='artwork' loading='lazy' src={artwork} />
+									<img key={key} className='artwork' loading='lazy' src={artwork.asset.url} />
 							
 							)
 						})
@@ -195,7 +283,9 @@ const InnerWork = () => {
 			}
 			
 
-			{canvas.length > 0 ? (
+			{ 
+			
+			selectedWork.canvas ? 
 				<>
 					<div style={{ color: 'black', fontSize:"5vw"}}> Canvas </div>
 
@@ -209,7 +299,7 @@ const InnerWork = () => {
 							textAlign: 'center',
 						}}>
 						<div>
-							{canvas.map((canva, idx) => {
+							{selectedWork.canvas.map((canva, idx) => {
 								return (
 									<video
 										key={idx}
@@ -219,7 +309,7 @@ const InnerWork = () => {
 											borderRadius: '20px',
 											margin: '0 5px',
 										}}
-										src={canva}
+										src={canva.asset.url ?? ""}
 										muted
 										loop
 										autoPlay
@@ -230,9 +320,20 @@ const InnerWork = () => {
 						</div>
 					</div>
 				</>
-			) : null}
+			 : 
+			 
+			 null
+			 
+			}
+
+
 		</motion.div>
+
 	)
+
+
+
+
 }
 
 export default InnerWork
