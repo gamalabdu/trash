@@ -46,7 +46,6 @@ const InnerWork = () => {
 
 
 
-
 	// let selectedWork: IWork = {
 
 	// 	image: state.item.image.asset.url,
@@ -223,7 +222,7 @@ const InnerWork = () => {
 
 				    : 
 				 
-				    selectedWork && !selectedWork.iphone && selectedWork.images.length > 0 ?
+				    selectedWork && !selectedWork.iphone && selectedWork.images ?
 
 					<div>
 						<div className='inner-work-gallery'>
