@@ -305,8 +305,8 @@ const Works = () => {
 
 
 	const sanityClient = createClient({
-		projectId: 'evyv39pq',
-		dataset: 'production',
+		projectId: process.env.REACT_APP_SANITY_PROJECT_ID,
+		dataset: process.env.REACT_APP_SANITY_DATASET,
 		useCdn: true, // set to `false` to bypass the edge cache
 		apiVersion: '2024-01-14', // use current date (YYYY-MM-DD) to target the latest API version
 		token: process.env.REACT_APP_SANITY_TOKEN
