@@ -2,7 +2,7 @@
 
 .works-container {
     background-color: #F0EEF0;
-    min-height: 100dvh;
+    min-height: calc(100dvh - 100px);
     transition: height 1s ease-in;
 }
 

@@ -1,6 +1,6 @@
 
 .inner-work-container {
-    min-height: 100dvh;
+    min-height: calc(100dvh - 100px);
     display: flex;
     flex-direction: column;
     justify-content: center;

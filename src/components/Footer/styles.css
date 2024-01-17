@@ -20,7 +20,7 @@
 
 
   .footer-black {
-    height: 15vh;
+    height: 100px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -33,6 +33,9 @@
     transform: translate3d(0, 0, 0);
     padding: 0 2%;
   }
+
+
+  
   .footer-black::after {
     content: "";
     background-image: url(../../assets/backgrounds/noise.png);

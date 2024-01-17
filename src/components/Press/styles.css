@@ -1,6 +1,7 @@
 
 .press-container {
     /* background-color: black; */
+    min-height: calc(100dvh - 100px);
 }
 
 .press-links {

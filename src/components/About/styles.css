@@ -1,7 +1,7 @@
 
 .about-container {
   text-align: center;
-  min-height: 100dvh;
+  min-height: calc(100dvh - 100px);
 }
 
 .section {

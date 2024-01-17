@@ -1,6 +1,7 @@
 .home-container {
     background-color: #1b1c1e;
     text-align: center;
+    min-height: calc(100dvh - 100px);
 }
 
 .we-are-text {
