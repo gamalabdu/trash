@@ -13,13 +13,16 @@ import InnerWork from './components/InnerWork/InnerWork';
 import Press from './components/Press/Press';
 import { AnimatePresence } from 'framer-motion';
 import Portfolio from './components/Portfoliio/Portfolio';
+import ForArtist2 from './components/ForArtist2/ForArtist2';
+import MusicCreation from './components/ForArtist2/MusicCreation/MusicCreation';
+import ForArtistHomePage from './components/ForArtist2/ForArtistHomePage/ForArtistHomePage';
 
 
 
 function App() {
 
 
-  const location = useLocation();
+  const location = useLocation()
 
 
   return (
@@ -38,7 +41,15 @@ function App() {
           >
             <Route path="home" element={<Home />} />
             <Route path="about" element={<About />} />
-            <Route path="for-artists" element={<ForArtist />} />
+
+            <Route path="for-artists" element={<ForArtist2 />} >
+
+              <Route index element={ <ForArtistHomePage /> } />
+              <Route path="music_creation" element={ <MusicCreation /> } />
+
+          
+            </Route>
+
             <Route path="for-clients" element={<ForClients />} />
             <Route path="works" element={<Works/>} />
             <Route path='innerworks' element={<InnerWork />} />

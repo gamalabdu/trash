@@ -36,6 +36,7 @@ const Portfolio = () => {
     
     const [authenticated, setAuthenticated] = useState(false);
 
+
     const authenticateUser = () => {
       if (password === 'Welcome2024') {
         setAuthenticated(true);
@@ -97,6 +98,7 @@ const Portfolio = () => {
             const musicData = await sanityClient.fetch(`
 				  *[_type == "song"]{
 					title,
+          id,
 					artist,
 					coverArt{
 						asset->{
@@ -110,7 +112,7 @@ const Portfolio = () => {
                     },
 					
 				}
-				`)
+				`);
 
             if ( musicData ) {
 
@@ -122,22 +124,25 @@ const Portfolio = () => {
                     artist : song.artist,
                     image : song.coverArt.asset.url,
                     music : song.music.asset.url,
+                    id: song.id
 
                 }))
 
 
+                musicEntries.sort((a, b) => a.id - b.id)
+
                 setSongs(musicEntries)
+
                 
             }
 
         }
 
-
-
-
-
+        
 
         getMusic()
+
+
         
     }, [])
 
@@ -154,98 +159,132 @@ const Portfolio = () => {
 
 
     return (
+      <div className="portfolio-container">
 
 
-			<div className='portfolio-container'>
+        {
+          // authenticated ?
+
+          songs.length === 0 ? 
+          
+          null : 
+
+            <div className="music-player-container">
+
+              <div className="player-half">
+
+                <img
+                  className="album-work"
+                  style={{ opacity: loading ? 0 : 1 }}
+                  src={songs[currentSongIndex].image}
+                />
+
+                <div className="artist-name">
+                  {songs[currentSongIndex].artist}
+                </div>
                 
-                {
+                <div className="song-title">
+                  {songs[currentSongIndex].title}
+                </div>
 
-                  authenticated ? 
+                <WavesurferPlayer
+                  height={50}
+                  width={350}
+                  waveColor="#b7c0c4"
+                  url={songs[currentSongIndex].music}
+                  onReady={onReady}
+                  normalize={true}
+                  onPlay={() => setPlaying(true)}
+                  onPause={() => setPlaying(false)}
+                />
+                <div className="buttons-container">
 
-                
-                  songs.length === 0 ? 
-                
-                    null 
+                  <div
+                    className="player-btn"
+                    onClick={() =>
+                      setCurrentSongIndex((prevIndex) =>
+                        prevIndex === 0 ? songs.length - 1 : prevIndex - 1
+                      )
+                    }
+                  >
+                    <FaBackward size={screenWidth === 800 ? 30 : 14} />
+
+                  </div>
+
+                  <div
+                    className="player-btn"
+                    onClick={() => {
+                      onPlayPause();
+                      setPlaying(!playing);
+                    }}
+                  >
+                    {
                     
-                    : 
+                    playing ? 
 
-					<div className='music-player-container'>
+                      <FaPause size={screenWidth === 800 ? 30 : 14} />
+                     : 
+                      <FaPlay size={screenWidth === 800 ? 30 : 14} />
+                    }
 
-						<div className='player-half'>
-							<img className='album-work' style={{ opacity: loading ? 0 : 1 }} src={songs[currentSongIndex].image} />
-							<div className='artist-name'>{songs[currentSongIndex].artist}</div>
-							<div className='song-title'>{songs[currentSongIndex].title}</div>
+                  </div>
 
-							<WavesurferPlayer
-								height={50}
-                                width={350}
-								waveColor='#b7c0c4'        
-								url={songs[currentSongIndex].music}
-								onReady={onReady}
-                                normalize={true}
-								onPlay={() => setPlaying(true)}
-								onPause={() => setPlaying(false)}
-							/>
-							<div className='buttons-container'>
-								<div className='player-btn' onClick={
-                                    () => setCurrentSongIndex((prevIndex) => (prevIndex === 0 ? songs.length - 1 : prevIndex - 1))
-                                }>
-									<FaBackward size={ screenWidth === 800 ? 30 : 14} />
-								</div>
-								<div
-									className='player-btn'
-									onClick={() => {
-                                        onPlayPause()
-										setPlaying(!playing)
-									}}>
-									{ playing ? <FaPause size={ screenWidth === 800 ? 30 : 14} /> : <FaPlay size={ screenWidth === 800 ? 30 : 14} />}
-								</div>
-								<div className='player-btn' 
-                                onClick={
-                                    () => setCurrentSongIndex((prevIndex) => (prevIndex === songs.length - 1 ? 0 : prevIndex + 1))
-                                }>
-									<FaForward size={ screenWidth === 800 ? 30 : 14} />
-								</div>
-							</div>
-						</div>
+                  <div
+                    className="player-btn"
+                    onClick={() =>
+                      setCurrentSongIndex((prevIndex) =>
+                        prevIndex === songs.length - 1 ? 0 : prevIndex + 1
+                      )
+                    }
+                  >
+                    <FaForward size={screenWidth === 800 ? 30 : 14} />
+                  </div>
 
+                </div>
 
-                        <div className='song-list-half'>
+              </div>
 
-                            <div className='song-list-container'>
-                                    {
-                                        songs.map((song,idx) => {
-                                            return (
-                                                <div 
-                                                className={`song-item${idx === currentSongIndex ? '-active' : ''}`} 
-                                                key={idx} 
-                                                onClick={() => handleSongItemClick(idx)}
-                                                >
-                                                    {song.artist + ' - ' + song.title}
-                                                </div>
-                                            )
-                                        })
-                                    }
-                            </div>
+              <div className="song-list-half">
 
+                <div className="song-list-container">
 
-                        </div>
+                  {
 
+                  songs.map((song, idx) => {
 
-					</div>
+                    return (
 
-                    :
+                      <div
+                        className={`song-item${
+                          idx === currentSongIndex ? "-active" : ""
+                        }`}
+                        key={idx}
+                        onClick={() => handleSongItemClick(idx)}
+                      >
+                        {  song.artist + " - " + song.title }
 
-                    <PasswordPage password={password} setPassword={setPassword} authenticateUser={authenticateUser} />
+                      </div>
+                    )
 
-				}
+                  })
+                  }
+                </div>
 
-			</div>
+              </div>
 
-		)     
+            </div>
+
+           // :
+
+          // <PasswordPage password={password} setPassword={setPassword} authenticateUser={authenticateUser} />
+
+        }
+
+      </div>
+    )   
 }
 
-export default Portfolio;
+export default Portfolio
 
 
 

@@ -1,7 +1,8 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import './styles.css'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion} from 'framer-motion'
+import { createClient } from '@sanity/client'
 
 const Home = () => {
 
@@ -25,6 +26,69 @@ const Home = () => {
 			navigate('/for-clients')
 		}
 	}
+
+	type HomeData = {
+			title: string,
+			homePic1 : string,
+			homePic2 : string,
+			icon: string
+	}
+
+
+	const [ homeData, setHomeData ] = useState<HomeData>()
+
+
+	const sanityClient = createClient({
+		projectId: process.env.REACT_APP_SANITY_PROJECT_ID,
+		dataset: process.env.REACT_APP_SANITY_DATASET,
+		useCdn: true, // set to `false` to bypass the edge cache
+		apiVersion: '2024-01-14', // use current date (YYYY-MM-DD) to target the latest API version
+		token: process.env.REACT_APP_SANITY_TOKEN,
+		ignoreBrowserTokenWarning: true
+	  })
+
+
+	useEffect(() => {
+
+		const response = sanityClient.fetch(`
+			*[_type == "home"]{
+				name,
+				homePic1{
+					asset -> {
+						url
+					}
+				},
+				homePic2{
+					asset -> {
+						url
+					}
+				},
+				titleIcon{
+					asset -> {
+						url
+					}
+				},
+			}
+
+			`
+		).then( (data) => {
+
+	    let responseData = data[0]
+
+		setHomeData({
+			title: responseData.name,
+			homePic1: responseData.homePic1.asset.url,
+			homePic2: responseData.homePic2.asset.url,
+			icon: responseData.titleIcon.asset.url
+		})
+
+		
+
+	   })
+
+
+	}, [])
+	
 
 
 
@@ -53,7 +117,10 @@ const Home = () => {
 	} 
 
 
+
 	return (
+
+
 		<motion.div className='home-container'
 		initial='hidden'
 		animate='show'
@@ -62,7 +129,7 @@ const Home = () => {
 		>
 
 			<div className='we-are-text'>
-				<img style={{ height: '70px' }} src={'https://drive.google.com/uc?id=13NFKppPpdsXM81vNdJdkRYJLfCJME-Dj'} alt='burningTrash' />
+				<img style={{ height: '70px' }} src={homeData?.icon} alt='burningTrash' />
 	            WE ARE THE CREATIVE POWERHOUSE BEHIND EMERGING ARTISTS, STARTUPS AND
 				BRANDS.
 			</div>
@@ -82,7 +149,7 @@ const Home = () => {
 					<Link to='/for-artists' style={{ textDecoration: 'none' }}>
 						<img
 							className='artist'
-							src={'https://drive.google.com/uc?id=1No6jQZ5OYqTDExdvWF0C3mY8HCMWJmZz'}
+							src={homeData?.homePic1}
 							alt='joe'
 						/>
 					</Link>
@@ -96,7 +163,7 @@ const Home = () => {
 						{' '}
 						<img
 							className='client'
-							src={'https://drive.google.com/uc?id=1IVNSl0GJZ3xtCoBMEGr1SHjfKXBTl9px'}
+							src={homeData?.homePic2}
 							alt='mike'
 						/>{' '}
 					</Link>

@@ -103,7 +103,8 @@ const serviceList = [
 
 					<div className='title-head'>
 						<div className='title-icon'> Services   <BsChevronDown className={ services ? 'chevron-down' : 'chevron-up'} size={45} onClick={() => setServices(!services)} /> </div>
-						<hr />
+						
+						<hr className='about-divider' />
 
 							<ul className={services ? 'list': 'list-hidden'}>
 								{
@@ -121,7 +122,7 @@ const serviceList = [
 					<div className='title-head'>
 
 						<div className='title-icon'> Founders <BsChevronDown className={ founders ? 'chevron-down' : 'chevron-up'} size={50} onClick={() => setFounders(!founders)} /> </div>
-						<hr />
+						<hr className='about-divider'/>
 
 							
 

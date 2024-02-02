@@ -47,6 +47,7 @@ const ForArtist = () => {
 	}
 
 	return (
+		
 		<motion.div
 			className='for-artist-container'
 			initial='hidden'

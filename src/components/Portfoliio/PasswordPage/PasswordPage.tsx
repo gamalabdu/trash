@@ -21,9 +21,8 @@ const PasswordPage = (props : IPasswordPageProps) => {
 					value={password}
 					onChange={(e) => setPassword(e.currentTarget.value)}
 				/>
-				<button className='password-btn' onClick={() => authenticateUser()}>
-					{' '}
-					Enter{' '}
+				<button className='password-btn' onClick={ () => authenticateUser() }>
+					Enter
 				</button>
 			</div>
 		</div>

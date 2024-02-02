@@ -67,7 +67,7 @@ p {
   cursor: pointer; 
 }
 
-hr {
+.about-divider {
   border-top: 3px solid #bbb;
 }
 

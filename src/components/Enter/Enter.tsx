@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './styles.css'
+import {createClient} from '@sanity/client'
 
 const Enter = () => {
 
@@ -20,6 +21,57 @@ const Enter = () => {
 		navigate('/home')
 	}
 
+	const [ enterVideo, setEnterVideo ] = useState<string>('')
+
+
+	const sanityClient = createClient({
+		projectId: process.env.REACT_APP_SANITY_PROJECT_ID,
+		dataset: process.env.REACT_APP_SANITY_DATASET,
+		useCdn: true, // set to `false` to bypass the edge cache
+		apiVersion: '2024-01-14', // use current date (YYYY-MM-DD) to target the latest API version
+		token: process.env.REACT_APP_SANITY_TOKEN,
+		ignoreBrowserTokenWarning: true
+	  })
+
+
+
+
+
+	useEffect(() => {
+
+		const fetchdata = async () => {
+
+			await sanityClient.fetch(
+				`*[_type == "enter"]{
+					name,
+					enterVideo{
+						asset->{
+						  url
+						}
+					},
+				}`
+			).then((data) => {
+
+				setEnterVideo(data[0].enterVideo.asset.url)
+				
+			})
+			
+
+		}
+
+
+		fetchdata()
+
+
+	}, [])
+
+
+
+
+
+
+
+
 	return (
 
 		<div id='/' className='enter'>
@@ -27,7 +79,7 @@ const Enter = () => {
 			<div className='video-container'>
 				<video
 					className='video'
-					src={ 'https://drive.google.com/uc?id=1CJrk4t9ChrfxGTU_7h6RZI-zsqI-NPsG' }
+					src={ enterVideo }
 					autoPlay
 					loop
 					muted
