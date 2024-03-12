@@ -61,8 +61,11 @@ const SongExample = (props: ISongExampleProps) => {
 
   return (
     <div className="song-example">
+
       <div className="example">
-        <div>{song.artist + " - " + song.title + " " + " Demo"}</div>
+
+        <div className="example-title">{song.artist + " - " + song.title + " " + " Demo"}</div>
+
         <WavesurferPlayer
           height={50}
           width={350}
@@ -70,13 +73,17 @@ const SongExample = (props: ISongExampleProps) => {
           url={song.demo}
           onReady={onReadyDemo}
           normalize={true}
+          // progressColor={"black"}
         />
         <div className="player-button" onClick={() => onPlayPauseDemo()}>
           {playingDemo ? <FaPause size={screenWidth === 800 ? 30 : 14} /> : <FaPlay size={screenWidth === 800 ? 30 : 14} />}
         </div>
       </div>
+
       <div className="example">
-        <div>{song.artist + " - " + song.title + " " + " Final"}</div>
+
+        <div className="example-title">{song.artist + " - " + song.title + " " + " Final"}</div>
+
         <WavesurferPlayer
           height={50}
           width={350}
@@ -88,7 +95,8 @@ const SongExample = (props: ISongExampleProps) => {
         <div className="player-button" onClick={() => onPlayPauseFinal()}>
           {playingFinal ? <FaPause size={screenWidth === 800 ? 30 : 14} /> : <FaPlay size={screenWidth === 800 ? 30 : 14} />}
         </div>
-      </div>
+      </div> 
+
     </div>
   );
 };
