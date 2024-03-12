@@ -45,6 +45,22 @@ const ForArtistHomePage = () => {
       useEffect(() => {
         window.scrollTo(0, 0);
       }, []);
+
+
+
+      const getUrlName = ( itemName : string ) => {
+
+        let urlName 
+
+        if ( itemName === 'Music Creation') {
+          urlName = 'music_creation'
+        } else if (itemName === 'Branding') {
+          urlName = 'branding'
+        }
+
+        return urlName
+
+      }
     
     
     
@@ -226,6 +242,8 @@ const ForArtistHomePage = () => {
 
                           const isHovered = hoveredIndex === idx
 
+                          let urlName = getUrlName(item.name)
+
                           return (
 
                             <div
@@ -235,7 +253,7 @@ const ForArtistHomePage = () => {
                                   onMouseLeave={onLeave}
                                   key={idx}>
 
-                                  <Link key={idx} to={`/for-artists/music_creation`} state={{ item }}>
+                                  <Link key={idx} to={`/for-artists/${urlName}`} state={{ item }}>
 
                                       <video
                                           ref={(video) => (videoRefs.current[idx] = video)}
