@@ -63,7 +63,6 @@ const BrandingPage = () => {
       }, [])
 
 
-
       const fadeOut = {
         hidden: {
           opacity: 0,
@@ -119,7 +118,7 @@ const BrandingPage = () => {
                 videos.map((video, idx) => {
                     return ( 
                     <div key={idx} className='branding-video-container'>
-                        <video width="500"  src={ video.video } controls draggable={false} loop={true} />
+                        <video width="500"  src={ video.video } draggable={false} autoPlay={true} loop={true} />
                     </div>
                 )
                 })
