@@ -118,7 +118,7 @@ const BrandingPage = () => {
                 videos.map((video, idx) => {
                     return ( 
                     <div key={idx} className='branding-video-container'>
-                        <video width="500"  src={ video.video } draggable={false} autoPlay={true} loop={true} />
+                        <video width="500"  src={ video.video } draggable={false} controls={true} autoPlay={true} loop={true} />
                     </div>
                 )
                 })
