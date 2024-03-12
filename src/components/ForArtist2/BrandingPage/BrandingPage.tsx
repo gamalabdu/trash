@@ -41,14 +41,9 @@ const BrandingPage = () => {
       }
       `)
       .then((videoData) => {
-
-
-        // console.log(videoData)
     
         let videoDataTemp = videoData;
-
-        console.log(videoDataTemp)
-    
+  
           let videoEntries: Video[] = videoDataTemp.map((video: any) => ({
             title: video.title,
             video: video.videos.map((v: any) => v.asset.url)
@@ -67,8 +62,6 @@ const BrandingPage = () => {
         
       }, [])
 
-
-      console.log(videos)
 
 
       const fadeOut = {
