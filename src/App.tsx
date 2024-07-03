@@ -17,6 +17,8 @@ import ForArtist2 from './components/ForArtist2/ForArtist2';
 import MusicCreation from './components/ForArtist2/MusicCreation/MusicCreation';
 import ForArtistHomePage from './components/ForArtist2/ForArtistHomePage/ForArtistHomePage';
 import BrandingPage from './components/ForArtist2/BrandingPage/BrandingPage';
+import AssetCreation from './components/ForArtist2/AssetCreation/AssetCreation';
+import Outreach from './components/ForArtist2/Outreach/Outreach';
 
 
 
@@ -47,7 +49,9 @@ function App() {
 
               <Route index element={ <ForArtistHomePage /> } />
               <Route path="music_creation" element={ <MusicCreation /> } />
-              <Route path="branding" element={ <BrandingPage /> } />
+              {/* <Route path="branding" element={ <BrandingPage /> } /> */}
+              <Route path="asset_creation" element={ <AssetCreation /> } />
+              <Route path="outreach" element={ <Outreach /> } />
           
             </Route>
 

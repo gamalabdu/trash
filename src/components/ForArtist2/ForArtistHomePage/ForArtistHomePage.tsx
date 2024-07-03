@@ -56,6 +56,12 @@ const ForArtistHomePage = () => {
           urlName = 'music_creation'
         } else if (itemName === 'Branding') {
           urlName = 'branding'
+        } else if (itemName === 'Asset Creation') {
+          urlName = 'asset_creation'
+        } else if (itemName === 'Outreach') {
+          urlName = 'outreach'
+        } else if (itemName === 'Digital') {
+          urlName = 'digital'
         }
 
         return urlName
@@ -73,6 +79,7 @@ const ForArtistHomePage = () => {
             ignoreBrowserTokenWarning: true
           })
     
+
     
         useEffect(() => {
     
@@ -83,7 +90,7 @@ const ForArtistHomePage = () => {
             const fetchData = async () => {
     
     
-                const worksData = await sanityClient.fetch(`
+          const worksData = await sanityClient.fetch(`
                       *[_type == "forartist"]{
                         name,
                         forArtistThumbnail{
@@ -111,6 +118,7 @@ const ForArtistHomePage = () => {
               }))
       
               setLoadedData(choiceEntries);
+
     
             })
     
@@ -192,8 +200,6 @@ const ForArtistHomePage = () => {
 
 
 
-
-
   return (
 
 
@@ -253,7 +259,9 @@ const ForArtistHomePage = () => {
                                   onMouseLeave={onLeave}
                                   key={idx}>
 
-                                  <Link key={idx} to={`/for-artists/${urlName}`} state={{ item }}>
+
+
+                                      <Link key={idx} to={`/for-artists/${urlName}`} state={{ item }}>
 
                                       <video
                                           ref={(video) => (videoRefs.current[idx] = video)}
@@ -271,12 +279,15 @@ const ForArtistHomePage = () => {
                                           alt={item.name}
                                       />
 
-                  <div
-                    className='text-overlay'>
-                    {item.name}
-                  </div>
+                                      <div
+                                        className='text-overlay'>
+                                        {item.name}
+                                      </div>
                  
                                   </Link>
+              
+
+                                  
                 </div>
 
                           )

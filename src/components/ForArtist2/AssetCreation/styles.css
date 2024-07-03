@@ -1,0 +1,17 @@
+.branding-container {
+    min-height: calc(100dvh - 100px);
+    text-align: center;
+}
+
+.branding-videos-container {
+    /* border: solid red 2px; */
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 19px;
+}
+
+.branding-video-container {
+    /* border: solid blue 2px; */
+    width: 100%;
+}

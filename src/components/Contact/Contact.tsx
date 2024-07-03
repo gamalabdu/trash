@@ -170,7 +170,7 @@ const Contact = () => {
 									<div className='app-form-group message'>
 										<textarea 
 											className='app-form-control' 
-											placeholder='MESSAGE' 
+											placeholder='TYPE MESSAGE HERE....' 
 											value={message}
 											onInput={ (e) => setMessage(e.currentTarget.value)}
 										/>

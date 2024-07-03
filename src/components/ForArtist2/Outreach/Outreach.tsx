@@ -4,10 +4,10 @@ import React, { useEffect, useState } from 'react'
 import './styles.css'
 import TextScramble from '@twistezo/react-text-scramble';
 
-const BrandingPage = () => {
+const Outreach = () => {
 
 
-    const scrambleTexts = ["content", "strategies", "websites", "pitch decks"];
+    const scrambleTexts = ["Brand", "Market", "Position"];
 
     const sanityClient = createClient({
         projectId: process.env.REACT_APP_SANITY_PROJECT_ID,
@@ -107,7 +107,7 @@ const BrandingPage = () => {
             nextLetterSpeed={50}
             pauseTime={1500}
           />
-          &nbsp; to build your brand.
+          &nbsp; your company.
         </div>
       </div>
 
@@ -134,4 +134,4 @@ const BrandingPage = () => {
   )
 }
 
-export default BrandingPage
+export default Outreach
