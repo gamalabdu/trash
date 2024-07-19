@@ -18,7 +18,7 @@ const Enter = () => {
 	const navigate = useNavigate()
 
 	const handleClick = () => {
-		navigate('/home')
+		navigate('/for-artists')
 	}
 
 	const [ enterVideo, setEnterVideo ] = useState<string>('')
@@ -63,7 +63,7 @@ const Enter = () => {
 		fetchdata()
 
 
-	}, [])
+	}, [sanityClient])
 
 
 

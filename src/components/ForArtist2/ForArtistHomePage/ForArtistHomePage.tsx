@@ -2,6 +2,8 @@ import { createClient } from '@sanity/client'
 import { motion } from 'framer-motion'
 import React, { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import '../../ForArtist/styles.css'
+import forArtistPic from "../../../assets/pictures/forartisthome.png"
 
 const ForArtistHomePage = () => {
 
@@ -28,19 +30,19 @@ const ForArtistHomePage = () => {
     
     
     
-      type ScrambleText = string;
-      type ScrambleTexts = ScrambleText[];
+      // type ScrambleText = string;
+      // type ScrambleTexts = ScrambleText[];
     
-      type TextScrambleProps = {
-        texts: ScrambleTexts;
-        className?: string;
-        letterSpeed?: number; // [ms]
-        nextLetterSpeed?: number; // [ms]
-        paused?: boolean;
-        pauseTime?: number; // [ms]
-      };
+      // type TextScrambleProps = {
+      //   texts: ScrambleTexts;
+      //   className?: string;
+      //   letterSpeed?: number; // [ms]
+      //   nextLetterSpeed?: number; // [ms]
+      //   paused?: boolean;
+      //   pauseTime?: number; // [ms]
+      // };
     
-      const scrambleTexts: ScrambleTexts = ['produce', 'mix', 'master', 'write'];
+      // const scrambleTexts: ScrambleTexts = ['produce', 'mix', 'master', 'write'];
     
       useEffect(() => {
         window.scrollTo(0, 0);
@@ -218,7 +220,8 @@ const ForArtistHomePage = () => {
       <div className='artist-text'> TRASH FOR ARTIST </div>
       <img
         className='trippie2'
-        src={'https://newenglandsounds.com/wp-content/uploads/2022/09/sabrina15-scaled.jpg'}
+        // src={'https://newenglandsounds.com/wp-content/uploads/2022/09/sabrina15-scaled.jpg'}
+        src={forArtistPic}
         alt='trippie'
       />
     </section>

@@ -115,11 +115,11 @@ const SideNav = () => {
 						For Artist
 					</NavLink>
 				</li>
-				<li>
+				{/* <li>
 					<NavLink key={'/for-clients'} style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/for-clients'>
 						For Startups
 					</NavLink>
-				</li>
+				</li> */}
 				<li>
 					<NavLink key={'our-work'} style={ ({isActive}) => { return isActive ? {color:"#f93b3b"} : {} }} to='/works'>
 						Our Work

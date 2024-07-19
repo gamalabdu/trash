@@ -1,16 +1,22 @@
 import React, { useEffect } from 'react'
 import './styles.css'
 import {motion} from 'framer-motion'
-import { createClient } from '@sanity/client'
+import mediumLogo from '../../assets/logos/medium.png'
+import pitchforkLogo from '../../assets/logos/Pitchfork_logo.svg.png'
+import pressPartyLogo from '../../assets/logos/pressparty.png'
+import buzzMusicLogo from '../../assets/logos/buzzmusic.png'
+import hypeMagazineLogo from '../../assets/logos/hypemagazine.png'
 
 const Press = () => {
 
 	const title = 'Press'
 
 	const DynamicPage = ( title : string ) => {
+
 		useEffect(() => {
 		  document.title = `TRASH - ${title}`; // Update the document title
-		}, [title]);
+		}, [title])
+
 	  }
   
 	  DynamicPage(title)
@@ -26,7 +32,7 @@ const Press = () => {
 		{
 			name: "Medium",
 			link: "https://medium.com/offthercrd/now-playing-sweet-sour-971798e57fee",
-			image: "https://drive.google.com/uc?id=1VorNJ8kGpaNfZrBjPkrSaMtIce0ldJkl"
+			image: mediumLogo
 		},
 		{
 			name: "Complex",
@@ -51,7 +57,7 @@ const Press = () => {
 		{
 			name: "PitchFork",
 			link: "https://pitchfork.com/reviews/albums/21378-5-oclock-shadow/",
-			image: "https://drive.google.com/uc?id=1oac4F1O4RWvOGtS1h9NNOP2YACj3Q-6P"
+			image: pitchforkLogo
 		},
 		{
 			name: "Vents Magazine",
@@ -61,7 +67,7 @@ const Press = () => {
 		{
 			name: "Press Party",
 			link: "https://www.pressparty.com/pg/newsdesk/anrfactory/view/334709/",
-			image: "https://drive.google.com/uc?id=1a_PMdQBcGb91cf3fEHvzSoA8JgeQH_fO"
+			image: pressPartyLogo
 		},
 		{
 			name: "Celeb Mix",
@@ -76,7 +82,7 @@ const Press = () => {
 		{
 			name: "Buzz Music",
 			link: "https://www.buzz-music.com/post/maria-alexa-asks-for-a-sign-in-a-new-single-wake-me-up",
-			image: "https://drive.google.com/uc?id=1FnS-sNaBzj-BwpQyC-l-Pbomfx-FtH4X"
+			image: buzzMusicLogo
 		},
 		{
 			name: "Wonderland",
@@ -84,14 +90,9 @@ const Press = () => {
 			image: "https://images.squarespace-cdn.com/content/v1/615881a67d3039460c6c8340/66eb5f65-3f1b-4607-ae1c-c2f4f0f6a80c/wonderland.png"
 		},
 		{
-			name: "ThisIsEarhart",
-			link: "https://thisisearhart.com/independent-artist-features/alex-mali-2",
-			image: "https://drive.google.com/uc?id=1PqaWFsJWJpX0thXFBvTckHbMFAuwxSzh"
-		},
-		{
 			name: "The Hype Magazine",
 			link: "https://www.thehypemagazine.com/2022/02/la-rodriguez-makes-major-waves-with-his-latest-visual-phone-line/",
-			image: "https://drive.google.com/uc?id=14KfhWJXyoP11CYhHBCKemT391GDoKKu_"
+			image: hypeMagazineLogo
 		},
 		{
 			name: "TwoDopeBoyz",

@@ -116,7 +116,7 @@
   .for-startups {
     width: 50%;
     position: relative;
-    cursor: pointer;
+    cursor: not-allowed! important;
   }
 
   .client {

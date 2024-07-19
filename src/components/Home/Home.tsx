@@ -118,6 +118,7 @@ const Home = () => {
 
 
 
+
 	return (
 
 
@@ -156,17 +157,20 @@ const Home = () => {
 				</div>
 
 				<div
-					onClick={() => handleClick('for-clients')}
+					// onClick={() => handleClick('for-clients')}
 					className='for-startups'>
 					<div className='inside-text'> for startups </div>
-					<Link to='/for-clients' style={{ textDecoration: 'none' }}>
+					{/* <Link 
+						to='/for-clients' 
+						style={{ textDecoration: 'none', cursor:"not-allowed" }}
+					> */}
 						{' '}
 						<img
 							className='client'
 							src={homeData?.homePic2}
 							alt='mike'
 						/>{' '}
-					</Link>
+					{/* </Link> */}
 				</div>
 			</div>
 

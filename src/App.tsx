@@ -5,8 +5,6 @@ import Enter from './components/Enter/Enter';
 import NavContainer from './components/NavContainer/NavContainer';
 import Home from './components/Home/Home';
 import About from './components/About/About';
-import ForArtist from './components/ForArtist/ForArtist';
-import ForClients from './components/ForClients/ForClients';
 import Works from './components/Works/Works';
 import Contact from './components/Contact/Contact';
 import InnerWork from './components/InnerWork/InnerWork';
@@ -16,7 +14,6 @@ import Portfolio from './components/Portfoliio/Portfolio';
 import ForArtist2 from './components/ForArtist2/ForArtist2';
 import MusicCreation from './components/ForArtist2/MusicCreation/MusicCreation';
 import ForArtistHomePage from './components/ForArtist2/ForArtistHomePage/ForArtistHomePage';
-import BrandingPage from './components/ForArtist2/BrandingPage/BrandingPage';
 import AssetCreation from './components/ForArtist2/AssetCreation/AssetCreation';
 import Outreach from './components/ForArtist2/Outreach/Outreach';
 
@@ -55,12 +52,14 @@ function App() {
           
             </Route>
 
-            <Route path="for-clients" element={<ForClients />} />
+            {/* <Route path="for-clients" element={<ForClients />} /> */}
+
             <Route path="works" element={<Works/>} />
             <Route path='innerworks' element={<InnerWork />} />
             <Route path='press' element={<Press />} />
             <Route path="contact" element={<Contact />} />
             <Route path="/gamal-portfolio" element={<Portfolio />} />
+            
           </Route>
         </Routes>
 

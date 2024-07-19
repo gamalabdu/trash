@@ -7,7 +7,7 @@ import TextScramble from '@twistezo/react-text-scramble';
 const Outreach = () => {
 
 
-    const scrambleTexts = ["Brand", "Market", "Position"];
+    const scrambleTexts = ["Feature", "Interview", "Review", "Write Up", "Editorial"];
 
     const sanityClient = createClient({
         projectId: process.env.REACT_APP_SANITY_PROJECT_ID,
@@ -99,7 +99,7 @@ const Outreach = () => {
 
 <div className="music-creation-top">
         <div className="step1-text">
-          Let us help you &nbsp;
+          Let us get you a &nbsp;
           <TextScramble
             className="text-scramble"
             texts={scrambleTexts}
@@ -107,7 +107,7 @@ const Outreach = () => {
             nextLetterSpeed={50}
             pauseTime={1500}
           />
-          &nbsp; your company.
+          &nbsp;.
         </div>
       </div>
 
