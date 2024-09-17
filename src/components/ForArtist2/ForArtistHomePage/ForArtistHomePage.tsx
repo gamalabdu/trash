@@ -80,6 +80,15 @@ const ForArtistHomePage = () => {
             token: process.env.REACT_APP_SANITY_TOKEN,
             ignoreBrowserTokenWarning: true
           })
+
+
+
+          
+
+
+
+
+
     
 
     
@@ -118,6 +127,15 @@ const ForArtistHomePage = () => {
                 thumbnail: choice.forArtistThumbnail.asset.url
       
               }))
+
+
+              choiceEntries.sort((a, b) => {
+                if (a.name === 'Music Creation') return -1;
+                if (b.name === 'Music Creation') return 1;
+                if (a.name === 'Asset Creation') return -1;
+                if (b.name === 'Asset Creation') return 1;
+                return 0;
+            });
       
               setLoadedData(choiceEntries);
 

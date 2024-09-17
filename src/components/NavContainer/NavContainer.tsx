@@ -56,6 +56,7 @@ const NavContainer = () => {
 
 	return (
 		<div className='nav-container'>
+			
 			<SideNav />
 			
 			<Outlet />

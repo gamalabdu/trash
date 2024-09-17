@@ -1,10 +1,9 @@
-.branding-container {
+/* .branding-container {
     min-height: calc(100dvh - 100px);
     text-align: center;
 }
 
 .branding-videos-container {
-    /* border: solid red 2px; */
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -12,6 +11,118 @@
 }
 
 .branding-video-container {
-    /* border: solid blue 2px; */
     width: 100%;
-}
+} */
+
+
+
+
+
+
+.outreach-container {
+    padding: 2rem 1rem;
+    max-width: 1200px;
+    margin: auto;
+    color: #2c2c2c;
+    line-height: 1.6;
+  }
+  
+  /* Title and Headings */
+  .outreach-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    color: #333;
+  }
+  
+  .service-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  
+  .category-description {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #666;
+  }
+  
+  /* Media Container Styles */
+  .media-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .service-media {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* List Styles */
+  .service-list {
+    list-style-type: none;
+    padding-left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .service-list li {
+    font-size: 1.2rem;
+    color: #444;
+  }
+  
+  .service-list li::before {
+    content: '•';
+    color: #333;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .media-container {
+      grid-template-columns: 1fr;
+    }
+  
+    .service-title {
+      font-size: 1.8rem;
+    }
+  
+    .category-description {
+      font-size: 1.1rem;
+    }
+  
+    .outreach-title {
+      font-size: 2rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .outreach-container {
+      padding: 1rem;
+    }
+  
+    .media-container {
+      gap: 0.5rem;
+    }
+  
+    .service-title {
+      font-size: 1.6rem;
+    }
+  
+    .category-description {
+      font-size: 1rem;
+    }
+  
+    .outreach-title {
+      font-size: 1.8rem;
+    }
+  }
+  

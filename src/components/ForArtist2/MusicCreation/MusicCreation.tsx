@@ -233,7 +233,7 @@ const MusicCreation = () => {
 
          <div className="inner-producing-text">
 
-         Have an idea and need help making it come life? <br />
+          Have an idea and need help making it come life? <br />
           Or maybe you have a sound in mind but can't seem to find the right
           instrumental? <br />
           Let us help you craft the song:
