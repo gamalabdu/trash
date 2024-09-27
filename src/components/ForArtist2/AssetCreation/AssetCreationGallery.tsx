@@ -51,6 +51,7 @@ const AssetCreationGallery: React.FC<Props> = ({ media }) => {
                   e.currentTarget.currentTime = 0;
                 }}
                 loop
+                playsInline
                 style={{ filter: "brightness(1.2)", width: "100%" }}
               />
             )}
@@ -65,7 +66,7 @@ const AssetCreationGallery: React.FC<Props> = ({ media }) => {
             {selectedMedia.type === "photo" ? (
               <img src={selectedMedia.src} alt={selectedMedia.title} style={{ width: '100%' }} />
             ) : (
-              <video src={selectedMedia.src} controls={false} loop autoPlay muted />
+              <video src={selectedMedia.src} controls={false} loop autoPlay muted playsInline/>
             )}
             <p>{selectedMedia.title} - {selectedMedia.subtitle}</p>
           </div>
