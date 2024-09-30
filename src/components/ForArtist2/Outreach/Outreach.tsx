@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import "./styles.css";
 import TextScramble from "@twistezo/react-text-scramble";
-// import AssetCreationGallery from "./AssetCreationGallery";
+import OutreachGallery from "./OutreachGallery";
+
 
 const Outreach = () => {
 
@@ -108,21 +109,21 @@ const Outreach = () => {
     >
       <div className="music-creation-top">
         <div className="step1-text">
-          Let us help you make &nbsp;
+          Let us help with &nbsp;
           <TextScramble
             className="text-scramble"
-            texts={["visuals", "cover art", "content"]}
+            texts={["press", "editorials", "write ups", "playlisting"]}
             letterSpeed={20}
             nextLetterSpeed={50}
             pauseTime={1500}
           />
-          &nbsp; for your digital identity.
+          &nbsp;.
         </div>
       </div>
 
       <section>
 
-        {/* <AssetCreationGallery media={media} /> */}
+        <OutreachGallery media={media} />
 
       </section>
 
