@@ -16,6 +16,7 @@ import MusicCreation from './components/ForArtist2/MusicCreation/MusicCreation';
 import ForArtistHomePage from './components/ForArtist2/ForArtistHomePage/ForArtistHomePage';
 import AssetCreation from './components/ForArtist2/AssetCreation/AssetCreation';
 import Outreach from './components/ForArtist2/Outreach/Outreach';
+import Digital from './components/ForArtist2/Digital/Digital';
 
 
 
@@ -49,6 +50,7 @@ function App() {
               {/* <Route path="branding" element={ <BrandingPage /> } /> */}
               <Route path="asset_creation" element={ <AssetCreation /> } />
               <Route path="outreach" element={ <Outreach /> } />
+              <Route path="digital" element={ <Digital /> } />
           
             </Route>
 

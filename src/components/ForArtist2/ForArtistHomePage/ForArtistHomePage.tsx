@@ -16,7 +16,7 @@ const ForArtistHomePage = () => {
     
     
     
-      const title = 'For Artist2';
+      const title = 'For Artists';
     
     
       const [loadedData, setLoadedData] = useState< IChoice[]> ([])
