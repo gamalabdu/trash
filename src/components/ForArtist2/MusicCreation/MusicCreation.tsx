@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 const MusicCreation = () => {
 
 
+  const title = "Music Creation"
 
   type Song = {
     title: string;
@@ -131,6 +132,8 @@ const MusicCreation = () => {
   useEffect(() => {
 
     window.scrollTo(0, 0)
+    
+    document.title = `TRASH - ${title}`; // Update the document title
 
     getMusic()
     getAlbumCovers()

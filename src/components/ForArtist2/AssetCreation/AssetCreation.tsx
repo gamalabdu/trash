@@ -8,6 +8,7 @@ import AssetCreationGallery from "./AssetCreationGallery";
 
 const AssetCreation = () => {
 
+  const title = "Asset Creation"
 
   const sanityClient = createClient({
     projectId: process.env.REACT_APP_SANITY_PROJECT_ID,
@@ -87,6 +88,11 @@ const AssetCreation = () => {
   
 
   useEffect(() => {
+    
+    window.scrollTo(0, 0)
+    
+    document.title = `TRASH - ${title}`; // Update the document title
+
     const fetchData = async () => {
       const photos = await getPhotos();
       const videos = await getVideos();

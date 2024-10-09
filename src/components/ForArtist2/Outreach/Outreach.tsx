@@ -10,6 +10,9 @@ import OutreachGallery from "./OutreachGallery";
 const Outreach = () => {
 
 
+  const title = "Outreach"
+
+
   const sanityClient = createClient({
     projectId: process.env.REACT_APP_SANITY_PROJECT_ID,
     dataset: process.env.REACT_APP_SANITY_DATASET,
@@ -64,6 +67,11 @@ const Outreach = () => {
   
 
   useEffect(() => {
+    
+    window.scrollTo(0, 0)
+    
+    document.title = `TRASH - ${title}`; // Update the document title
+
     const fetchData = async () => {
       const photos = await getPhotos();
       const combinedMedia = shuffleArray([...photos]);
