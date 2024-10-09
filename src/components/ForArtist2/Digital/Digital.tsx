@@ -2,14 +2,15 @@
 import { createClient } from "@sanity/client";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import "./styles.css";
 import TextScramble from "@twistezo/react-text-scramble";
-import OutreachGallery from "../Outreach/OutreachGallery";
+import DigitalGallery from "./DigitalGallery";
 
 
 
 const Digital = () => {
 
+
+  const title = "Digital"
 
   const sanityClient = createClient({
     projectId: process.env.REACT_APP_SANITY_PROJECT_ID,
@@ -40,7 +41,7 @@ const Digital = () => {
   const getPhotos = async () => {
 
     const assetPhotosData = await sanityClient.fetch(`
-      *[_type == "digitalPage"]{
+      *[_type == "digitalPagePhotos"]{
         title,
         subtitle,
         assetImage{
@@ -61,18 +62,57 @@ const Digital = () => {
     return photoEntries;
   };
 
+  const getVideos = async () => {
 
+    const assetVideoData = await sanityClient.fetch(`
+      *[_type == "digitalPageVideos"]{
+        title,
+        subtitle,
+        assetVideo{
+          asset->{
+            url
+          }
+        },
+      }
+    `);
+  
+    const videoEntries: Media[] = assetVideoData
+      .filter((video: any) => video.assetVideo && video.assetVideo.asset && video.assetVideo.asset.url)
+      .map((video: any) => ({
+        title: video.title,
+        subtitle: video.subtitle,
+        src: video.assetVideo.asset.url,
+        type: "video",
+      }));
+  
+    return videoEntries;
+  };
   
 
   useEffect(() => {
+
+    window.scrollTo(0, 0)
+    
+    document.title = `TRASH - ${title}`; // Update the document title
+
     const fetchData = async () => {
       const photos = await getPhotos();
-      const combinedMedia = shuffleArray([...photos]);
+      const videos = await getVideos();
+      const combinedMedia = shuffleArray([...photos, ...videos]);
       setMedia(combinedMedia);
     };
 
     fetchData();
   }, []);
+
+
+
+
+
+
+
+
+
 
   const fadeOut = {
     hidden: {
@@ -124,7 +164,7 @@ const Digital = () => {
 
       <section>
 
-        <OutreachGallery media={media} />
+        <DigitalGallery media={media} />
 
       </section>
 
