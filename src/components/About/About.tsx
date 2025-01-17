@@ -119,7 +119,7 @@ const serviceList = [
 						
 					</div>
 
-					<div className='title-head'>
+					{/* <div className='title-head'>
 
 						<div className='title-icon'> Founders <BsChevronDown className={ founders ? 'chevron-down' : 'chevron-up'} size={50} onClick={() => setFounders(!founders)} /> </div>
 						<hr className='about-divider'/>
@@ -144,7 +144,7 @@ const serviceList = [
 								</div>
 							
 						
-					</div>
+					</div>     */}
 
 
 
