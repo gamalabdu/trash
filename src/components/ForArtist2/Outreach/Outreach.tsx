@@ -53,12 +53,15 @@ const Outreach = () => {
       }
     `);  
 
-    const photoEntries: Media[] = assetPhotosData.map((photo: any) => ({
-      title: photo.title,
-      subtitle: photo.subtitle,
-      src: photo.assetImage.asset.url,
-      type: "photo",
-    }));
+const photoEntries: Media[] = assetPhotosData
+  .filter((photo: any) => photo.assetImage?.asset?.url) // filter out bad/null data
+  .map((photo: any) => ({
+    title: photo.title,
+    subtitle: photo.subtitle,
+    src: photo.assetImage.asset.url,
+    type: "photo",
+  }));
+
 
     return photoEntries;
   };
