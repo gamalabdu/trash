@@ -18,6 +18,7 @@ import AssetCreation from './components/ForArtist2/AssetCreation/AssetCreation';
 import Outreach from './components/ForArtist2/Outreach/Outreach';
 import Digital from './components/ForArtist2/Digital/Digital';
 import ArtistDevelopment from './components/ForArtist2/ArtistDevelopment/ArtistDevelopment';
+import PitchPacket from './components/PitchPacket/PitchPacket';
 
 
 
@@ -62,7 +63,7 @@ function App() {
             <Route path='press' element={<Press />} />
             <Route path="contact" element={<Contact />} />
             <Route path="/gamal-portfolio" element={<Portfolio />} />
-            
+            <Route path="/pitch-packet" element={<PitchPacket />} />
           </Route>
         </Routes>
 
