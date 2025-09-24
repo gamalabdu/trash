@@ -36,7 +36,6 @@ function App() {
         
         <Routes location={location} key={location.pathname}>
 
-          {/* Set the default route to "Enter" */}
           <Route index element={<Enter />} />
 
           <Route
