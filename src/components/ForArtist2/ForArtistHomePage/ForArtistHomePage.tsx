@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import forArtistPic from "../../../assets/pictures/forartisthome.png";
+import { safeVideoPlay, isIOSDevice } from "../../../utils/mobileVideoUtils";
 
 const ForArtists = () => {
   type IChoice = {
@@ -168,18 +169,33 @@ const ForArtists = () => {
     setHoveredIndex(null);
   };
 
+  // Handle touch events for mobile devices
+  const handleTouchStart = (idx: number) => {
+    setHoveredIndex(idx);
+  };
+
+  const handleTouchEnd = () => {
+    // Don't immediately stop on touch end for mobile
+    // This allows users to see the video play briefly
+    setTimeout(() => {
+      setHoveredIndex(null);
+    }, 2000);
+  };
+
   useEffect(() => {
-    videoRefs.current.forEach((video, index) => {
-      if (video && video.paused && isLoaded) {
+    videoRefs.current.forEach(async (video, index) => {
+      if (video && isLoaded) {
         if (index === hoveredIndex) {
-          setTimeout(() => video.play(), 500);
+          video.currentTime = 0;
+          // Use safe video play utility for better mobile compatibility
+          await safeVideoPlay(video);
         } else {
           video.pause();
           video.currentTime = 0; // Reset the video to the beginning
         }
       }
     });
-  }, [hoveredIndex]);
+  }, [hoveredIndex, isLoaded]);
 
   return (
     <motion.div
@@ -230,6 +246,8 @@ const ForArtists = () => {
                     aria-disabled={isLoaded}
                     onMouseEnter={() => onHover(idx)}
                     onMouseLeave={onLeave}
+                    onTouchStart={() => handleTouchStart(idx)}
+                    onTouchEnd={handleTouchEnd}
                     key={idx}
                   >
                     {isBrandingDisabled ? (
@@ -246,6 +264,9 @@ const ForArtists = () => {
                             loop={true}
                             preload="auto"
                             muted
+                            playsInline
+                            {...({ 'webkit-playsinline': 'true' } as any)}
+                            {...({ 'x-webkit-airplay': 'deny' } as any)}
                             onLoadedData={() => setIsLoaded(true)}
                           />
 
@@ -278,6 +299,9 @@ const ForArtists = () => {
                             loop={true}
                             preload="auto"
                             muted
+                            playsInline
+                            {...({ 'webkit-playsinline': 'true' } as any)}
+                            {...({ 'x-webkit-airplay': 'deny' } as any)}
                             onLoadedData={() => setIsLoaded(true)}
                           />
 

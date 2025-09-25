@@ -118,7 +118,17 @@ const BrandingPage = () => {
                 videos.map((video, idx) => {
                     return ( 
                     <div key={idx} className='branding-video-container'>
-                        <video width="500"  src={ video.video } draggable={false} controls={true} autoPlay={false} loop={true} />
+                        <video 
+                          width="500" 
+                          src={video.video} 
+                          draggable={false} 
+                          controls={true} 
+                          autoPlay={false} 
+                          loop={true}
+                          playsInline
+                          {...({ 'webkit-playsinline': 'true' } as any)}
+                          {...({ 'x-webkit-airplay': 'deny' } as any)}
+                        />
                     </div>
                 )
                 })

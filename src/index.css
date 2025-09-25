@@ -48,6 +48,28 @@
   overflow-y: auto; /* always allow scrolling if content exceeds viewport */
 }
 
+/* Mobile Safari video optimizations */
+video {
+  -webkit-playsinline: inline;
+  -webkit-user-select: none;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  background: transparent;
+}
+
+/* Prevent iOS video fullscreen on touch */
+video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+}
+
+/* iOS-specific video fixes */
+@supports (-webkit-touch-callout: none) {
+  video {
+    object-position: center center;
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+  }
+}
+
 /* Focus styles for accessibility */
 *:focus-visible {
   outline: 2px solid var(--color-primary);

@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {createClient} from '@sanity/client'
+import { safeVideoPlay, configureVideoForMobile } from '../../utils/mobileVideoUtils'
 
 const Enter = () => {
 
@@ -21,6 +22,7 @@ const Enter = () => {
 	}
 
 	const [ enterVideo, setEnterVideo ] = useState<string>('')
+	const videoRef = useRef<HTMLVideoElement>(null)
 
 
 	const sanityClient = createClient({
@@ -64,6 +66,40 @@ const Enter = () => {
 
 	}, [sanityClient])
 
+	// Ensure video plays automatically when loaded
+	useEffect(() => {
+		if (enterVideo && videoRef.current) {
+			const video = videoRef.current;
+			
+			// Auto-play function that sets start time and plays
+			const autoPlayVideo = async () => {
+				// Set start time to 12 seconds before playing
+				video.currentTime = 12;
+				return await safeVideoPlay(video);
+			};
+			
+			// Fallback handler ONLY if autoplay is blocked by browser
+			const handleAutoplayFallback = async () => {
+				video.currentTime = 12;
+				await safeVideoPlay(video);
+				document.removeEventListener('touchstart', handleAutoplayFallback);
+				document.removeEventListener('click', handleAutoplayFallback);
+			};
+			
+			// Try to autoplay immediately - this should work in most cases
+			autoPlayVideo().then((success) => {
+				if (!success) {
+					console.log('Autoplay blocked by browser - video will start on first user interaction');
+					// Only add fallback listeners if autoplay is actually blocked
+					document.addEventListener('touchstart', handleAutoplayFallback, { once: true });
+					document.addEventListener('click', handleAutoplayFallback, { once: true });
+				} else {
+					console.log('Video autoplaying from 12 seconds');
+				}
+			});
+		}
+	}, [enterVideo])
+
 
 
 
@@ -78,13 +114,30 @@ const Enter = () => {
 
 			<div className='absolute inset-0 flex justify-center items-center'>
 				<video
+					ref={videoRef}
 					className='w-full h-full object-cover'
 					src={ enterVideo }
 					autoPlay
 					loop
 					muted
 					playsInline
-					title='YouTube video player'
+					{...({ 'webkit-playsinline': 'true' } as any)}
+					{...({ 'x-webkit-airplay': 'deny' } as any)}
+					disablePictureInPicture
+					preload="auto"
+					title='Enter page background video'
+					onLoadedData={() => {
+						if (videoRef.current) {
+							configureVideoForMobile(videoRef.current);
+						}
+					}}
+					onCanPlay={() => {
+						// Ensure video starts at 12 seconds when ready to play
+						if (videoRef.current && videoRef.current.currentTime < 12) {
+							videoRef.current.currentTime = 12;
+						}
+					}}
+					onError={(e) => console.warn('Enter video error:', e)}
 					>
 				</video>
 			</div>

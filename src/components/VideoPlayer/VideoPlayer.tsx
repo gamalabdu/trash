@@ -150,6 +150,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         playsInline={playsInline}
         preload={preload}
         className="absolute inset-0 w-full h-full object-cover border-none outline-none bg-transparent"
+        {...({ 'webkit-playsinline': 'true' } as any)}
+        {...({ 'x-webkit-airplay': 'deny' } as any)}
+        disablePictureInPicture
       />
     </div>
   );

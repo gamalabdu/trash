@@ -163,6 +163,51 @@ const AssetCreationGallery: React.FC<Props> = ({ media }) => {
     }
   };
 
+  // Mobile touch handlers
+  const handleContainerTouchStart = (e: React.TouchEvent<HTMLDivElement>, item: any) => {
+    if (item.type === 'video') {
+      const container = e.currentTarget;
+      const video = container.querySelector('video') as HTMLVideoElement;
+      
+      if (video) {
+        // Add visual effects immediately
+        container.classList.add('video-playing');
+        
+        // Ensure video is ready
+        if (video.readyState >= 2) {
+          video.currentTime = 0;
+          
+          const playPromise = video.play();
+          if (playPromise !== undefined) {
+            playPromise
+              .then(() => {
+                console.log("✅ Mobile video playing successfully:", item.title);
+              })
+              .catch((error) => {
+                console.warn("❌ Mobile play prevented:", error.message, item.title);
+                // Keep visual effects even if play fails (browser restriction)
+              });
+          }
+        }
+      }
+    }
+  };
+
+  const handleContainerTouchEnd = (e: React.TouchEvent<HTMLDivElement>, item: any) => {
+    if (item.type === 'video') {
+      const container = e.currentTarget;
+      const video = container.querySelector('video') as HTMLVideoElement;
+      if (video) {
+        // Keep the video playing for a brief moment on mobile
+        setTimeout(() => {
+          container.classList.remove('video-playing');
+          video.pause();
+          video.currentTime = 0;
+        }, 2000);
+      }
+    }
+  };
+
   return (
     <>
       <section className='asset-gallery' ref={galleryRef}>
@@ -174,6 +219,8 @@ const AssetCreationGallery: React.FC<Props> = ({ media }) => {
             onKeyDown={(e) => handleKeyPress(e, item)}
             onMouseEnter={(e) => handleContainerMouseEnter(e, item)}
             onMouseLeave={(e) => handleContainerMouseLeave(e, item)}
+            onTouchStart={(e) => handleContainerTouchStart(e, item)}
+            onTouchEnd={(e) => handleContainerTouchEnd(e, item)}
             tabIndex={0}
             role="button"
             aria-label={`View ${item.title} - ${item.subtitle}`}
@@ -203,7 +250,8 @@ const AssetCreationGallery: React.FC<Props> = ({ media }) => {
                   preload="auto"
                   style={{ opacity: 0, transition: 'opacity 0.3s ease' }}
                   disablePictureInPicture
-                  webkit-playsinline="true"
+                  {...({ 'webkit-playsinline': 'true' } as any)}
+                  {...({ 'x-webkit-airplay': 'deny' } as any)}
                 />
               )}
               <div className="overlay">

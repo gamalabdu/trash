@@ -51,8 +51,18 @@ const DigitalGallery : React.FC<Props> = ({ media }) => {
                   e.currentTarget.pause();
                   e.currentTarget.currentTime = 0;
                 }}
+                onTouchStart={(e) => e.currentTarget.play()}
+                onTouchEnd={(e) => {
+                  setTimeout(() => {
+                    e.currentTarget.pause();
+                    e.currentTarget.currentTime = 0;
+                  }, 2000);
+                }}
                 loop
                 playsInline
+                {...({ 'webkit-playsinline': 'true' } as any)}
+                {...({ 'x-webkit-airplay': 'deny' } as any)}
+                disablePictureInPicture
                 style={{ filter: "brightness(1.2)", width: "100%" }}
               />
             )}
