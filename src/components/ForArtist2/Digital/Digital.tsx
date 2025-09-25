@@ -233,6 +233,18 @@ const Digital = () => {
             <h3>Editorial Placements</h3>
             <p>Strategic placement in influential music blogs, magazines, and online publications to amplify your reach.</p>
           </motion.div>
+
+          <motion.div 
+            className="service-card"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            <h3>Websites & Digital Experiences</h3>
+            <p>
+              We design and build custom websites and immersive digital experiences that showcase your artistry and connect you with your audience. From sleek portfolios to interactive campaigns, we bring your vision to life online.
+            </p>
+          </motion.div>
           
           <motion.div 
             className="service-card"
@@ -242,6 +254,46 @@ const Digital = () => {
           >
             <h3>Playlist Curation</h3>
             <p>Premium playlist placements across streaming platforms to maximize your music's discovery and engagement.</p>
+          </motion.div>
+
+          <motion.div 
+            className="service-card"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+          >
+            <a
+              href="/press"
+              className="service-card-link"
+              style={{
+                display: "block",
+                width: "100%",
+                height: "100%",
+                textDecoration: "none",
+                color: "inherit",
+                cursor: "pointer"
+              }}
+              aria-label="See our press and digital work"
+            >
+              <h3 style={{ display: "flex", alignItems: "center", gap: "0.5em" }}>
+                See Our Press & Digital Highlights
+                <span style={{ fontSize: "1.2em" }} aria-hidden="true">→</span>
+              </h3>
+              <p>
+                Explore our press features, digital campaigns, and artist success stories.
+              </p>
+              <span
+                style={{
+                  display: "inline-block",
+                  marginTop: "0.5em",
+                  color: "#f93b3b",
+                  fontWeight: 600,
+                  fontSize: "0.98em"
+                }}
+              >
+                Click to visit our Press Page
+              </span>
+            </a>
           </motion.div>
         </div>
       </section>

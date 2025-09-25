@@ -7,7 +7,8 @@ import {
   FaHandshake, 
   FaMicrophone, 
   FaInstagram, 
-  FaDollarSign 
+  FaMusic,
+  FaVideo 
 } from 'react-icons/fa';
 import './styles.css';
 
@@ -47,6 +48,16 @@ const ArtistDevelopment = () => {
 
   const services = [
     {
+      title: "Music Production",
+      description: "Professional recording, mixing, and mastering services to bring your creative vision to life with industry-standard quality.",
+      icon: FaMusic
+    },
+    {
+      title: "Content Creation",
+      description: "Comprehensive visual and multimedia content including music videos, promotional materials, and social media assets.",
+      icon: FaVideo
+    },
+    {
       title: "Brand Identity",
       description: "Craft a unique artistic persona that resonates with your target audience and sets you apart in the industry.",
       icon: FaUserTie
@@ -71,33 +82,28 @@ const ArtistDevelopment = () => {
       description: "Build and maintain a strong digital presence that converts followers into dedicated fans.",
       icon: FaInstagram
     },
-    {
-      title: "Revenue Optimization",
-      description: "Maximize your income through strategic releases, merchandise, touring, and licensing opportunities.",
-      icon: FaDollarSign
-    }
   ];
 
   const processSteps = [
     {
       step: "01",
-      title: "Assessment",
-      description: "We analyze your current position, strengths, and areas for growth to create a personalized development plan."
+      title: "Deep Dive",
+      description: "We dig into your sound, story, and what makes you unique. No cookie-cutter plans here—just real talk about where you're at and where you want to go."
     },
     {
       step: "02", 
-      title: "Strategy",
-      description: "Together we build a comprehensive roadmap that aligns with your artistic vision and career goals."
+      title: "Blueprint",
+      description: "Time to map out your takeover. We craft a game plan that's 100% you—authentic to your vision and built for the long haul."
     },
     {
       step: "03",
-      title: "Implementation",
-      description: "Execute the plan with our hands-on support, from content creation to industry networking."
+      title: "Launch Mode",
+      description: "Now we make it happen. From laying down tracks to creating killer content, we're in the trenches with you every step of the way."
     },
     {
       step: "04",
-      title: "Growth",
-      description: "Monitor progress, adapt strategies, and scale your success as you evolve as an artist."
+      title: "Level Up",
+      description: "Watch your fanbase grow and your streams climb. We keep pushing boundaries and evolving your artistry as you rise through the ranks."
     }
   ];
 
@@ -208,7 +214,7 @@ const ArtistDevelopment = () => {
         >
           <h2 className="cta-title">Ready to Transform Your Career?</h2>
           <p className="cta-description">
-            Join the artists who have accelerated their success with our proven development strategies.
+            Skip the boring stuff—let’s get started.
           </p>
           <div className="cta-stats">
             <div className="stat">
