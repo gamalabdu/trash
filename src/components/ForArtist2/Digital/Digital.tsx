@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import TextScramble from "@twistezo/react-text-scramble";
 import DigitalGallery from "./DigitalGallery";
+import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner";
 
 
 
@@ -37,6 +38,8 @@ const Digital = () => {
   };
 
   const [media, setMedia] = useState<Media[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const getPhotos = async () => {
 
@@ -96,10 +99,19 @@ const Digital = () => {
     document.title = `TRASH - ${title}`; // Update the document title
 
     const fetchData = async () => {
-      const photos = await getPhotos();
-      const videos = await getVideos();
-      const combinedMedia = shuffleArray([...photos, ...videos]);
-      setMedia(combinedMedia);
+      try {
+        setLoading(true);
+        setError(null);
+        const photos = await getPhotos();
+        const videos = await getVideos();
+        const combinedMedia = shuffleArray([...photos, ...videos]);
+        setMedia(combinedMedia);
+      } catch (err) {
+        console.error('Error fetching media:', err);
+        setError('Failed to load digital content. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchData();
@@ -140,32 +152,113 @@ const Digital = () => {
 
 
 
+  if (loading) {
+    return (
+      <motion.div
+        className="digital-container"
+        initial="hidden"
+        animate="show"
+        exit="exit"
+        variants={fadeOut}
+      >
+        <LoadingSpinner />
+      </motion.div>
+    );
+  }
+
+  if (error) {
+    return (
+      <motion.div
+        className="digital-container"
+        initial="hidden"
+        animate="show"
+        exit="exit"
+        variants={fadeOut}
+      >
+        <div className="error-message">
+          <h2>Oops!</h2>
+          <p>{error}</p>
+        </div>
+      </motion.div>
+    );
+  }
+
   return (
     <motion.div
-      className="branding-container"
+      className="digital-container"
       initial="hidden"
       animate="show"
       exit="exit"
       variants={fadeOut}
     >
-      <div className="music-creation-top">
-        <div className="step1-text">
-          Let us help with &nbsp;
-          <TextScramble
-            className="text-scramble"
-            texts={["press", "editorials", "write ups", "playlisting"]}
-            letterSpeed={20}
-            nextLetterSpeed={50}
-            pauseTime={1500}
-          />
-          &nbsp;.
+      {/* Hero Section */}
+      <div className="digital-hero">
+        <div className="digital-hero-content">
+          <h1 className="digital-title">
+            Digital
+          </h1>
+          <div className="digital-subtitle">
+            Let us help with &nbsp;
+            <TextScramble
+              className="text-scramble"
+              texts={["press", "editorials", "write ups", "playlisting"]}
+              letterSpeed={20}
+              nextLetterSpeed={50}
+              pauseTime={1500}
+            />
+            &nbsp;.
+          </div>
         </div>
       </div>
 
-      <section>
+      {/* Services Section */}
+      <section className="digital-services">
+        <div className="services-grid">
+          <motion.div 
+            className="service-card"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <h3>Press Coverage</h3>
+            <p>Get featured in top music publications and digital platforms. We craft compelling stories that capture your artistic vision.</p>
+          </motion.div>
+          
+          <motion.div 
+            className="service-card"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            <h3>Editorial Placements</h3>
+            <p>Strategic placement in influential music blogs, magazines, and online publications to amplify your reach.</p>
+          </motion.div>
+          
+          <motion.div 
+            className="service-card"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+          >
+            <h3>Playlist Curation</h3>
+            <p>Premium playlist placements across streaming platforms to maximize your music's discovery and engagement.</p>
+          </motion.div>
+        </div>
+      </section>
 
+      {/* Gallery Section */}
+      <section className="digital-gallery-section">
+        <motion.div 
+          className="gallery-header"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+        >
+          <h2>Our Work</h2>
+          <p>Explore our portfolio of successful digital campaigns and press coverage.</p>
+        </motion.div>
+        
         <DigitalGallery media={media} />
-
       </section>
 
     </motion.div>

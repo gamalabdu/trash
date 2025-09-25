@@ -216,8 +216,6 @@ const MusicCreation = () => {
     >
 
 
-      <section className="producing">
-
       <div className="music-creation-top">
         <div className="step1-text">
           Let us help you &nbsp;
@@ -231,6 +229,8 @@ const MusicCreation = () => {
           &nbsp; your next song.
         </div>
       </div>
+
+      <section className="producing">
 
         <div className="inner-producing">
 
@@ -268,20 +268,30 @@ const MusicCreation = () => {
 
 
       <section className="production-page-section">
-
-              {
-                albumCovers.map((album) => {
-                  return (
-                    <div key={album.title} style={{ cursor:"pointer" }}>
-                      <Link to={album.link}>
-                      <img className="album-covers-image" src={album.image} />
-                      </Link>
+        <div className="section-header">
+          <h2 className="section-title">Offical musical releases by <span className="text-[#f93b3b]">TRASH</span></h2>
+          <p className="section-subtitle">Click to listen on Spotify</p>
+        </div>
+        
+        <div className="albums-grid">
+          {
+            albumCovers.map((album) => {
+              return (
+                <div key={album.title} className="album-item">
+                  <Link to={album.link}>
+                    <img className="album-covers-image" src={album.image} alt={`${album.artist} - ${album.title}`} />
+                    <div className="album-overlay">
+                      <div className="album-info">
+                        <h3 className="album-title">{album.title}</h3>
+                        <p className="album-artist">{album.artist}</p>
+                      </div>
                     </div>
-                  )
-                })
-              }
-
-
+                  </Link>
+                </div>
+              )
+            })
+          }
+        </div>
       </section>
 
 

@@ -36,71 +36,127 @@ h2 {
 
 nav {
     mix-blend-mode: difference;
-    position: absolute;
-    z-index: 100;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
   }
 
   nav ul {
     position: fixed;
-    top: 60px;
-    left: 20px;
-    height: 100vh;
+    top: 75px;
+    left: 16px;
+    height: calc(100vh - 75px);
     visibility: hidden;
+    opacity: 0;
     pointer-events: none;
     list-style: none;
-    width: 35px;
+    width: 40px;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform: translateX(-10px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
+  
   nav ul li {
-    font: bold 1.4vh "Work Sans", "Arial Black", Gadget, sans-serif;
+    font: bold clamp(11px, 1.2vh, 14px) "Work Sans", "Arial Black", Gadget, sans-serif;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    padding: 0.75em 0;
+    letter-spacing: 1.5px;
+    padding: 0.6em 0;
     writing-mode: vertical-lr;
+    transition: all 0.3s ease;
+    text-align: center;
   }
+
+  nav ul li a {
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  nav ul li a:hover {
+    color: #f93b3b !important;
+    text-shadow: 0 0 8px rgba(249, 59, 59, 0.5);
+  }
+  
   nav.active ul {
     visibility: visible;
+    opacity: 1;
     pointer-events: initial;
-    transition-delay: 0.2s;
+    transform: translateX(0);
+    transition-delay: 0.1s;
   }
   
   .nav-icon {
     appearance: none;
-    background: transparent;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
     cursor: pointer;
     display: inline-block;
-    height: 35px;
+    height: 44px;
     position: fixed;
     top: 15px;
-    left: 10px;
-    transition: background 0.3s;
-    width: 35px;
+    left: 15px;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    width: 44px;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+  }
+
+  .nav-icon:hover {
+    background: rgba(249, 59, 59, 0.1);
+    border-color: rgba(249, 59, 59, 0.3);
+    transform: scale(1.05);
   }
   
   .nav-icon span {
     position: absolute;
-    top: 15px;
-    left: 5px;
+    top: 20px;
+    left: 8px;
     background: #fff;
     display: block;
-    height: 3px;
-    right: 5px;
-    transition: transform 0.3s;
+    height: 2px;
+    right: 8px;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border-radius: 1px;
   }
-  .nav-icon span:before, .nav-icon span:after {
+  
+  .nav-icon span:before, 
+  .nav-icon span:after {
     width: 100%;
-    height: 3px;
+    height: 2px;
     background: #fff;
     content: "";
     display: block;
     left: 0;
     position: absolute;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border-radius: 1px;
   }
+  
   .nav-icon span:before {
-    top: -8px;
+    top: -6px;
   }
+  
   .nav-icon span:after {
-    bottom: -8px;
+    bottom: -6px;
   }
+  
+  .active .nav-icon {
+    background: rgba(249, 59, 59, 0.2);
+    border-color: rgba(249, 59, 59, 0.4);
+  }
+  
   .active .nav-icon span {
-    transform: rotate(90deg);
+    background: transparent;
+  }
+  
+  .active .nav-icon span:before {
+    transform: rotate(45deg);
+    top: 0;
+  }
+  
+  .active .nav-icon span:after {
+    transform: rotate(-45deg);
+    bottom: 0;
   }

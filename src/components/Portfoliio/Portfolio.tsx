@@ -1,291 +1,231 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useCallback } from 'react';
 import './styles.css';
-import axios from 'axios';
-import { FaPlay } from "react-icons/fa6";
-import { FaPause } from "react-icons/fa6";
-import { FaForward } from "react-icons/fa6";
-import { FaBackward } from "react-icons/fa6";
-import WaveSurfer from 'wavesurfer.js'
-import { useWavesurfer } from '@wavesurfer/react'
-import WavesurferPlayer from '@wavesurfer/react'
+import WavesurferPlayer from '@wavesurfer/react';
 import PasswordPage from './PasswordPage/PasswordPage';
-import {createClient} from '@sanity/client'
+import AlbumArtDisplay from './components/AlbumArtDisplay';
+import AudioControls from './components/AudioControls';
+import PlaylistView from './components/PlaylistView';
+import { usePortfolioData } from './hooks/usePortfolioData';
+import { useAudioPlayer } from './hooks/useAudioPlayer';
 
-const Portfolio = () => {
-   
+const Portfolio: React.FC = memo(() => {
+  const {
+    songs,
+    loading,
+    error,
+    authenticated,
+    password,
+    authenticateUser,
+    setPassword,
+  } = usePortfolioData();
 
-    type SongEntry = {
-        title: string,
-        artist: string,
-        image: string,
-        music: string,
-        id: number
-    }
+  const {
+    wavesurfer,
+    playerState,
+    onReady,
+    playPause,
+    nextSong,
+    previousSong,
+    setVolume,
+    toggleMute,
+    selectSong,
+    formatTime,
+    updatePlayerState,
+  } = useAudioPlayer({
+    songs,
+    onSongChange: (index) => {
+      updatePlayerState({ currentSongIndex: index });
+    },
+  });
 
-    const [loading, setLoading] = useState(false);
-
-    const [currentSongIndex, setCurrentSongIndex] = useState(0);
-
-    const [songs, setSongs] = useState<SongEntry[]>([]);
-
-    const [playing, setPlaying] = useState(false);
-
-    const [wavesurfer, setWavesurfer] = useState<WaveSurfer | null>(null)
-
-    const [password, setPassword] = useState<string>("")
+  // Keyboard navigation - moved before early returns
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.target && (e.target as HTMLElement).tagName === 'INPUT') return;
     
-    const [authenticated, setAuthenticated] = useState(false);
-
-
-    const authenticateUser = () => {
-      if (password === 'Welcome2024') {
-        setAuthenticated(true);
-      }
-    }
-
-
-      const onPlayPause = () => {
-        wavesurfer && wavesurfer.playPause()
-        setPlaying(true)
-      }
-
-      const onReady = (ws: WaveSurfer) => {
-
-        setWavesurfer(ws)
-        setPlaying(false)
-
-        ws.on('finish', () => {
-
-            setCurrentSongIndex((prevIndex) => (prevIndex === songs.length - 1 ? 0 : prevIndex + 1));
-            setPlaying(false);
-        })
- 
-      }
-
-
-
-
-      const handleSongItemClick = (index : number) => {
-        setCurrentSongIndex(index);
-        setPlaying(true); // Start playing the clicked song
-      }
-
-
-
-    const screenWidth = window.innerWidth;
-
-
-
-    const sanityClient = createClient({
-		projectId: process.env.REACT_APP_SANITY_PROJECT_ID,
-		dataset: process.env.REACT_APP_SANITY_DATASET,
-		useCdn: true, // set to `false` to bypass the edge cache
-		apiVersion: '2024-01-14', // use current date (YYYY-MM-DD) to target the latest API version
-		token: process.env.REACT_APP_SANITY_TOKEN,
-        ignoreBrowserTokenWarning: true
-	  })
-
-
-
-
-
-    useEffect(() => {
-
-
-        const getMusic = async () => {
-
-
-            const musicData = await sanityClient.fetch(`
-				  *[_type == "song"]{
-					title,
-          id,
-					artist,
-					coverArt{
-						asset->{
-							url
-						}
-					},
-					music{
-                        asset->{
-							url
-						}
-                    },
-					
-				}
-				`);
-
-            if ( musicData ) {
-
-                let musicDataTemp = musicData
-
-                let musicEntries : SongEntry[] = musicDataTemp.map( (song : any) => ({
-
-                    title : song.title ,
-                    artist : song.artist,
-                    image : song.coverArt.asset.url,
-                    music : song.music.asset.url,
-                    id: song.id
-
-                }))
-
-
-                musicEntries.sort((a, b) => a.id - b.id)
-
-                setSongs(musicEntries)
-
-                
-            }
-
+    switch (e.code) {
+      case 'Space':
+        e.preventDefault();
+        playPause();
+        break;
+      case 'ArrowLeft':
+        e.preventDefault();
+        previousSong();
+        break;
+      case 'ArrowRight':
+        e.preventDefault();
+        nextSong();
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        if (playerState.currentSongIndex > 0) {
+          selectSong(playerState.currentSongIndex - 1);
         }
-
-        
-
-        getMusic()
-
-
-        
-    }, [])
-
-
-
-    if (loading) {
-
-        return <div> Loading... </div>
-
+        break;
+      case 'ArrowDown':
+        e.preventDefault();
+        if (playerState.currentSongIndex < songs.length - 1) {
+          selectSong(playerState.currentSongIndex + 1);
+        }
+        break;
     }
+  }, [playPause, previousSong, nextSong, selectSong, playerState.currentSongIndex, songs.length]);
 
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleKeyDown]);
 
-    
-
-
+  // Handle loading state
+  if (loading) {
     return (
       <div className="portfolio-container">
-
-
-        {
-          // authenticated ?
-
-          songs.length === 0 ? 
-          
-          null : 
-
-            <div className="music-player-container">
-
-              <div className="player-half">
-
-                <img
-                  className="album-work"
-                  style={{ opacity: loading ? 0 : 1 }}
-                  src={songs[currentSongIndex].image}
-                />
-
-                <div className="artist-name">
-                  {songs[currentSongIndex].artist}
-                </div>
-                
-                <div className="song-title">
-                  {songs[currentSongIndex].title}
-                </div>
-
-                <WavesurferPlayer
-                  height={50}
-                  width={350}
-                  waveColor="#b7c0c4"
-                  url={songs[currentSongIndex].music}
-                  onReady={onReady}
-                  normalize={true}
-                  onPlay={() => setPlaying(true)}
-                  onPause={() => setPlaying(false)}
-                />
-                <div className="buttons-container">
-
-                  <div
-                    className="player-btn"
-                    onClick={() =>
-                      setCurrentSongIndex((prevIndex) =>
-                        prevIndex === 0 ? songs.length - 1 : prevIndex - 1
-                      )
-                    }
-                  >
-                    <FaBackward size={screenWidth === 800 ? 30 : 14} />
-
-                  </div>
-
-                  <div
-                    className="player-btn"
-                    onClick={() => {
-                      onPlayPause();
-                      setPlaying(!playing);
-                    }}
-                  >
-                    {
-                    
-                    playing ? 
-
-                      <FaPause size={screenWidth === 800 ? 30 : 14} />
-                     : 
-                      <FaPlay size={screenWidth === 800 ? 30 : 14} />
-                    }
-
-                  </div>
-
-                  <div
-                    className="player-btn"
-                    onClick={() =>
-                      setCurrentSongIndex((prevIndex) =>
-                        prevIndex === songs.length - 1 ? 0 : prevIndex + 1
-                      )
-                    }
-                  >
-                    <FaForward size={screenWidth === 800 ? 30 : 14} />
-                  </div>
-
-                </div>
-
-              </div>
-
-              <div className="song-list-half">
-
-                <div className="song-list-container">
-
-                  {
-
-                  songs.map((song, idx) => {
-
-                    return (
-
-                      <div
-                        className={`song-item${
-                          idx === currentSongIndex ? "-active" : ""
-                        }`}
-                        key={idx}
-                        onClick={() => handleSongItemClick(idx)}
-                      >
-                        {  song.artist + " - " + song.title }
-
-                      </div>
-                    )
-
-                  })
-                  }
-                </div>
-
-              </div>
-
-            </div>
-
-           // :
-
-          // <PasswordPage password={password} setPassword={setPassword} authenticateUser={authenticateUser} />
-
-        }
-
+        <div className="loading-message">
+          <div className="loading-spinner"></div>
+          Loading your music...
+        </div>
       </div>
-    )   
-}
+    );
+  }
 
-export default Portfolio
+  // Handle error state
+  if (error) {
+    return (
+      <div className="portfolio-container">
+        <div className="error-message">
+          <h3>Oops! Something went wrong</h3>
+          <p>{error}</p>
+        </div>
+      </div>
+    );
+  }
 
+  // Handle empty state
+  if (songs.length === 0) {
+    return (
+      <div className="portfolio-container">
+        <div className="loading-message">
+          No songs available at the moment.
+        </div>
+      </div>
+    );
+  }
 
+  // Show password page if not authenticated (currently commented out in original)
+  if (!authenticated && false) { // Keep original logic but disable for now
+    return (
+      <div className="portfolio-container">
+        <PasswordPage
+          password={password}
+          setPassword={setPassword}
+          authenticateUser={authenticateUser}
+        />
+      </div>
+    );
+  }
 
+  const currentSong = songs[playerState.currentSongIndex];
 
+  return (
+    <div className="portfolio-container" role="main" aria-label="Music Portfolio">
+      <div 
+        className="music-player-container" 
+        role="region" 
+        aria-label="Music Player"
+        tabIndex={0}
+      >
+        {/* Left Panel - Album Art and Controls */}
+        <div className="player-half">
+          <AlbumArtDisplay
+            song={currentSong}
+            isPlaying={playerState.isPlaying}
+            isLoading={playerState.isLoading}
+          />
+
+          {/* Enhanced Waveform Visualizer */}
+          <div className="waveform-container">
+            <div className="waveform-content">
+              <WavesurferPlayer
+                key={`${currentSong.id}-${playerState.currentSongIndex}`}
+                height={50}
+                width={280}
+                waveColor="rgba(255, 255, 255, 0.3)"
+                progressColor="#f93b3b"
+                cursorColor="#f93b3b"
+                url={currentSong.music}
+                onReady={(ws) => {
+                  console.log('WaveSurfer ready for song:', currentSong.title);
+                  onReady(ws);
+                }}
+                normalize={true}
+                onPlay={() => updatePlayerState({ isPlaying: true })}
+                onPause={() => updatePlayerState({ isPlaying: false })}
+                barWidth={2}
+                barGap={1}
+                barRadius={2}
+              />
+            </div>
+            
+            {playerState.isLoading && (
+              <div className="waveform-loading" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+                <div className="waveform-skeleton">
+                  {Array.from({ length: 15 }, (_, i) => (
+                    <div key={i} className="skeleton-bar"></div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <AudioControls
+            playerState={playerState}
+            onPlayPause={playPause}
+            onNext={nextSong}
+            onPrevious={previousSong}
+            onVolumeChange={setVolume}
+            onToggleMute={toggleMute}
+            formatTime={formatTime}
+          />
+        </div>
+
+        {/* Right Panel - Playlist */}
+        <div className="song-list-half">
+          <PlaylistView
+            songs={songs}
+            currentSongIndex={playerState.currentSongIndex}
+            onSongSelect={selectSong}
+            isPlaying={playerState.isPlaying}
+          />
+        </div>
+      </div>
+
+      {/* Screen Reader Live Region for Announcements */}
+      <div 
+        className="sr-only" 
+        aria-live="polite" 
+        aria-atomic="true"
+        role="status"
+      >
+        {playerState.isPlaying 
+          ? `Now playing: ${currentSong.title} by ${currentSong.artist}`
+          : `Paused: ${currentSong.title} by ${currentSong.artist}`
+        }
+      </div>
+
+      {/* Keyboard shortcuts help (hidden visually but available to screen readers) */}
+      <div className="sr-only">
+        <h2>Keyboard Shortcuts</h2>
+        <ul>
+          <li>Space: Play/Pause</li>
+          <li>Left Arrow: Previous track</li>
+          <li>Right Arrow: Next track</li>
+          <li>Up Arrow: Previous song in playlist</li>
+          <li>Down Arrow: Next song in playlist</li>
+        </ul>
+      </div>
+    </div>
+  );
+});
+
+Portfolio.displayName = 'Portfolio';
+
+export default Portfolio;

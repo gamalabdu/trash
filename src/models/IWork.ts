@@ -1,6 +1,8 @@
 import { IAsset } from "./IAsset";
 
 export interface IWork {
+    id?: string,
+    slug?: string,
     image: IAsset,
     type: string[],
     name: string,

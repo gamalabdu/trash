@@ -1,5 +1,4 @@
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
-import './styles.css'
 import GalleryItem from './GalleryItem/GalleryItem'
 import { Link } from 'react-router-dom'
 import { IWork } from '../../models/IWork'
@@ -21,12 +20,12 @@ const Gallery = (props: IGalleryProps) => {
 		<AnimatePresence>
 			<LayoutGroup>
 			<motion.div
-				className='gallery-container'
+				className='flex flex-wrap justify-center gap-x-4 gap-y-10 p-[5%] w-full max-[800px]:flex-col max-[800px]:text-center'
 				key={'gallery-container'}
 				>
 				{
 				data.map((item, i) => (
-					<Link key={i} to='/innerworks' state={{ item }}>
+					<Link key={i} to={`/works/${item.slug}`}>
 						<motion.div
 							key={i}
 							initial={{ opacity: 0 }}

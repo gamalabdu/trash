@@ -1,4 +1,15 @@
 .App {
-  /* text-align: center; */
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-primary);
+}
+
+/* Global transition improvements */
+* {
+  transition: color var(--transition-fast), 
+              background-color var(--transition-fast),
+              border-color var(--transition-fast),
+              transform var(--transition-fast),
+              opacity var(--transition-fast);
 }
 

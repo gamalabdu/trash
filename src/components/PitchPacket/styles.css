@@ -1,0 +1,86 @@
+/* PitchPacket Mobile Optimizations */
+
+/* Enhanced mobile scrolling for PDF container */
+.pitch-packet-pdf-container {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Prevent zoom on input focus (if any inputs are added later) */
+@media screen and (max-width: 768px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  textarea {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+}
+
+/* Better touch targets for mobile */
+@media screen and (max-width: 768px) {
+  .pitch-packet-download-btn {
+    min-height: 44px; /* iOS recommended minimum touch target */
+    min-width: 44px;
+    padding: 12px 24px;
+  }
+  
+  .pitch-packet-retry-btn {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 12px 20px;
+  }
+}
+
+/* Mobile-specific PDF viewer improvements */
+@media screen and (max-width: 480px) {
+  .pitch-packet-pdf-viewer {
+    border-radius: 8px; /* Smaller radius on very small screens */
+  }
+  
+  .pitch-packet-container {
+    padding-bottom: env(safe-area-inset-bottom, 20px); /* Account for iOS home indicator */
+  }
+}
+
+/* Smooth animations optimized for mobile */
+@media (prefers-reduced-motion: no-preference) {
+  .pitch-packet-fade-in {
+    animation: pitchPacketFadeIn 0.6s ease-out;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pitch-packet-fade-in {
+    animation: none;
+  }
+}
+
+@keyframes pitchPacketFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .pitch-packet-error-icon {
+    filter: contrast(2);
+  }
+  
+  .pitch-packet-download-btn {
+    border: 2px solid currentColor;
+  }
+}
+
+/* Dark mode adjustments for mobile */
+@media (prefers-color-scheme: dark) {
+  .pitch-packet-pdf-hint {
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+  }
+}

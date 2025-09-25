@@ -152,20 +152,37 @@ const Press = () => {
 		exit='exit'
 		variants={fadeOut}
 		>
-			<h1 style={{ textAlign: 'center', padding: '1em', fontSize:"5vw" }}> PRESS </h1>
+			<div className='press-header'>
+				<h1>PRESS</h1>
+				<p className='press-subtitle'>Featured in these publications</p>
+			</div>
 
 			<div className='press-links'>
-
 				{
-					pressLinks.map((item,idx) => {
+					pressLinks.map((item, idx) => {
 						return (
-							<div className='item-container'>
-								<img onClick={() => goToLink(item.link)} className={ item.name === 'AnRFactory' ? 'anr' : 'item-link'} src={item.image} />
+							<div 
+								key={idx}
+								className='item-container'
+								onClick={() => goToLink(item.link)}
+								role="button"
+								tabIndex={0}
+								onKeyDown={(e) => {
+									if (e.key === 'Enter' || e.key === ' ') {
+										goToLink(item.link);
+									}
+								}}
+								aria-label={`Visit ${item.name} article`}
+							>
+								<img 
+									className={item.name === 'AnRFactory' ? 'anr' : 'item-link'} 
+									src={item.image} 
+									alt={`${item.name} logo`}
+								/>
 							</div>
 						)
 					})
 				}
-
 			</div>
 
 		</motion.div>

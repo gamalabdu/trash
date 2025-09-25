@@ -6,14 +6,15 @@ import TopButton from './TopButton/TopButton'
 import Gallery from '../Gallery/Gallery'
 import { RoughNotation } from "react-rough-notation";
 import { motion} from 'framer-motion'
-import {createClient} from '@sanity/client'
 import { IWork } from '../../models/IWork'
+import { useWorks } from '../../context/WorksContext'
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner'
 
 
 const Works = () => {
-
-
+	
 	const title = 'Explore our work'
+	const { works, loading, error } = useWorks()
 
 	const buttonChoices = [
 		{
@@ -54,25 +55,14 @@ const Works = () => {
 		},
 	]
 
-
 	const navigate = useNavigate()
 
 	const handleClick = (link : string) => {
-
       navigate(link)
-    
 	}
 
-
-
-	const [ works, setWorks ] = useState<IWork[]>([])
-
 	const [filteredWorks, setFilteredWorks] = useState<IWork[]>([]);
-
 	const [Buttons, setButtons] = useState(false)
-
-	const [loading, setLoading] = useState(true);
-
 	const [categories, setCategories] =  useState<string[]>(['Everything'])
 
 	const intersection = works?.filter(work => {
@@ -83,98 +73,10 @@ const Works = () => {
 		)
 	  });
 
-
-
-	const sanityClient = createClient({
-		projectId: process.env.REACT_APP_SANITY_PROJECT_ID,
-		dataset: process.env.REACT_APP_SANITY_DATASET,
-		useCdn: true, // set to `false` to bypass the edge cache
-		apiVersion: '2024-01-14', // use current date (YYYY-MM-DD) to target the latest API version
-		token: process.env.REACT_APP_SANITY_TOKEN,
-		ignoreBrowserTokenWarning: true
-	  })
-
-
 	useEffect(() => {
-
 		window.scrollTo(0, 0)
-
-		document.title = `TRASH - ${title}`; // Update the document title
-
-		const fetchData = async () => {
-
-
-			const worksData = await sanityClient.fetch(`
-				  *[_type == "work"]{
-					name,
-					statement,
-					image{
-						asset->{
-							url
-						}
-					},
-					type,
-					videos[]{
-						asset->{
-						  url
-						}
-					},
-					images[]{
-						asset-> {
-							url
-						}
-					},
-					canvas[]{
-						asset-> {
-							url
-						}
-					},
-					assets[]{
-						asset->{
-							url
-						}
-					},
-					iphone,
-					artworks[]{
-						asset-> {
-							url
-						}
-					}
-				}
-				`)
-
-			if (worksData) {
-
-				let myWorks = worksData
-
-				let workEntries: IWork[] = myWorks.map((work: any) => ({
-
-					name: work.name,
-					image: work.image,
-					type: work.type,
-					statement: work.statement,
-					videos: work.videos,
-					images: work.images,
-					canvas: work.canvas,
-					assets: work.assets,
-					iphone: work.iphone,
-					artworks: work.artworks
-
-
-				}))
-
-				setWorks(workEntries);
-				setFilteredWorks(workEntries)
-
-			}
-
-			setLoading(false);
-
-		}
-
-		fetchData()
-
-	}, [])
+		document.title = `TRASH - ${title}`;
+	}, [title])
 
 
 
@@ -189,7 +91,7 @@ const Works = () => {
 			);
 			setFilteredWorks(filteredItems);
 		}
-	}, [categories]);
+	}, [categories, works, intersection]);
 
 	  
 
@@ -239,8 +141,37 @@ const Works = () => {
 	  };
 
 
-	// console.log(filteredWorks);
+	// Handle loading state
+	if (loading) {
+		return (
+			<motion.div
+				className='works-container'
+				initial='hidden'
+				animate='show'
+				exit='exit'
+				variants={fadeOut}>
+				<LoadingSpinner />
+			</motion.div>
+		);
+	}
 
+	// Handle error state
+	if (error) {
+		return (
+			<motion.div
+				className='works-container'
+				initial='hidden'
+				animate='show'
+				exit='exit'
+				variants={fadeOut}>
+				<div className='error-container'>
+					<h2>Error loading works</h2>
+					<p>{error}</p>
+					<button onClick={() => window.location.reload()}>Try Again</button>
+				</div>
+			</motion.div>
+		);
+	}
 
 	return (
 		

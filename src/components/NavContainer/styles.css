@@ -1,37 +1,70 @@
 
 
-.scroll-to-top {
-    /* --offset: -50px;  */
-    position: sticky;
+.scroll-icons-container {
+    position: fixed;
     bottom: 50px;      
-    place-self: end;
-    /* margin-top: calc(var(--offset)); */
+    right: 20px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
     white-space: nowrap;
     mix-blend-mode: difference;
-    margin-left: 20px;
-    margin-right: 20px;
-    visibility: visible;
-    opacity: 1;
-    transition: all 300ms ease-out;
-    cursor: pointer;
-    z-index: 100;
-    height: 0px;
+    z-index: 1000;
+    pointer-events: none; /* Allow clicks to pass through container */
 }
 
-
-.scroll-to-top-active {
+.scroll-icon {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    padding: 12px;
+    backdrop-filter: blur(10px);
+    color: white;
     display: flex;
-    justify-content: space-between;
-    visibility: hidden;
-    height: 0px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    pointer-events: auto; /* Re-enable pointer events for the icons themselves */
+    
+    /* Smooth entrance animation */
+    animation: slideInUp 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    transform: translateY(20px);
     opacity: 0;
-    transition: all 300ms ease-out;
+}
+
+.scroll-icon:hover {
+    background: rgba(249, 59, 59, 0.2);
+    border-color: rgba(249, 59, 59, 0.4);
+    transform: scale(1.1) translateY(0);
+    color: #f93b3b;
+    transition: all 0.3s ease;
+}
+
+.scroll-icon a {
+    color: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Smooth entrance animation */
+@keyframes slideInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 
 .nav-container {
-    height: calc(100dvh - 100px)
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* ensure footer sits after content */
+    min-height: 100dvh;
+}
+
+.nav-container footer {
+    margin-top: auto; /* push footer below long content without overlapping */
 }
 
