@@ -168,7 +168,7 @@ const Enter = () => {
 			<div className='absolute bottom-0 left-0 w-full flex items-center justify-center pb-40 sm:pb-48 md:pb-56'>
 				<button 
 					onClick={() => handleClick()}
-					className='inline-flex items-center justify-center px-12 py-6 border-2 border-gray-300 text-gray-300 bg-brand-bg cursor-pointer transition-all duration-300 ease-in-out hover:scale-130 font-primary text-xl sm:text-2xl md:text-3xl min-w-48 min-h-16'
+					className='inline-flex items-center justify-center px-12 py-6 border-2 border-gray-300 text-gray-300 cursor-pointer transition-all duration-300 ease-in-out hover:scale-130 font-primary text-xl sm:text-2xl md:text-3xl min-w-48 min-h-16'
 				> 
 					ENTER 
 				</button>

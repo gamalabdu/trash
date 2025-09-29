@@ -21,6 +21,9 @@ import BrandingPage from './components/ForArtist2/BrandingPage/BrandingPage';
 import PitchPacket from './components/PitchPacket/PitchPacket';
 import Roster from './components/Roster/Roster';
 import NotFound from './components/NotFound/NotFound';
+import AdminPanel from './components/Admin/AdminPanel';
+import Reviews from './components/Reviews/Reviews';
+import ReviewDetail from './components/Reviews/ReviewDetail';
 import { WorksProvider } from './context/WorksContext';
 
 
@@ -39,6 +42,9 @@ function App() {
           <Routes location={location} key={location.pathname}>
 
             <Route index element={<Enter />} />
+            
+            {/* Admin Panel - Outside of NavContainer for full control */}
+            <Route path="/admin" element={<AdminPanel />} />
 
             <Route
               element={<NavContainer />}
@@ -59,6 +65,8 @@ function App() {
               <Route path="works" element={<Works/>} />
               <Route path="works/:slug" element={<InnerWork />} />
               <Route path='press' element={<Press />} />
+              <Route path="reviews" element={<Reviews />} />
+              <Route path="reviews/:id" element={<ReviewDetail />} />
               <Route path="contact" element={<Contact />} />
               <Route path="roster" element={<Roster />} />
               <Route path="/gamal-portfolio" element={<Portfolio />} />

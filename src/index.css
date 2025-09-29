@@ -2,6 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    /* Use dark theme by default to match your existing design */
+    --background: 27 28% 11%; /* #1b1c1e */
+    --foreground: 300 4% 94%; /* #F0EEF0 */
+    --card: 30 29% 17%; /* #2a2b2d */
+    --card-foreground: 300 4% 94%;
+    --popover: 30 29% 17%;
+    --popover-foreground: 300 4% 94%;
+    --primary: 0 84% 60%; /* #f93b3b */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 30 29% 17%;
+    --secondary-foreground: 300 4% 94%;
+    --muted: 30 29% 17%;
+    --muted-foreground: 0 0% 60%; /* #999999 */
+    --accent: 30 29% 17%;
+    --accent-foreground: 300 4% 94%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 30 29% 17%;
+    --input: 30 29% 17%;
+    --ring: 0 84% 60%;
+    --radius: 0.5rem;
+  }
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue:wght@400&family=Work+Sans:wght@300;400;500;600;700&display=swap');
 
 /* CSS Variables for consistent theming */
@@ -60,6 +86,24 @@ video {
 /* Prevent iOS video fullscreen on touch */
 video::-webkit-media-controls-start-playback-button {
   display: none !important;
+}
+
+/* Simple Select Dropdown */
+[data-radix-select-content] {
+  z-index: 50;
+}
+
+[data-radix-select-content][data-side="bottom"] {
+  margin-top: 8px;
+}
+
+[data-radix-select-content][data-side="top"] {
+  margin-bottom: 8px;
+}
+
+/* Force dropdown to open below */
+[data-radix-select-content] {
+  transform-origin: top !important;
 }
 
 /* iOS-specific video fixes */
@@ -124,6 +168,14 @@ video::-webkit-media-controls-start-playback-button {
   background-color: var(--color-primary-dark);
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(249, 59, 59, 0.3);
+}
+
+/* Line clamp utility */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 
