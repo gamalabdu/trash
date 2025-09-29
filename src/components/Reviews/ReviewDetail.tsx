@@ -4,6 +4,7 @@ import { Card, CardContent } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { ArrowLeft, Clock, User, Calendar, Share2, ExternalLink } from 'lucide-react';
+import { FaInstagram, FaTwitter, FaSpotify, FaYoutube, FaSoundcloud, FaApple, FaTiktok, FaFacebook, FaLinkedin, FaGlobe, FaExternalLinkAlt } from 'react-icons/fa';
 import { sanityClient } from '../../utils/sanityClient';
 
 interface Article {
@@ -38,8 +39,43 @@ interface ContentBlock {
 const ReviewDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [article, setArticle] = useState<Article | null>(null);
+  const [relatedArticles, setRelatedArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const getSocialIcon = (url: string) => {
+    const urlLower = url.toLowerCase();
+    
+    if (urlLower.includes('instagram.com')) {
+      return <FaInstagram className="w-5 h-5" />;
+    } else if (urlLower.includes('twitter.com') || urlLower.includes('x.com')) {
+      return <FaTwitter className="w-5 h-5" />;
+    } else if (urlLower.includes('spotify.com')) {
+      return <FaSpotify className="w-5 h-5" />;
+    } else if (urlLower.includes('youtube.com') || urlLower.includes('youtu.be')) {
+      return <FaYoutube className="w-5 h-5" />;
+    } else if (urlLower.includes('soundcloud.com')) {
+      return <FaSoundcloud className="w-5 h-5" />;
+    } else if (urlLower.includes('music.apple.com') || urlLower.includes('itunes.apple.com')) {
+      return <FaApple className="w-5 h-5" />;
+    } else if (urlLower.includes('tiktok.com')) {
+      return <FaTiktok className="w-5 h-5" />;
+    } else if (urlLower.includes('facebook.com') || urlLower.includes('fb.com')) {
+      return <FaFacebook className="w-5 h-5" />;
+    } else if (urlLower.includes('linkedin.com')) {
+      return <FaLinkedin className="w-5 h-5" />;
+    } else {
+      return <FaGlobe className="w-5 h-5" />;
+    }
+  };
+
+  const handleSocialClick = (link: string) => {
+    if (link.startsWith('http')) {
+      window.open(link, '_blank', 'noopener,noreferrer');
+    } else {
+      window.open(`https://${link}`, '_blank', 'noopener,noreferrer');
+    }
+  };
 
   useEffect(() => {
     if (id) {
@@ -108,12 +144,101 @@ const ReviewDetail: React.FC = () => {
       };
 
       setArticle(processedArticle);
+      
+      // Fetch related articles after setting the main article
+      await fetchRelatedArticles(processedArticle);
     } catch (error) {
       console.error('Error fetching article:', error);
       setError('Failed to load article');
     }
     
     setLoading(false);
+  };
+
+  const fetchRelatedArticles = async (currentArticle: Article) => {
+    try {
+      // Get all tags and category tags from the current article
+      const allTags = [...(currentArticle.tags || []), ...(currentArticle.categoryTags || [])];
+      
+      if (allTags.length === 0) {
+        return;
+      }
+
+      // Create a query to find articles with similar tags or categories
+      const relatedData = await sanityClient.fetch(`
+        *[_type == "articles" && _id != $currentId && (
+          count(tags[@ in $tags]) > 0 || 
+          count(categoryTags[@ in $categoryTags]) > 0
+        )] | order(publishedDate desc) [0...6] {
+          _id,
+          title,
+          subtitle,
+          heroImage{
+            asset->{
+              url
+            },
+            alt
+          },
+          categoryTags,
+          authorName,
+          publishedDate,
+          tags
+        }
+      `, { 
+        currentId: currentArticle._id,
+        tags: currentArticle.tags || [],
+        categoryTags: currentArticle.categoryTags || []
+      });
+
+      // If no related articles found, try a more permissive query
+      let finalRelatedData = relatedData;
+      if (relatedData.length === 0) {
+        // Try to find any recent articles (fallback)
+        const fallbackData = await sanityClient.fetch(`
+          *[_type == "articles" && _id != $currentId] | order(publishedDate desc) [0...3] {
+            _id,
+            title,
+            subtitle,
+            heroImage{
+              asset->{
+                url
+              },
+              alt
+            },
+            categoryTags,
+            authorName,
+            publishedDate,
+            tags
+          }
+        `, { currentId: currentArticle._id });
+        
+        finalRelatedData = fallbackData;
+      }
+
+      const processedRelatedArticles: Article[] = finalRelatedData.map((article: any) => ({
+        _id: article._id,
+        title: article.title || '',
+        subtitle: article.subtitle || '',
+        heroImage: article.heroImage?.asset?.url || null,
+        heroImageAlt: article.heroImage?.alt || '',
+        categoryTags: article.categoryTags || [],
+        authorName: article.authorName || '',
+        authorRole: '',
+        authorImage: null,
+        authorSocialLinks: [],
+        publishedDate: article.publishedDate || '',
+        content: [],
+        externalLinks: [],
+        tags: article.tags || [],
+        shareCount: 0,
+        metaDescription: '',
+        keywords: []
+      }));
+
+      setRelatedArticles(processedRelatedArticles);
+    } catch (error) {
+      console.error('Error fetching related articles:', error);
+    }
   };
 
   const formatDate = (dateString: string) => {
@@ -291,99 +416,152 @@ const ReviewDetail: React.FC = () => {
         {/* Hero Image */}
         {article.heroImage && (
           <div className="mb-8">
-            <div className="aspect-[16/9] overflow-hidden rounded-lg">
+            <div className="relative aspect-[16/9] overflow-hidden rounded-lg group">
               <img 
                 src={article.heroImage} 
                 alt={article.heroImageAlt || article.title}
                 className="w-full h-full object-cover"
               />
+              
+              {/* Related Links Overlay */}
+              {article.externalLinks && article.externalLinks.length > 0 && (
+                <div className="absolute top-4 right-4 flex gap-2">
+                  {article.externalLinks.slice(0, 4).map((link, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleSocialClick(link)}
+                      className="w-10 h-10 bg-black/70 hover:bg-brand-red text-white flex items-center justify-center transition-all duration-300 backdrop-blur-sm border border-white/20 hover:border-brand-red"
+                      title={`External Link - ${link}`}
+                    >
+                      {getSocialIcon(link)}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         )}
 
         {/* Author Bio */}
-        <Card className="bg-card border-border mb-8">
-          <CardContent className="p-6">
-            <div className="flex gap-4">
-              {article.authorImage && (
-                <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
-                  <img 
-                    src={article.authorImage} 
-                    alt={article.authorName}
-                    className="w-full h-full object-cover"
-                  />
+        <div className="mb-8 bg-gray-800/30 rounded-lg p-6 border border-gray-700/50">
+          <div className="flex gap-4">
+            {article.authorImage && (
+              <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
+                <img 
+                  src={article.authorImage} 
+                  alt={article.authorName}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
+            <div className="flex-1">
+              <h3 className="text-white font-primary font-bold text-lg mb-2">
+                {article.authorName}
+              </h3>
+              <p className="text-gray-400 font-secondary text-sm mb-3">
+                {article.authorRole}
+              </p>
+              {article.authorSocialLinks.length > 0 && (
+                <div className="flex gap-2">
+                  {article.authorSocialLinks.map((link, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleSocialClick(link)}
+                      className="w-6 h-6 text-brand-red hover:text-brand-red/80 transition-colors flex items-center justify-center"
+                      title={`Author Social Link - ${link}`}
+                    >
+                      {getSocialIcon(link)}
+                    </button>
+                  ))}
                 </div>
               )}
-              <div className="flex-1">
-                <h3 className="text-white font-primary font-bold text-lg mb-2">
-                  {article.authorName}
-                </h3>
-                <p className="text-gray-400 font-secondary text-sm mb-3">
-                  {article.authorRole}
-                </p>
-                {article.authorSocialLinks.length > 0 && (
-                  <div className="flex gap-2">
-                    {article.authorSocialLinks.map((link, index) => (
-                      <a 
-                        key={index}
-                        href={link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-brand-red hover:text-brand-red/80 transition-colors"
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                      </a>
-                    ))}
-                  </div>
-                )}
-              </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* Article Content */}
         <div className="prose prose-invert max-w-none">
           {article.content.map((block, index) => renderContentBlock(block, index))}
         </div>
 
-        {/* Tags */}
-        {article.tags.length > 0 && (
+        {/* Subtle Divider */}
+        <div className="mt-16 mb-8 flex items-center justify-center">
+          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent"></div>
+          <div className="mx-4 text-gray-500 text-sm font-secondary">MORE ARTICLES</div>
+          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent"></div>
+        </div>
+
+        {/* Related Articles */}
+        {relatedArticles.length > 0 && (
           <div className="mt-12 pt-8 border-t border-gray-700">
-            <h3 className="text-white font-primary font-bold text-lg mb-4">Tags</h3>
-            <div className="flex flex-wrap gap-2">
-              {article.tags.map((tag, index) => (
-                <Badge 
-                  key={index} 
-                  variant="outline"
-                  className="border-gray-600 text-gray-300 hover:border-brand-red hover:text-brand-red transition-colors"
+            <h3 className="text-white font-primary font-bold text-2xl mb-6">Related Articles</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {relatedArticles.map((relatedArticle) => (
+                <Link 
+                  key={relatedArticle._id} 
+                  to={`/reviews/${relatedArticle._id}`}
+                  className="group block"
                 >
-                  {tag}
-                </Badge>
+                  <Card className="bg-gray-800/50 border-gray-700 hover:border-brand-red/50 transition-all duration-300 hover:bg-gray-800/70">
+                    <CardContent className="p-0">
+                      {/* Article Image */}
+                      {relatedArticle.heroImage && (
+                        <div className="aspect-[16/9] overflow-hidden rounded-t-lg">
+                          <img 
+                            src={relatedArticle.heroImage} 
+                            alt={relatedArticle.heroImageAlt || relatedArticle.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        </div>
+                      )}
+                      
+                      <div className="p-4">
+                        {/* Category Tags */}
+                        {relatedArticle.categoryTags.length > 0 && (
+                          <div className="flex gap-2 mb-3">
+                            {relatedArticle.categoryTags.slice(0, 2).map((tag, index) => (
+                              <Badge 
+                                key={index} 
+                                className="bg-brand-red/20 text-brand-red border-brand-red/30 px-2 py-1 text-xs font-secondary font-semibold"
+                              >
+                                {tag}
+                              </Badge>
+                            ))}
+                          </div>
+                        )}
+                        
+                        {/* Title */}
+                        <h4 className="text-white font-primary font-bold text-lg mb-2 group-hover:text-brand-red transition-colors line-clamp-2">
+                          {relatedArticle.title}
+                        </h4>
+                        
+                        {/* Subtitle */}
+                        {relatedArticle.subtitle && (
+                          <p className="text-gray-400 font-secondary text-sm mb-3 line-clamp-2">
+                            {relatedArticle.subtitle}
+                          </p>
+                        )}
+                        
+                        {/* Meta Info */}
+                        <div className="flex items-center justify-between text-xs text-gray-500 font-secondary">
+                          <div className="flex items-center gap-2">
+                            <User className="w-3 h-3" />
+                            <span>{relatedArticle.authorName}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Calendar className="w-3 h-3" />
+                            <span>{formatDate(relatedArticle.publishedDate)}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
               ))}
             </div>
           </div>
         )}
 
-        {/* External Links */}
-        {article.externalLinks.length > 0 && (
-          <div className="mt-8 pt-8 border-t border-gray-700">
-            <h3 className="text-white font-primary font-bold text-lg mb-4">Related Links</h3>
-            <div className="space-y-2">
-              {article.externalLinks.map((link, index) => (
-                <a 
-                  key={index}
-                  href={link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-brand-red hover:text-brand-red/80 transition-colors font-secondary"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                  {link}
-                </a>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
