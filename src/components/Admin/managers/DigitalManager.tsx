@@ -215,14 +215,7 @@ const DigitalManager: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          <VideoIcon className="w-6 h-6 text-red-500" />
-          <div>
-            <h2 className="text-xl font-bold text-white">Digital Page</h2>
-            <p className="text-gray-400">Manage digital page photos and videos</p>
-          </div>
-        </div>
+      <div className="flex items-center justify-end">
         <div className="flex space-x-2">
           <Button onClick={fetchData} variant="outline" className="border-gray-500 text-gray-300 hover:bg-gray-600">
             <RefreshCw className="w-4 h-4 mr-2" />

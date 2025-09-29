@@ -214,14 +214,7 @@ const AssetCreationManager: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          <ImageIcon className="w-6 h-6 text-red-500" />
-          <div>
-            <h2 className="text-xl font-bold text-white">Asset Creation</h2>
-            <p className="text-gray-400">Manage asset creation photos and videos</p>
-          </div>
-        </div>
+      <div className="flex items-center justify-end">
       </div>
 
       {message && (

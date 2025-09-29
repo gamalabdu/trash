@@ -159,14 +159,7 @@ const OutreachManager: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          <Users className="w-6 h-6 text-red-500" />
-          <div>
-            <h2 className="text-xl font-bold text-white">Outreach Assets</h2>
-            <p className="text-gray-400">Manage outreach media and promotional content</p>
-          </div>
-        </div>
+      <div className="flex items-center justify-end">
         <Button onClick={handleAddAsset} className="bg-red-500 hover:bg-red-600">
           <Plus className="w-4 h-4 mr-2" />
           Add Asset

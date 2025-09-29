@@ -175,14 +175,7 @@ const BrandingManager: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          <VideoIcon className="w-6 h-6 text-red-500" />
-          <div>
-            <h2 className="text-xl font-bold text-white">Branding Page</h2>
-            <p className="text-gray-400">Manage branding page videos and content</p>
-          </div>
-        </div>
+      <div className="flex items-center justify-end">
         <Button onClick={handleAddItem} className="bg-red-500 hover:bg-red-600">
           <Plus className="w-4 h-4 mr-2" />
           Add Branding Item

@@ -5,7 +5,7 @@ import { Label } from '../../ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../ui/card';
 import { Alert, AlertDescription } from '../../ui/alert';
 import { Progress } from '../../ui/progress';
-import { Upload, Save, RefreshCw, Image as ImageIcon } from 'lucide-react';
+import { Upload, Save, RefreshCw, Image as ImageIcon, Plus } from 'lucide-react';
 import { sanityClient } from '../../../utils/sanityClient';
 
 interface HomeData {
@@ -61,6 +61,8 @@ const HomeManager: React.FC = () => {
         cache: 'no-store'
       });
 
+      console.log('Fetched home data:', data);
+
       if (data) {
         setHomeData({
           _id: data._id,
@@ -68,6 +70,15 @@ const HomeManager: React.FC = () => {
           homePic1: data.homePic1?.asset?.url || null,
           homePic2: data.homePic2?.asset?.url || null,
           titleIcon: data.titleIcon?.asset?.url || null
+        });
+        console.log('Home data set successfully');
+      } else {
+        console.log('No home data found, will create new document');
+        setHomeData({
+          name: '',
+          homePic1: null,
+          homePic2: null,
+          titleIcon: null
         });
       }
     } catch (error) {
@@ -104,6 +115,7 @@ const HomeManager: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Submitting home data:', homeData);
     setUploading(true);
     setUploadProgress(0);
     setMessage(null);
@@ -159,13 +171,20 @@ const HomeManager: React.FC = () => {
       }
 
       // Update or create the document
+      console.log('Update data:', updateData);
+      console.log('Home data ID:', homeData._id);
+      
       if (homeData._id) {
+        console.log('Updating existing home document');
         await sanityClient.patch(homeData._id).set(updateData).commit();
       } else {
-        await sanityClient.create({
+        console.log('Creating new home document');
+        const newDoc = await sanityClient.create({
           _type: 'home',
           ...updateData
         });
+        console.log('Created new document:', newDoc);
+        setHomeData(prev => ({ ...prev, _id: newDoc._id }));
       }
 
       setUploadProgress(100);
@@ -195,6 +214,37 @@ const HomeManager: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      <div className="flex items-center justify-end">
+        <div className="flex space-x-2">
+          <Button 
+            type="button" 
+            variant="outline" 
+            onClick={fetchHomeData}
+            disabled={uploading}
+            className="border-gray-600 text-gray-300 hover:bg-gray-700"
+          >
+            <RefreshCw className="w-4 h-4 mr-2" />
+            Refresh
+          </Button>
+          <Button 
+            type="button"
+            onClick={() => {
+              setHomeData({
+                name: '',
+                homePic1: null,
+                homePic2: null,
+                titleIcon: null
+              });
+              setMessage({ type: 'success', text: 'Form cleared - ready to add new home data' });
+            }}
+            className="bg-red-500 hover:bg-red-600"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Add Home Data
+          </Button>
+        </div>
+      </div>
+
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Title */}
         <div className="space-y-2">
@@ -312,7 +362,7 @@ const HomeManager: React.FC = () => {
         )}
 
         {/* Submit Button */}
-        <div className="flex space-x-4">
+        <div className="flex justify-start">
           <Button 
             type="submit" 
             disabled={uploading}
@@ -329,17 +379,6 @@ const HomeManager: React.FC = () => {
                 Save Changes
               </>
             )}
-          </Button>
-          
-          <Button 
-            type="button" 
-            variant="outline" 
-            onClick={fetchHomeData}
-            disabled={uploading}
-            className="border-gray-600 text-gray-300 hover:bg-gray-700"
-          >
-            <RefreshCw className="w-4 h-4 mr-2" />
-            Refresh
           </Button>
         </div>
       </form>

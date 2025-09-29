@@ -324,14 +324,7 @@ const WorksManager: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          <ImageIcon className="w-6 h-6 text-red-500" />
-          <div>
-            <h2 className="text-xl font-bold text-white">Portfolio Works</h2>
-            <p className="text-gray-400">Manage your portfolio projects and works</p>
-          </div>
-        </div>
+      <div className="flex items-center justify-end">
         <Button onClick={handleAddWork} className="bg-red-500 hover:bg-red-600">
           <Plus className="w-4 h-4 mr-2" />
           Add Work
