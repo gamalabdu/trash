@@ -28,12 +28,24 @@ interface Article {
 }
 
 interface ContentBlock {
-  _type: 'block' | 'spotifyEmbed' | 'pullQuote';
+  _type: 'block' | 'spotifyEmbed' | 'pullQuote' | 'photoBlock';
   _key?: string;
   children?: any[];
   style?: string;
   embedCode?: string;
   text?: string;
+  photos?: PhotoItem[];
+  layout?: 'single' | 'sidebyside' | '3column';
+}
+
+interface PhotoItem {
+  _key: string;
+  asset?: {
+    url: string;
+  };
+  url?: string;
+  alt?: string;
+  caption?: string;
 }
 
 const ReviewDetail: React.FC = () => {
@@ -109,7 +121,22 @@ const ReviewDetail: React.FC = () => {
           },
           authorSocialLinks,
           publishedDate,
-          content,
+          content[]{
+            _type,
+            _key,
+            children,
+            style,
+            embedCode,
+            text,
+            photos[]{
+              asset->{
+                url
+              },
+              alt,
+              caption
+            },
+            layout
+          },
           externalLinks,
           tags,
           shareCount,
@@ -270,7 +297,25 @@ const ReviewDetail: React.FC = () => {
         const text = block.children?.[0]?.text || '';
         const style = block.style || 'normal';
         
-        if (style === 'h1') {
+        // Check if the text contains HTML (from rich text editor)
+        const hasHTML = text && (text.includes('<') && text.includes('>'));
+        
+        if (hasHTML) {
+          // Render rich text content with HTML
+          return (
+            <div 
+              key={index} 
+              className="text-gray-300 font-secondary leading-relaxed mb-4"
+              dangerouslySetInnerHTML={{ __html: text }}
+              style={{
+                // Use consistent sans-serif font for all article content
+                fontFamily: 'var(--font-secondary)',
+                fontSize: '1.125rem',
+                lineHeight: '1.7',
+              }}
+            />
+          );
+        } else if (style === 'h1') {
           return (
             <h1 key={index} className="text-3xl font-primary font-bold text-white mb-6 mt-8">
               {text}
@@ -290,7 +335,7 @@ const ReviewDetail: React.FC = () => {
           );
         } else {
           return (
-            <p key={index} className="text-gray-300 font-secondary leading-relaxed mb-4">
+            <p key={index} className="text-gray-300 font-secondary leading-relaxed mb-4" style={{ fontSize: '1.125rem', lineHeight: '1.7' }}>
               {text}
             </p>
           );
@@ -307,12 +352,63 @@ const ReviewDetail: React.FC = () => {
         );
 
       case 'pullQuote':
+        const quoteText = block.text || '';
+        const hasQuoteHTML = quoteText && (quoteText.includes('<') && quoteText.includes('>'));
+        
         return (
           <blockquote key={index} className="border-l-4 border-brand-red pl-6 py-4 my-6 bg-gray-800/50 rounded-r-lg">
-            <p className="text-xl font-secondary italic text-gray-200">
-              "{block.text}"
-            </p>
+            {hasQuoteHTML ? (
+              <div 
+                className="text-xl font-secondary italic text-gray-200"
+                dangerouslySetInnerHTML={{ __html: quoteText }}
+                style={{
+                  // Use consistent sans-serif font for quotes
+                  fontFamily: 'var(--font-secondary)',
+                  fontSize: '1.25rem',
+                  lineHeight: '1.6',
+                }}
+              />
+            ) : (
+              <p className="text-xl font-secondary italic text-gray-200" style={{ fontSize: '1.25rem', lineHeight: '1.6' }}>
+                "{quoteText}"
+              </p>
+            )}
           </blockquote>
+        );
+
+      case 'photoBlock':
+        if (!block.photos || block.photos.length === 0) return null;
+        
+        const getGridClass = () => {
+          switch (block.layout) {
+            case 'sidebyside':
+              return 'grid-cols-1 md:grid-cols-2';
+            case '3column':
+              return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
+            default:
+              return 'grid-cols-1';
+          }
+        };
+
+        return (
+          <div key={index} className={`my-8 grid gap-6 ${getGridClass()}`}>
+            {block.photos.map((photo) => (
+              <div key={photo._key} className="space-y-3">
+                <div className="aspect-video overflow-hidden rounded-lg">
+                  <img 
+                    src={photo.asset?.url || photo.url} 
+                    alt={photo.alt || 'Article photo'} 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                {photo.caption && (
+                  <p className="text-sm text-gray-400 font-secondary italic text-center">
+                    {photo.caption}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
         );
 
       default:

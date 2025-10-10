@@ -60,7 +60,22 @@ const Reviews: React.FC = () => {
           },
           authorSocialLinks,
           publishedDate,
-          content,
+          content[]{
+            _type,
+            _key,
+            children,
+            style,
+            embedCode,
+            text,
+            photos[]{
+              asset->{
+                url
+              },
+              alt,
+              caption
+            },
+            layout
+          },
           externalLinks,
           tags,
           shareCount,
