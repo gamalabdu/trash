@@ -12,7 +12,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '../../ui/popover';
 import { Calendar as CalendarComponent } from '../../ui/calendar';
 import { Plus, Edit, Trash2, RefreshCw, FileText, Upload, Save, Image as ImageIcon, Calendar, User, Tag } from 'lucide-react';
 import { sanityClient } from '../../../utils/sanityClient';
-import ContentBlockComponent from '../../ui/content-block';
+import ContentBlockComponent, { ContentBlockProps } from '../../ui/content-block';
 
 interface Article {
   _id?: string;
@@ -66,6 +66,8 @@ const ArticleManager: React.FC = () => {
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [articleToDelete, setArticleToDelete] = useState<Article | null>(null);
 
   useEffect(() => {
     fetchArticles();
@@ -202,17 +204,29 @@ const ArticleManager: React.FC = () => {
     setIsDialogOpen(true);
   };
 
-  const handleDelete = async (articleId: string) => {
-    if (!window.confirm('Are you sure you want to delete this article?')) return;
+  const handleDelete = (article: Article) => {
+    setArticleToDelete(article);
+    setDeleteConfirmOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!articleToDelete?._id) return;
 
     try {
-      await sanityClient.delete(articleId);
+      await sanityClient.delete(articleToDelete._id);
       setMessage({ type: 'success', text: 'Article deleted successfully!' });
+      setDeleteConfirmOpen(false);
+      setArticleToDelete(null);
       fetchArticles();
     } catch (error) {
       console.error('Error deleting article:', error);
       setMessage({ type: 'error', text: 'Failed to delete article' });
     }
+  };
+
+  const cancelDelete = () => {
+    setDeleteConfirmOpen(false);
+    setArticleToDelete(null);
   };
 
   const uploadAsset = async (file: File, type: 'image' | 'file' = 'image'): Promise<string> => {
@@ -441,7 +455,7 @@ const ArticleManager: React.FC = () => {
                   <Button size="sm" variant="outline" onClick={() => handleEdit(article)} className="border-gray-500 text-gray-300 hover:bg-gray-600">
                     <Edit className="w-3 h-3" />
                   </Button>
-                  <Button size="sm" variant="outline" onClick={() => article._id && handleDelete(article._id)} className="border-red-500 text-red-400 hover:bg-red-500/10">
+                  <Button size="sm" variant="outline" onClick={() => handleDelete(article)} className="border-red-500 text-red-400 hover:bg-red-500/10">
                     <Trash2 className="w-3 h-3" />
                   </Button>
                 </div>
@@ -502,6 +516,92 @@ const ArticleManager: React.FC = () => {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Delete Confirmation Modal */}
+      <Dialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
+        <DialogContent className="bg-gray-800 border-gray-700 text-white max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="text-red-400 flex items-center gap-2">
+              <Trash2 className="w-5 h-5" />
+              Delete Article
+            </DialogTitle>
+            <DialogDescription className="text-gray-400">
+              Are you sure you want to delete "{articleToDelete?.title}"? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          
+          {articleToDelete && (
+            <div className="space-y-4">
+              {/* Article Preview */}
+              <Card className="bg-gray-700 border-gray-600">
+                <CardContent className="pt-6">
+                  {typeof articleToDelete.heroImage === 'string' && articleToDelete.heroImage && (
+                    <div className="aspect-video bg-gray-600 rounded-lg overflow-hidden mb-4">
+                      <img 
+                        src={articleToDelete.heroImage} 
+                        alt={articleToDelete.heroImageAlt} 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
+                  
+                  <div className="space-y-3">
+                    <div>
+                      <h3 className="text-white font-bold text-lg mb-1">{articleToDelete.title}</h3>
+                      <p className="text-gray-400 text-sm">{articleToDelete.subtitle}</p>
+                    </div>
+                    
+                    <div className="flex items-center gap-4 text-xs text-gray-500">
+                      <div className="flex items-center gap-1">
+                        <User className="w-3 h-3" />
+                        <span>{articleToDelete.authorName}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Calendar className="w-3 h-3" />
+                        <span>{new Date(articleToDelete.publishedDate).toLocaleDateString()}</span>
+                      </div>
+                    </div>
+                    
+                    {articleToDelete.categoryTags.length > 0 && (
+                      <div className="flex flex-wrap gap-1">
+                        {articleToDelete.categoryTags.map((tag, index) => (
+                          <span key={index} className="px-2 py-1 bg-red-500/20 text-red-300 text-xs rounded">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    
+                    {articleToDelete.metaDescription && (
+                      <p className="text-gray-400 text-sm line-clamp-3">
+                        {articleToDelete.metaDescription}
+                      </p>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Action Buttons */}
+              <div className="flex justify-end gap-3">
+                <Button 
+                  variant="outline" 
+                  onClick={cancelDelete}
+                  className="border-gray-500 text-gray-300 hover:bg-gray-600"
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  onClick={confirmDelete}
+                  className="bg-red-500 hover:bg-red-600 text-white"
+                >
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Delete Article
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
@@ -524,6 +624,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, onSave, onCancel, up
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+  const [allCollapsed, setAllCollapsed] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -682,22 +783,6 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, onSave, onCancel, up
     
     setFormData(prev => ({ ...prev, content: newContent }));
     setDraggedIndex(null);
-  };
-
-  const moveBlockUp = (index: number) => {
-    if (index === 0) return;
-    
-    const newContent = [...formData.content];
-    [newContent[index - 1], newContent[index]] = [newContent[index], newContent[index - 1]];
-    setFormData(prev => ({ ...prev, content: newContent }));
-  };
-
-  const moveBlockDown = (index: number) => {
-    if (index === formData.content.length - 1) return;
-    
-    const newContent = [...formData.content];
-    [newContent[index], newContent[index + 1]] = [newContent[index + 1], newContent[index]];
-    setFormData(prev => ({ ...prev, content: newContent }));
   };
 
   return (
@@ -944,8 +1029,23 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, onSave, onCancel, up
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <Label className="text-lg font-semibold text-white">Content Blocks ({formData.content.length})</Label>
-                <div className="text-sm text-gray-400">
-                  Drag blocks to reorder • Click edit to modify content
+                <div className="flex items-center gap-3">
+                  <div className="text-sm text-gray-400">
+                    Drag blocks to reorder • Click edit to modify content
+                  </div>
+                  {formData.content.length > 0 && (
+                    <Button
+                      type="button"
+                      onClick={() => setAllCollapsed(!allCollapsed)}
+                      className={`text-xs font-medium px-4 py-2 transition-all duration-200 border ${
+                        allCollapsed
+                          ? 'bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30 text-blue-400 hover:border-blue-500/50'
+                          : 'bg-gray-600/50 hover:bg-gray-600/70 border-gray-500/30 text-gray-300 hover:border-gray-500/50'
+                      }`}
+                    >
+                      {allCollapsed ? '⊞ Expand All' : '⊟ Collapse All'}
+                    </Button>
+                  )}
                 </div>
               </div>
               
@@ -981,14 +1081,13 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, onSave, onCancel, up
                       setFormData(prev => ({ ...prev, content: updatedContent }));
                     }}
                     onRemove={removeContentBlock}
-                    onMoveUp={moveBlockUp}
-                    onMoveDown={moveBlockDown}
-                    onDragStart={() => {}} // Handled by parent div
-                    onDragOver={() => {}} // Handled by parent div
-                    onDrop={() => {}} // Handled by parent div
+                    onMoveUp={() => {}}
+                    onMoveDown={() => {}}
+                    onDragStart={() => {}}
+                    onDragOver={() => {}}
+                    onDrop={() => {}}
                     isDragging={draggedIndex === index}
-                    isFirst={index === 0}
-                    isLast={index === formData.content.length - 1}
+                    forceCollapsed={allCollapsed}
                   />
                 </div>
               ))}
