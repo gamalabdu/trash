@@ -1,0 +1,331 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+body {
+  --tt-toolbar-height: 44px;
+  --tt-theme-text: var(--tt-gray-light-900);
+
+  .dark & {
+    --tt-theme-text: var(--tt-gray-dark-900);
+  }
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  color: var(--tt-theme-text);
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  padding: 0;
+  overscroll-behavior-y: none;
+}
+
+html,
+body {
+  overscroll-behavior-x: none;
+}
+
+html,
+body,
+#root,
+#app {
+  height: 100%;
+  background-color: var(--tt-bg-color);
+}
+
+::-webkit-scrollbar {
+  width: 0.25rem;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--tt-scrollbar-color) transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--tt-scrollbar-color);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tiptap.ProseMirror {
+  font-family: "DM Sans", sans-serif;
+}
+
+.simple-editor-wrapper {
+  width: 100%;
+  min-height: 600px;
+  background-color: var(--tt-bg-color);
+  border-radius: var(--tt-radius-lg);
+  border: 1px solid var(--tt-border-color);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.simple-editor-content {
+  max-width: 1200px; // Increased from 648px to fit multiple images side-by-side
+  width: 100%;
+  margin: 0 auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--tt-bg-color);
+}
+
+.simple-editor-content .tiptap.ProseMirror.simple-editor {
+  flex: 1;
+  padding: 3rem 3rem 3rem;
+  background-color: var(--tt-bg-color);
+  color: var(--tt-theme-text);
+  min-height: 400px;
+  
+  // Cursor color for light mode (default black)
+  caret-color: #000000;
+  
+  // Cursor color for dark mode
+  .dark & {
+    caret-color: #ffffff;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .simple-editor-content .tiptap.ProseMirror.simple-editor {
+    padding: 1rem 1.5rem 1rem;
+  }
+}
+
+/* Image Resize Styles */
+.simple-editor img {
+  transition: all 0.2s ease;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Only apply hover effects in editor mode */
+.editor-mode .simple-editor img:hover {
+  outline: 2px solid rgba(59, 130, 246, 0.3);
+  outline-offset: 2px;
+}
+
+/* Size lock visual feedback */
+.simple-editor img.size-locked {
+  outline: 2px solid #10b981 !important;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2), 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Drag Handle Styles */
+.tiptap.ProseMirror {
+  .ProseMirror-drag-handle {
+    position: absolute;
+    left: -24px;
+    top: 0;
+    width: 16px;
+    height: 16px;
+    background-color: #6b7280;
+    border-radius: 4px;
+    cursor: grab;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 10;
+    
+    &:hover {
+      background-color: #4b5563;
+    }
+    
+    &:active {
+      cursor: grabbing;
+    }
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 4px;
+      height: 4px;
+      background-color: white;
+      border-radius: 1px;
+      box-shadow: 
+        0 -6px 0 white,
+        0 6px 0 white,
+        -6px 0 0 white,
+        6px 0 0 white;
+    }
+  }
+  
+  // Show drag handle on hover
+  .ProseMirror-selectednode:hover .ProseMirror-drag-handle,
+  .image-gallery-wrapper:hover .ProseMirror-drag-handle,
+  .song-wrapper:hover .ProseMirror-drag-handle,
+  .quote-wrapper:hover .ProseMirror-drag-handle,
+  .spotify-wrapper:hover .ProseMirror-drag-handle {
+    opacity: 1;
+  }
+  
+  // Force drag handle visibility for debugging
+  .ProseMirror-drag-handle {
+    opacity: 1 !important;
+    background-color: #ef4444 !important; // Red for debugging
+  }
+  
+  // Alternative drag handle selectors
+  [data-drag-handle],
+  .drag-handle,
+  .tiptap-drag-handle {
+    position: absolute;
+    left: -24px;
+    top: 0;
+    width: 16px;
+    height: 16px;
+    background-color: #ef4444 !important; // Red for debugging
+    border-radius: 4px;
+    cursor: grab;
+    opacity: 1 !important;
+    transition: opacity 0.2s ease;
+    z-index: 10;
+    
+    &:hover {
+      background-color: #dc2626 !important;
+    }
+    
+    &:active {
+      cursor: grabbing;
+    }
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 4px;
+      height: 4px;
+      background-color: white;
+      border-radius: 1px;
+      box-shadow: 
+        0 -6px 0 white,
+        0 6px 0 white,
+        -6px 0 0 white,
+        6px 0 0 white;
+    }
+  }
+  
+  // Dark mode support
+  .dark & {
+    .ProseMirror-drag-handle {
+      background-color: #9ca3af;
+      
+      &:hover {
+        background-color: #6b7280;
+      }
+    }
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    display: inline-block; // Changed from block to inline-block for side-by-side layout
+    position: relative;
+    cursor: pointer;
+    vertical-align: top; // Align images to top when side-by-side
+    margin: 0.5rem; // Reduced margin for side-by-side positioning
+  }
+
+  > img:not([data-type="emoji"] img) {
+    margin: 0.5rem; // Reduced margin for side-by-side layout
+    outline: 0.125rem solid transparent;
+    border-radius: var(--tt-radius-xs, 0.25rem);
+  }
+
+  img:not([data-type="emoji"] img).ProseMirror-selectednode {
+    outline-color: var(--tt-brand-color-500);
+    position: relative;
+  }
+
+  // Thread image handling
+  .tiptap-thread:has(> img) {
+    margin: 0.5rem 0; // Reduced margin for side-by-side layout
+
+    img {
+      outline: 0.125rem solid transparent;
+      border-radius: var(--tt-radius-xs, 0.25rem);
+    }
+  }
+
+  .tiptap-thread img {
+    margin: 0.5rem; // Consistent margin for side-by-side layout
+  }
+
+  // Ensure consecutive images display side-by-side
+  img + img {
+    margin-left: 0.5rem; // Small gap between side-by-side images
+  }
+
+  // Handle multiple consecutive images (3+ images)
+  img + img + img {
+    margin-left: 0.5rem;
+  }
+
+  // Enhanced cursor positioning for better spacing control
+  .ProseMirror {
+    // Allow cursor positioning around block elements
+    [data-type="song"],
+    [data-type="image-gallery"],
+    [data-type="spotify"],
+    .image-gallery-wrapper,
+    .song-wrapper,
+    .spotify-wrapper {
+      position: relative;
+      
+      // Add invisible clickable areas for cursor positioning
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 0.5rem;
+        z-index: 1;
+        cursor: text;
+      }
+      
+      &::before {
+        top: -0.5rem;
+      }
+      
+      &::after {
+        bottom: -0.5rem;
+      }
+    }
+
+    // Ensure proper spacing around elements
+    p + [data-type="song"],
+    p + [data-type="image-gallery"],
+    p + [data-type="spotify"],
+    [data-type="song"] + p,
+    [data-type="image-gallery"] + p,
+    [data-type="spotify"] + p {
+      margin-top: 1rem;
+    }
+
+    // Allow cursor positioning next to songs, galleries, and spotify embeds
+    .song-wrapper,
+    .image-gallery-wrapper,
+    .spotify-wrapper {
+      margin: 1rem 0;
+      
+      // Add clickable areas for cursor positioning
+      &:hover {
+        &::before,
+        &::after {
+          background-color: rgba(var(--tt-brand-color-500-rgb), 0.1);
+        }
+      }
+    }
+  }
+}

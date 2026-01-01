@@ -1,0 +1,227 @@
+// Spotify Node Styles
+.spotify-wrapper {
+  margin: 1rem 0;
+  position: relative;
+  
+  &:hover {
+    .spotify-controls {
+      opacity: 1;
+    }
+  }
+}
+
+.spotify-node {
+  border: none;
+  border-radius: 0;
+  background-color: transparent;
+  overflow: visible;
+  position: relative;
+}
+
+.spotify-controls {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  gap: 0.25rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 10;
+  
+  .edit-spotify-button,
+  .delete-spotify-button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    background-color: var(--tt-bg-color);
+    border: 1px solid var(--tt-border-color);
+    border-radius: var(--tt-radius-sm);
+    
+    &:hover {
+      background-color: var(--tt-gray-light-100);
+    }
+  }
+  
+  .delete-spotify-button {
+    color: var(--tt-red-500);
+    
+    &:hover {
+      background-color: var(--tt-red-50);
+    }
+  }
+}
+
+  .spotify-edit-form {
+    padding: 1.5rem;
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+      
+      label {
+        display: block;
+        margin-bottom: 0.75rem;
+        font-weight: 600;
+        color: var(--tt-theme-text);
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      
+      .form-input,
+      .form-textarea {
+        width: 100%;
+        padding: 0.875rem 1rem;
+        border: 2px solid var(--tt-border-color);
+        border-radius: 8px;
+        background-color: var(--tt-bg-color);
+        color: var(--tt-theme-text);
+        font-size: 0.875rem;
+        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        transition: all 0.2s ease;
+        
+        &:focus {
+          outline: none;
+          border-color: #1db954;
+          box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.1);
+          transform: translateY(-1px);
+        }
+        
+        &::placeholder {
+          color: var(--tt-gray-light-500);
+          font-style: italic;
+        }
+      }
+      
+      .form-textarea {
+        resize: vertical;
+        min-height: 120px;
+        line-height: 1.5;
+      }
+    }
+    
+    .form-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--tt-border-color);
+      
+      .save-button,
+      .cancel-button {
+        padding: 0.875rem 2rem;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.875rem;
+        transition: all 0.2s ease;
+        min-width: 120px;
+      }
+      
+      .save-button {
+        background: linear-gradient(135deg, #1db954 0%, #1ed760 100%);
+        color: white;
+        border: none;
+        
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(29, 185, 84, 0.3);
+        }
+      }
+      
+      .cancel-button {
+        background: transparent;
+        border: 2px solid var(--tt-border-color);
+        color: var(--tt-theme-text);
+        
+        &:hover {
+          background-color: var(--tt-gray-light-100);
+          border-color: var(--tt-gray-light-300);
+        }
+      }
+    }
+  }
+
+.spotify-display {
+  .spotify-title {
+    padding: 1rem 1rem 0.5rem;
+    font-weight: 600;
+    color: var(--tt-theme-text);
+    font-size: 1.1rem;
+  }
+  
+  .spotify-embed-container {
+    width: 100%;
+    background-color: var(--tt-bg-color);
+    border-radius: 12px;
+    overflow: hidden;
+    
+    iframe {
+      width: 100%;
+      border: none;
+      border-radius: 12px;
+      background-color: transparent;
+    }
+  }
+  
+  .spotify-error {
+    padding: 2rem;
+    text-align: center;
+    color: var(--tt-gray-light-600);
+    
+    p {
+      margin: 0.5rem 0;
+      
+      &:first-child {
+        font-weight: 500;
+        color: var(--tt-red-500);
+      }
+      
+      &:last-child {
+        font-size: 0.875rem;
+        font-style: italic;
+      }
+    }
+  }
+}
+
+
+// Dark mode support
+.dark {
+  .spotify-node {
+    background-color: var(--tt-gray-dark-800);
+    border-color: var(--tt-gray-dark-600);
+  }
+  
+  .spotify-controls {
+    .edit-spotify-button,
+    .delete-spotify-button {
+      background-color: var(--tt-gray-dark-700);
+      border-color: var(--tt-gray-dark-600);
+      color: var(--tt-gray-dark-100);
+      
+      &:hover {
+        background-color: var(--tt-gray-dark-600);
+      }
+    }
+    
+    .delete-spotify-button:hover {
+      background-color: var(--tt-red-900);
+    }
+  }
+  
+  .spotify-modal {
+    background-color: var(--tt-gray-dark-800);
+    border-color: var(--tt-gray-dark-600);
+  }
+  
+  .spotify-modal-header {
+    border-color: var(--tt-gray-dark-600);
+    
+    .spotify-modal-close:hover {
+      background-color: var(--tt-gray-dark-700);
+    }
+  }
+  
+  .spotify-error p:first-child {
+    color: var(--tt-red-400);
+  }
+}

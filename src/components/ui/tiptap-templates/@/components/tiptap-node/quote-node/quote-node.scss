@@ -1,0 +1,350 @@
+/* Quote Node Styles - Minimal Editorial Style */
+.quote-wrapper {
+  position: relative;
+  margin: 1.5rem 0;
+  cursor: grab;
+  user-select: none; /* Prevent text selection during drag */
+  
+  &:active {
+    cursor: grabbing;
+  }
+  
+  &:hover {
+    outline: 1px solid rgba(0, 0, 0, 0.05);
+    outline-offset: 2px;
+  }
+  
+  &.selected {
+    outline: 1px solid rgba(0, 0, 0, 0.2);
+    outline-offset: 2px;
+  }
+}
+
+.quote-container {
+  position: relative;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: grab;
+  user-select: none; /* Prevent text selection during drag */
+  
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.quote-icon {
+  display: none;
+}
+
+/* Display Mode - Clean & Simple */
+.quote-display {
+  position: relative;
+  text-align: left;
+  padding: 1rem 0 1rem 1rem;
+  border-left: 2px solid #000;
+  
+  .dark & {
+    border-left-color: #fff;
+  }
+}
+
+/* Width Variations */
+.quote-width-full {
+  width: 100%;
+}
+
+.quote-width-wide {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.quote-width-medium {
+  width: 60%;
+  margin: 0 auto;
+}
+
+.quote-width-narrow {
+  width: 40%;
+  margin: 0 auto;
+}
+
+.quote-content {
+  position: relative;
+}
+
+.quote-text {
+  font-size: 1.125rem; // 18px - Smaller and more sleek
+  line-height: 1.4;
+  font-style: italic;
+  color: #000;
+  margin: 0 0 0.5rem 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 400;
+  
+  .dark & {
+    color: #fff;
+  }
+}
+
+.quote-author {
+  font-size: 0.75rem;
+  color: #666;
+  margin: 0;
+  font-weight: 500;
+  font-style: normal;
+  
+  .dark & {
+    color: #999;
+  }
+}
+
+.quote-controls {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  gap: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  
+  .quote-wrapper:hover & {
+    opacity: 1;
+  }
+}
+
+.quote-control-button {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 4px; // Square corners - more modern
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  transition: all 0.15s ease;
+  
+  .dark & {
+    background: rgba(30, 30, 30, 0.95);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  &:hover {
+    background: rgba(255, 255, 255, 1);
+    border-color: rgba(0, 0, 0, 0.2);
+    
+    .dark & {
+      background: rgba(40, 40, 40, 1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+  
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+/* Edit Mode - Simple & Clean */
+.quote-editor {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem 0 0.75rem 1rem;
+  border-left: 2px solid #ccc;
+  
+  .dark & {
+    border-left-color: #555;
+  }
+}
+
+.quote-text-input,
+.quote-author-input {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1.125rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  background: #fff;
+  color: #000;
+  font-family: Georgia, 'Times New Roman', serif;
+  resize: vertical;
+  transition: border-color 0.2s ease;
+  
+  .dark & {
+    background: #1a1a1a;
+    border-color: #374151;
+    color: #fff;
+  }
+  
+  &:focus {
+    outline: none;
+    border-color: #000;
+    
+    .dark & {
+      border-color: #fff;
+    }
+  }
+  
+  &::placeholder {
+    color: #999;
+    font-style: italic;
+  }
+}
+
+.quote-text-input {
+  font-style: italic;
+  line-height: 1.4;
+  font-weight: 400;
+  min-height: 60px;
+}
+
+.quote-author-input {
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.quote-width-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.quote-width-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #666;
+  
+  .dark & {
+    color: #999;
+  }
+}
+
+.quote-width-select {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  background: #fff;
+  color: #000;
+  cursor: pointer;
+  
+  .dark & {
+    background: #1a1a1a;
+    border-color: #374151;
+    color: #fff;
+  }
+  
+  &:focus {
+    outline: none;
+    border-color: #000;
+    
+    .dark & {
+      border-color: #fff;
+    }
+  }
+}
+
+.quote-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.quote-button {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  border: 1px solid #e5e7eb;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  
+  &:hover {
+    border-color: #000;
+    
+    .dark & {
+      border-color: #fff;
+    }
+  }
+  
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.quote-button-save {
+  background: #000;
+  color: white;
+  border-color: #000;
+  
+  .dark & {
+    background: #fff;
+    color: #000;
+    border-color: #fff;
+  }
+  
+  &:hover {
+    background: #1a1a1a;
+    
+    .dark & {
+      background: #e5e5e5;
+    }
+  }
+}
+
+.quote-button-cancel {
+  background: #fff;
+  color: #000;
+  border-color: #e5e7eb;
+  
+  .dark & {
+    background: #1a1a1a;
+    color: #fff;
+    border-color: #374151;
+  }
+  
+  &:hover {
+    background: #f5f5f5;
+    border-color: #000;
+    
+    .dark & {
+      background: #2a2a2a;
+      border-color: #fff;
+    }
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .quote-wrapper {
+    margin: 1rem 0;
+  }
+  
+  .quote-text {
+    font-size: 1rem;
+  }
+  
+  .quote-display {
+    padding: 0.75rem 0 0.75rem 0.75rem;
+  }
+  
+  .quote-editor {
+    padding: 0.75rem 0 0.75rem 0.75rem;
+  }
+  
+  /* On mobile, make all quotes full width for better readability */
+  .quote-width-wide,
+  .quote-width-medium,
+  .quote-width-narrow {
+    width: 100%;
+    margin: 0;
+  }
+}
+

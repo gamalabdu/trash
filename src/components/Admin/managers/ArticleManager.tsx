@@ -10,9 +10,15 @@ import { Progress } from '../../ui/progress';
 import { Textarea } from '../../ui/textarea';
 import { Popover, PopoverContent, PopoverTrigger } from '../../ui/popover';
 import { Calendar as CalendarComponent } from '../../ui/calendar';
-import { Plus, Edit, Trash2, RefreshCw, FileText, Upload, Save, Image as ImageIcon, Calendar, User, Tag } from 'lucide-react';
+import { Plus, Edit, Trash2, RefreshCw, FileText, Upload, Save, Image as ImageIcon, Calendar, User, Tag, ArrowLeft, Crop } from 'lucide-react';
 import { sanityClient } from '../../../utils/sanityClient';
-import ContentBlockComponent, { ContentBlockProps } from '../../ui/content-block';
+import { SimpleEditorWrapper } from '../../ui/tiptap-templates/simple/simple-editor-wrapper';
+import { HeroImagePositionModal } from '../../ui/hero-image-position-modal';
+import '../../ui/tiptap-templates/simple/simple-editor.scss';
+import '../../ui/tiptap-templates/@/components/tiptap-node/quote-node/quote-node.scss';
+import '../../ui/tiptap-templates/@/components/tiptap-node/blockquote-node/blockquote-node.scss';
+import '../../ui/tiptap-templates/@/components/tiptap-node/image-node/image-node.scss';
+import '../../ui/tiptap-templates/@/components/tiptap-node/paragraph-node/paragraph-node.scss';
 
 interface Article {
   _id?: string;
@@ -20,6 +26,7 @@ interface Article {
   subtitle: string;
   heroImage?: File | string | null;
   heroImageAlt?: string;
+  heroImageFocusPoint?: { x: number; y: number }; // Focus point for positioning (0-1 range)
   categoryTags: string[];
   authorName: string;
   authorRole: string;
@@ -62,12 +69,14 @@ const ArticleManager: React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(false);
   const [editingArticle, setEditingArticle] = useState<Article | null>(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [articleToDelete, setArticleToDelete] = useState<Article | null>(null);
+  
+  // Section navigation state
+  const [currentSection, setCurrentSection] = useState<'list' | 'editor'>('list');
 
   useEffect(() => {
     fetchArticles();
@@ -79,7 +88,6 @@ const ArticleManager: React.FC = () => {
       const timer = setTimeout(() => {
         setMessage(null);
       }, 3000);
-      
       return () => clearTimeout(timer);
     }
   }, [message]);
@@ -96,7 +104,11 @@ const ArticleManager: React.FC = () => {
             asset->{
               url
             },
-            alt
+            alt,
+            hotspot{
+              x,
+              y
+            }
           },
           categoryTags,
           authorName,
@@ -134,7 +146,8 @@ const ArticleManager: React.FC = () => {
       `, {
         timestamp: Date.now()
       }, {
-        cache: 'no-store'
+        cache: 'no-store',
+        useCdn: false
       });
 
       setArticles(articlesData.map((article: any) => ({
@@ -143,6 +156,10 @@ const ArticleManager: React.FC = () => {
         subtitle: article.subtitle || '',
         heroImage: article.heroImage?.asset?.url || null,
         heroImageAlt: article.heroImage?.alt || '',
+        heroImageFocusPoint: article.heroImage?.hotspot ? {
+          x: article.heroImage.hotspot.x,
+          y: article.heroImage.hotspot.y
+        } : undefined,
         categoryTags: article.categoryTags || [],
         authorName: article.authorName || '',
         authorRole: article.authorRole || '',
@@ -156,7 +173,7 @@ const ArticleManager: React.FC = () => {
               photos: block.photos.map((photo: any, index: number) => ({
                 _key: `photo-${index}`,
                 url: photo.asset?.url,
-                assetRef: photo.asset?._ref, // Store the asset reference ID
+                assetRef: photo.asset?._ref,
                 alt: photo.alt || '',
                 caption: photo.caption || ''
               }))
@@ -183,6 +200,7 @@ const ArticleManager: React.FC = () => {
       subtitle: '',
       heroImage: null,
       heroImageAlt: '',
+      heroImageFocusPoint: undefined,
       categoryTags: [],
       authorName: '',
       authorRole: '',
@@ -196,12 +214,12 @@ const ArticleManager: React.FC = () => {
       metaDescription: '',
       keywords: []
     });
-    setIsDialogOpen(true);
+    setCurrentSection('editor');
   };
 
   const handleEdit = (article: Article) => {
     setEditingArticle({ ...article });
-    setIsDialogOpen(true);
+    setCurrentSection('editor');
   };
 
   const handleDelete = (article: Article) => {
@@ -229,6 +247,12 @@ const ArticleManager: React.FC = () => {
     setArticleToDelete(null);
   };
 
+  const handleBackToList = () => {
+    setCurrentSection('list');
+    setEditingArticle(null);
+    setMessage(null);
+  };
+
   const uploadAsset = async (file: File, type: 'image' | 'file' = 'image'): Promise<string> => {
     const asset = await sanityClient.assets.upload(type, file, {
       filename: file.name
@@ -250,7 +274,7 @@ const ArticleManager: React.FC = () => {
         authorRole: articleData.authorRole,
         authorSocialLinks: articleData.authorSocialLinks,
         publishedDate: articleData.publishedDate,
-        content: articleData.content,
+        content: articleData.content, // already synchronized from editor
         externalLinks: articleData.externalLinks,
         tags: articleData.tags,
         shareCount: articleData.shareCount,
@@ -260,28 +284,32 @@ const ArticleManager: React.FC = () => {
 
       // Handle hero image upload
       if (articleData.heroImage instanceof File) {
+        console.log('Uploading hero image file:', articleData.heroImage);
         setUploadProgress(30);
         const heroImageAssetId = await uploadAsset(articleData.heroImage, 'image');
+        console.log('Hero image uploaded, asset ID:', heroImageAssetId);
         updateData.heroImage = {
           _type: 'image',
-          asset: {
-            _type: 'reference',
-            _ref: heroImageAssetId
-          },
-          alt: articleData.heroImageAlt
+          asset: { _type: 'reference', _ref: heroImageAssetId },
+          alt: articleData.heroImageAlt,
+          hotspot: articleData.heroImageFocusPoint ? {
+            x: articleData.heroImageFocusPoint.x,
+            y: articleData.heroImageFocusPoint.y
+          } : undefined
         };
       } else if (typeof articleData.heroImage === 'string' && articleData.heroImage) {
-        // For existing images, we need to fetch the current article to get the asset reference
+        console.log('Using existing hero image URL:', articleData.heroImage);
         if (articleData._id) {
           const currentArticle = await sanityClient.fetch(`*[_id == "${articleData._id}"][0]`);
           if (currentArticle?.heroImage?.asset?._ref) {
             updateData.heroImage = {
               _type: 'image',
-              asset: {
-                _type: 'reference',
-                _ref: currentArticle.heroImage.asset._ref
-              },
-              alt: articleData.heroImageAlt
+              asset: { _type: 'reference', _ref: currentArticle.heroImage.asset._ref },
+              alt: articleData.heroImageAlt,
+              hotspot: articleData.heroImageFocusPoint ? {
+                x: articleData.heroImageFocusPoint.x,
+                y: articleData.heroImageFocusPoint.y
+              } : undefined
             };
           }
         }
@@ -293,110 +321,33 @@ const ArticleManager: React.FC = () => {
         const authorImageAssetId = await uploadAsset(articleData.authorImage, 'image');
         updateData.authorImage = {
           _type: 'image',
-          asset: {
-            _type: 'reference',
-            _ref: authorImageAssetId
-          }
+          asset: { _type: 'reference', _ref: authorImageAssetId }
         };
       }
 
-      // Process content blocks and upload photos
-      setUploadProgress(70);
-      const processedContent = await Promise.all(
-        articleData.content.map(async (block) => {
-          if (block._type === 'photoBlock' && block.photos) {
-            console.log('Processing photo block:', block);
-            const processedPhotos = (await Promise.all(
-              block.photos.map(async (photo) => {
-                console.log('Processing photo:', photo);
-                if (photo.file) {
-                  const assetId = await uploadAsset(photo.file, 'image');
-                  return {
-                    _type: 'image',
-                    asset: {
-                      _type: 'reference',
-                      _ref: assetId
-                    },
-                    alt: photo.alt || '',
-                    caption: photo.caption || ''
-                  };
-                } else {
-                  // For existing photos, we need to extract the asset ID from the URL
-                  // URL format: https://cdn.sanity.io/images/projectId/dataset/assetId-format
-                  let assetId = photo.assetRef; // Use assetRef if available
-                  
-                  if (!assetId && photo.url && typeof photo.url === 'string' && photo.url.includes('cdn.sanity.io')) {
-                    // Extract asset ID from CDN URL as fallback
-                    // URL format: https://cdn.sanity.io/images/projectId/dataset/assetId-dimensions.ext
-                    const urlParts = photo.url.split('/');
-                    const filename = urlParts[urlParts.length - 1];
-                    // Remove file extension and dimensions, keep the asset ID
-                    // Example: "e71295894b693dfd9530f8c159d7b8855edffe22-704x698.png" -> "e71295894b693dfd9530f8c159d7b8855edffe22"
-                    const withoutExt = filename.replace(/\.(jpg|jpeg|png|gif|webp)$/i, '');
-                    const parts = withoutExt.split('-');
-                    // The asset ID is everything except the last part (dimensions)
-                    if (parts.length >= 2) {
-                      assetId = parts.slice(0, -1).join('-');
-                      console.log('Extracted asset ID from URL:', assetId, 'from filename:', filename);
-                    }
-                  }
-                  
-                  if (!assetId) {
-                    console.error('No valid asset ID found for photo:', photo);
-                    // Skip this photo if we can't get a valid asset ID
-                    return null;
-                  }
-                  
-                  return {
-                    _type: 'image',
-                    asset: {
-                      _type: 'reference',
-                      _ref: assetId
-                    },
-                    alt: photo.alt || '',
-                    caption: photo.caption || ''
-                  };
-                }
-              })
-            )).filter(photo => photo !== null);
-            
-            return {
-              _type: 'photoBlock',
-              photos: processedPhotos,
-              layout: block.layout
-            };
-          }
-          return block;
-        })
-      );
-      
-      updateData.content = processedContent;
+      // (Optional) if you keep photoBlock in the future, you can process it here.
+      // For the single-editor approach, `content` is just one HTML block already.
 
       setUploadProgress(90);
 
       if (articleData._id) {
         await sanityClient.patch(articleData._id).set(updateData).commit();
       } else {
-        await sanityClient.create({
-          _type: 'articles',
-          ...updateData
-        });
+        await sanityClient.create({ _type: 'articles', ...updateData });
       }
 
       setUploadProgress(100);
       setMessage({ type: 'success', text: articleData._id ? 'Article updated successfully!' : 'Article created successfully!' });
-      
-      // Small delay to ensure Sanity has processed the update, then refresh and close modal
+
       setTimeout(async () => {
         await fetchArticles();
-        setIsDialogOpen(false);
+        setCurrentSection('list');
         setEditingArticle(null);
       }, 500);
 
     } catch (error) {
       console.error('Error saving article:', error);
       setMessage({ type: 'error', text: 'Failed to save article' });
-      // Don't close modal on error so user can try again
     }
 
     setUploading(false);
@@ -411,6 +362,53 @@ const ArticleManager: React.FC = () => {
     );
   }
 
+  // Render editor section
+  if (currentSection === 'editor' && editingArticle) {
+    return (
+      <div className="space-y-6">
+        {/* Header with back button */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <Button 
+              onClick={handleBackToList} 
+              variant="outline" 
+              className="border-gray-500 text-gray-300 hover:bg-gray-600"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Articles
+            </Button>
+            <div>
+              <h2 className="text-xl font-semibold text-white">
+                {editingArticle._id ? 'Edit Article' : 'Create New Article'}
+              </h2>
+              <p className="text-sm text-gray-400">
+                {editingArticle._id ? 'Update article information' : 'Add a new article to your blog'}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {message && (
+          <Alert variant={message.type === 'error' ? 'destructive' : 'default'}>
+            <AlertDescription>{message.text}</AlertDescription>
+          </Alert>
+        )}
+
+        {/* Full-width article form */}
+        <div className="bg-gray-800 rounded-lg border border-gray-700 p-6">
+          <ArticleForm 
+            article={editingArticle}
+            onSave={handleSave}
+            onCancel={handleBackToList}
+            uploading={uploading}
+            uploadProgress={uploadProgress}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // Render list section
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-end">
@@ -463,8 +461,10 @@ const ArticleManager: React.FC = () => {
             </CardHeader>
             <CardContent>
               {typeof article.heroImage === 'string' && article.heroImage && (
-                <div className="aspect-video bg-gray-600 rounded-lg overflow-hidden mb-3">
-                  <img src={article.heroImage} alt={article.heroImageAlt} className="w-full h-full object-cover" />
+                <div className="bg-gray-600 rounded-lg overflow-hidden mb-3">
+                  <div className="aspect-[16/9] overflow-hidden">
+                    <img src={article.heroImage} alt={article.heroImageAlt} className="w-full h-full object-cover" />
+                  </div>
                 </div>
               )}
               <div className="space-y-2">
@@ -496,27 +496,6 @@ const ArticleManager: React.FC = () => {
         </div>
       )}
 
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="bg-gray-800 border-gray-700 text-white max-w-4xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>{editingArticle?._id ? 'Edit Article' : 'Create New Article'}</DialogTitle>
-            <DialogDescription className="text-gray-400">
-              {editingArticle?._id ? 'Update article information' : 'Add a new article to your blog'}
-            </DialogDescription>
-          </DialogHeader>
-          
-          {editingArticle && (
-            <ArticleForm 
-              article={editingArticle}
-              onSave={handleSave}
-              onCancel={() => setIsDialogOpen(false)}
-              uploading={uploading}
-              uploadProgress={uploadProgress}
-            />
-          )}
-        </DialogContent>
-      </Dialog>
-
       {/* Delete Confirmation Modal */}
       <Dialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
         <DialogContent className="bg-gray-800 border-gray-700 text-white max-w-2xl">
@@ -536,12 +515,14 @@ const ArticleManager: React.FC = () => {
               <Card className="bg-gray-700 border-gray-600">
                 <CardContent className="pt-6">
                   {typeof articleToDelete.heroImage === 'string' && articleToDelete.heroImage && (
-                    <div className="aspect-video bg-gray-600 rounded-lg overflow-hidden mb-4">
-                      <img 
-                        src={articleToDelete.heroImage} 
-                        alt={articleToDelete.heroImageAlt} 
-                        className="w-full h-full object-cover"
-                      />
+                    <div className="bg-gray-600 rounded-lg overflow-hidden mb-4">
+                      <div className="aspect-[16/9] overflow-hidden">
+                        <img 
+                          src={articleToDelete.heroImage} 
+                          alt={articleToDelete.heroImageAlt} 
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
                     </div>
                   )}
                   
@@ -615,6 +596,75 @@ interface ArticleFormProps {
 }
 
 const ArticleForm: React.FC<ArticleFormProps> = ({ article, onSave, onCancel, uploading, uploadProgress }) => {
+  // Hero image cropping state
+  const [isHeroCropModalOpen, setIsHeroCropModalOpen] = useState(false);
+  const [heroImageFile, setHeroImageFile] = useState<File | null>(null);
+
+  // Helper function to process Spotify and YouTube embeds in HTML
+  const processMediaEmbeds = (html: string): string => {
+    console.log('Processing media embeds, input HTML length:', html.length);
+    console.log('Input HTML preview:', html.substring(0, 1000));
+    
+    let processed = html;
+    
+    // Process Spotify embeds
+    const spotifyRegex = /<div[^>]*data-type="spotify"[^>]*data-iframe-code="([^"]*)"[^>]*(?:\/>|>.*?<\/div>)/g;
+    processed = processed.replace(spotifyRegex, (match, iframeCode) => {
+        console.log('Found Spotify div match:', match);
+        console.log('Iframe code from data attribute:', iframeCode);
+        
+        // Decode HTML entities in the iframe code
+        const decodedIframeCode = iframeCode
+          .replace(/&lt;/g, '<')
+          .replace(/&gt;/g, '>')
+          .replace(/&quot;/g, '"')
+          .replace(/&#x27;/g, "'")
+          .replace(/&amp;/g, '&');
+        
+        console.log('Decoded iframe code:', decodedIframeCode);
+        
+        // Check for both escaped and unescaped iframe tags
+        if (decodedIframeCode && (decodedIframeCode.includes('<iframe') || decodedIframeCode.includes('&lt;iframe'))) {
+          console.log('Converting to HTML embed');
+          // Return the iframe code as actual HTML
+          return `<div class="spotify-embed-container">${decodedIframeCode}</div>`;
+        }
+        console.log('No valid iframe code found, returning original');
+        return match; // Return original if no valid iframe code
+      }
+    );
+    
+    // Process YouTube embeds
+    const youtubeRegex = /<div[^>]*data-type="youtube"[^>]*data-embed-code="([^"]*)"[^>]*(?:\/>|>.*?<\/div>)/g;
+    processed = processed.replace(youtubeRegex, (match, embedCode) => {
+        console.log('Found YouTube div match:', match);
+        console.log('Embed code from data attribute:', embedCode);
+        
+        // Decode HTML entities in the embed code
+        const decodedEmbedCode = embedCode
+          .replace(/&lt;/g, '<')
+          .replace(/&gt;/g, '>')
+          .replace(/&quot;/g, '"')
+          .replace(/&#x27;/g, "'")
+          .replace(/&amp;/g, '&');
+        
+        console.log('Decoded embed code:', decodedEmbedCode);
+        
+        // Check for both escaped and unescaped iframe tags
+        if (decodedEmbedCode && (decodedEmbedCode.includes('<iframe') || decodedEmbedCode.includes('&lt;iframe'))) {
+          console.log('Converting to HTML embed');
+          // Return the embed code as actual HTML
+          return `<div class="youtube-embed-container">${decodedEmbedCode}</div>`;
+        }
+        console.log('No valid embed code found, returning original');
+        return match; // Return original if no valid embed code
+      }
+    );
+    
+    console.log('Processed HTML length:', processed.length);
+    console.log('Processed HTML preview:', processed.substring(0, 1000));
+    return processed;
+  };
   const [formData, setFormData] = useState<Article>(article);
   const [newTag, setNewTag] = useState('');
   const [newCategoryTag, setNewCategoryTag] = useState('');
@@ -622,17 +672,105 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, onSave, onCancel, up
   const [newSocialLink, setNewSocialLink] = useState('');
   const [newExternalLink, setNewExternalLink] = useState('');
   const [calendarOpen, setCalendarOpen] = useState(false);
-  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
-  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
-  const [allCollapsed, setAllCollapsed] = useState(false);
+
+  // ===== Single-editor helpers =====
+  const makeHtmlBlock = (html: string) => ({
+    _type: 'block' as const,
+    _key: `block-${Date.now()}`,
+    style: 'normal',
+    children: [
+      {
+        _type: 'span',
+        _key: `span-${Date.now()}`,
+        text: html,      // store HTML string here (preview already supports it)
+        marks: [],
+      },
+    ],
+  });
+
+  const extractInitialHTML = (content: ArticleContentBlock[] | undefined) => {
+    if (!content || content.length === 0) return '';
+    const first = content.find(b => b._type === 'block');
+    const txt = first?.children?.[0]?.text;
+    if (txt && typeof txt === 'string' && txt.includes('<') && txt.includes('>')) {
+      return txt; // HTML stored previously
+    }
+    const plain = content
+      .filter(b => b._type === 'block')
+      .map(b => b.children?.map((c: any) => c?.text ?? '').join('') ?? '')
+      .join('\n\n');
+    return plain || '';
+  };
+
+  const [editorHTML, setEditorHTML] = useState<string>(() => extractInitialHTML(article.content));
+
+  // Keep formData.content in sync with the editor HTML (so Preview & Save work)
+  useEffect(() => {
+    setFormData(prev => ({ ...prev, content: [makeHtmlBlock(editorHTML)] }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editorHTML]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSave(formData);
   };
 
+  // Helper function to get object position based on focus point
+  const getObjectPosition = (focusPoint?: { x: number; y: number }) => {
+    if (!focusPoint) return 'center center';
+    return `${focusPoint.x * 100}% ${focusPoint.y * 100}%`;
+  };
+
   const handleFileChange = (file: File | null, field: 'heroImage' | 'authorImage') => {
     setFormData(prev => ({ ...prev, [field]: file }));
+  };
+
+  // Hero image cropping functions
+  const handleHeroCropClick = async () => {
+    if (!formData.heroImage) return;
+    
+    try {
+      let file: File;
+      
+      if (formData.heroImage instanceof File) {
+        file = formData.heroImage;
+      } else if (typeof formData.heroImage === 'string') {
+        // Convert URL to File
+        const response = await fetch(formData.heroImage);
+        const blob = await response.blob();
+        file = new File([blob], 'hero-image.png', { type: blob.type });
+      } else {
+        return;
+      }
+      
+      setHeroImageFile(file);
+      setIsHeroCropModalOpen(true);
+    } catch (error) {
+      console.error('Error preparing hero image for crop:', error);
+    }
+  };
+
+  const handleHeroCropComplete = (croppedImageUrl: string, cropData?: { x: number; y: number; width: number; height: number }) => {
+    console.log('Hero positioning complete, cropData:', cropData);
+    
+    // Store the focus point for positioning (do NOT crop the image)
+    let focusPoint = { x: 0.5, y: 0.5 }; // Default center
+    if (cropData) {
+      // Use the position directly as focus point
+      focusPoint = {
+        x: cropData.x,
+        y: cropData.y
+      };
+    }
+    
+    console.log('Setting focus point:', focusPoint);
+    setFormData(prev => ({ 
+      ...prev, 
+      heroImageFocusPoint: focusPoint // Only update the focus point, keep original image
+    }));
+    
+    setIsHeroCropModalOpen(false);
+    setHeroImageFile(null);
   };
 
   const handleDateSelect = (date: Date | undefined) => {
@@ -643,146 +781,65 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, onSave, onCancel, up
   };
 
   const addTag = () => {
-    if (newTag.trim() && !formData.tags.includes(newTag.trim())) {
-      setFormData(prev => ({ ...prev, tags: [...prev.tags, newTag.trim()] }));
+    const v = newTag.trim();
+    if (v && !formData.tags.includes(v)) {
+      setFormData(prev => ({ ...prev, tags: [...prev.tags, v] }));
       setNewTag('');
     }
   };
-
   const removeTag = (tagToRemove: string) => {
     setFormData(prev => ({ ...prev, tags: prev.tags.filter(tag => tag !== tagToRemove) }));
   };
 
   const addCategoryTag = () => {
-    if (newCategoryTag.trim() && !formData.categoryTags.includes(newCategoryTag.trim())) {
-      setFormData(prev => ({ ...prev, categoryTags: [...prev.categoryTags, newCategoryTag.trim()] }));
+    const v = newCategoryTag.trim();
+    if (v && !formData.categoryTags.includes(v)) {
+      setFormData(prev => ({ ...prev, categoryTags: [...prev.categoryTags, v] }));
       setNewCategoryTag('');
     }
   };
-
   const removeCategoryTag = (tagToRemove: string) => {
     setFormData(prev => ({ ...prev, categoryTags: prev.categoryTags.filter(tag => tag !== tagToRemove) }));
   };
 
   const addKeyword = () => {
-    if (newKeyword.trim() && !formData.keywords.includes(newKeyword.trim())) {
-      setFormData(prev => ({ ...prev, keywords: [...prev.keywords, newKeyword.trim()] }));
+    const v = newKeyword.trim();
+    if (v && !formData.keywords.includes(v)) {
+      setFormData(prev => ({ ...prev, keywords: [...prev.keywords, v] }));
       setNewKeyword('');
     }
   };
-
-  const removeKeyword = (keywordToRemove: string) => {
-    setFormData(prev => ({ ...prev, keywords: prev.keywords.filter(keyword => keyword !== keywordToRemove) }));
+  const removeKeyword = (k: string) => {
+    setFormData(prev => ({ ...prev, keywords: prev.keywords.filter(x => x !== k) }));
   };
 
   const addSocialLink = () => {
-    if (newSocialLink.trim() && !formData.authorSocialLinks.includes(newSocialLink.trim())) {
-      setFormData(prev => ({ ...prev, authorSocialLinks: [...prev.authorSocialLinks, newSocialLink.trim()] }));
+    const v = newSocialLink.trim();
+    if (v && !formData.authorSocialLinks.includes(v)) {
+      setFormData(prev => ({ ...prev, authorSocialLinks: [...prev.authorSocialLinks, v] }));
       setNewSocialLink('');
     }
   };
-
-  const removeSocialLink = (linkToRemove: string) => {
-    setFormData(prev => ({ ...prev, authorSocialLinks: prev.authorSocialLinks.filter(link => link !== linkToRemove) }));
+  const removeSocialLink = (v: string) => {
+    setFormData(prev => ({ ...prev, authorSocialLinks: prev.authorSocialLinks.filter(x => x !== v) }));
   };
 
   const addExternalLink = () => {
-    if (newExternalLink.trim() && !formData.externalLinks.includes(newExternalLink.trim())) {
-      setFormData(prev => ({ ...prev, externalLinks: [...prev.externalLinks, newExternalLink.trim()] }));
+    const v = newExternalLink.trim();
+    if (v && !formData.externalLinks.includes(v)) {
+      setFormData(prev => ({ ...prev, externalLinks: [...prev.externalLinks, v] }));
       setNewExternalLink('');
     }
   };
-
-  const removeExternalLink = (linkToRemove: string) => {
-    setFormData(prev => ({ ...prev, externalLinks: prev.externalLinks.filter(link => link !== linkToRemove) }));
+  const removeExternalLink = (v: string) => {
+    setFormData(prev => ({ ...prev, externalLinks: prev.externalLinks.filter(x => x !== v) }));
   };
 
-
-  const removeContentBlock = (index: number) => {
-    setFormData(prev => ({ 
-      ...prev, 
-      content: prev.content.filter((_, i) => i !== index) 
-    }));
-  };
-
-  const addTextBlock = () => {
-    const newBlock: ArticleContentBlock = {
-      _type: 'block',
-      _key: `block-${Date.now()}`,
-      style: 'normal',
-      children: [{
-        _type: 'span',
-        _key: `span-${Date.now()}`,
-        text: '',
-        marks: []
-      }]
-    };
-    setFormData(prev => ({ ...prev, content: [newBlock, ...prev.content] }));
-  };
-
-
-
-  const handleDragStart = (e: React.DragEvent, index: number) => {
-    setDraggedIndex(index);
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/plain', index.toString());
-  };
-
-  const handleDragEnd = () => {
-    setDraggedIndex(null);
-    setDragOverIndex(null);
-  };
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-  };
-
-  const handleDragEnter = (e: React.DragEvent, index: number) => {
-    e.preventDefault();
-    if (draggedIndex !== null && draggedIndex !== index) {
-      setDragOverIndex(index);
-    }
-  };
-
-  const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault();
-    // Only clear if we're actually leaving the drop zone
-    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-    const x = e.clientX;
-    const y = e.clientY;
-    
-    if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) {
-      setDragOverIndex(null);
-    }
-  };
-
-  const handleDrop = (e: React.DragEvent, dropIndex: number) => {
-    e.preventDefault();
-    setDragOverIndex(null);
-    
-    const draggedIndex = parseInt(e.dataTransfer.getData('text/plain'));
-    
-    if (isNaN(draggedIndex) || draggedIndex === dropIndex) {
-      setDraggedIndex(null);
-      return;
-    }
-
-    // Create new array with reordered items
-    const newContent = [...formData.content];
-    const draggedItem = newContent[draggedIndex];
-    
-    // Remove from old position
-    newContent.splice(draggedIndex, 1);
-    
-    // Adjust drop index if dragging from top to bottom
-    const adjustedDropIndex = draggedIndex < dropIndex ? dropIndex - 1 : dropIndex;
-    
-    // Insert at new position
-    newContent.splice(adjustedDropIndex, 0, draggedItem);
-    
-    setFormData(prev => ({ ...prev, content: newContent }));
-    setDraggedIndex(null);
+  // For the editor only: upload an image and return the CDN URL
+  const uploadImageForEditor = async (file: File): Promise<string> => {
+    const asset: any = await sanityClient.assets.upload('image', file, { filename: file.name });
+    // Sanity returns a document with `url`, which is what we want to insert in the editor.
+    return asset?.url;
   };
 
   return (
@@ -795,6 +852,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, onSave, onCancel, up
           <TabsTrigger value="seo" className="data-[state=active]:bg-red-500">SEO & Meta</TabsTrigger>
         </TabsList>
 
+        {/* BASIC */}
         <TabsContent value="basic" className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
@@ -847,9 +905,38 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, onSave, onCancel, up
               <CardTitle className="text-white text-sm">Hero Image</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {typeof formData.heroImage === 'string' && formData.heroImage && (
-                <div className="aspect-video bg-gray-600 rounded-lg overflow-hidden">
-                  <img src={formData.heroImage} alt="Current hero" className="w-full h-full object-cover" />
+              {formData.heroImage && (
+                <div className="space-y-3">
+                  <div className="bg-gray-600 rounded-lg overflow-hidden">
+                    <div className="aspect-[16/9] overflow-hidden">
+                      {typeof formData.heroImage === 'string' ? (
+                        <img 
+                          src={formData.heroImage} 
+                          alt="Current hero" 
+                          className="w-full h-full object-cover" 
+                          style={{ objectPosition: getObjectPosition(formData.heroImageFocusPoint) }}
+                        />
+                      ) : formData.heroImage instanceof File ? (
+                        <img 
+                          src={URL.createObjectURL(formData.heroImage)} 
+                          alt="Current hero" 
+                          className="w-full h-full object-cover" 
+                          style={{ objectPosition: getObjectPosition(formData.heroImageFocusPoint) }}
+                        />
+                      ) : null}
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      onClick={handleHeroCropClick}
+                      className="flex-1 border-gray-500 text-gray-300 hover:bg-gray-600"
+                    >
+                      <Crop className="w-4 h-4 mr-2" />
+                      Position Image
+                    </Button>
+                  </div>
                 </div>
               )}
               <Input 
@@ -956,156 +1043,29 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, onSave, onCancel, up
           </div>
         </TabsContent>
 
+        {/* CONTENT (single Tiptap editor) */}
         <TabsContent value="content" className="space-y-6">
-          <div className="space-y-6">
-            <div className="space-y-4">
-              <div>
-                <Label className="text-lg font-semibold text-white">Article Content</Label>
-                <p className="text-sm text-gray-400 mt-1">Create and organize your article content with rich text editing</p>
-              </div>
-              
-              {/* Add Content Buttons */}
-              <div className="flex flex-wrap gap-2">
-                <Button type="button" onClick={addTextBlock} className="bg-blue-500 hover:bg-blue-600">
-                  <FileText className="w-4 h-4 mr-2" />
-                  Add Text Block
-                </Button>
-                
-                <Button 
-                  type="button" 
-                  onClick={() => {
-                    const newBlock: ArticleContentBlock = {
-                      _type: 'spotifyEmbed',
-                      _key: `spotify-${Date.now()}`,
-                      embedCode: ''
-                    };
-                    setFormData(prev => ({ ...prev, content: [newBlock, ...prev.content] }));
-                  }}
-                  className="bg-green-500 hover:bg-green-600"
-                >
-                  <ImageIcon className="w-4 h-4 mr-2" />
-                  Add Spotify
-                </Button>
-                
-                <Button 
-                  type="button" 
-                  onClick={() => {
-                    const newBlock: ArticleContentBlock = {
-                      _type: 'pullQuote',
-                      _key: `quote-${Date.now()}`,
-                      text: ''
-                    };
-                    setFormData(prev => ({ ...prev, content: [newBlock, ...prev.content] }));
-                  }}
-                  className="bg-purple-500 hover:bg-purple-600"
-                >
-                  <Tag className="w-4 h-4 mr-2" />
-                  Add Quote
-                </Button>
-                
-                <Button 
-                  type="button" 
-                  onClick={() => {
-                    const newBlock: ArticleContentBlock = {
-                      _type: 'photoBlock',
-                      _key: `photoBlock-${Date.now()}`,
-                      photos: [],
-                      layout: 'single'
-                    };
-                    setFormData(prev => ({ ...prev, content: [newBlock, ...prev.content] }));
-                  }}
-                  className="bg-orange-500 hover:bg-orange-600"
-                >
-                  <ImageIcon className="w-4 h-4 mr-2" />
-                  Add Photo Block
-                </Button>
-              </div>
-
-
+          <div className="space-y-4">
+            <div>
+              <Label className="text-lg font-semibold text-white">Article Content</Label>
+              <p className="text-sm text-gray-400 mt-1">
+                Write your article below. You can insert images, headings, quotes, and lists.
+              </p>
             </div>
 
-
-            {/* Content Blocks */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <Label className="text-lg font-semibold text-white">Content Blocks ({formData.content.length})</Label>
-                <div className="flex items-center gap-3">
-                  <div className="text-sm text-gray-400">
-                    Drag blocks to reorder • Click edit to modify content
-                  </div>
-                  {formData.content.length > 0 && (
-                    <Button
-                      type="button"
-                      onClick={() => setAllCollapsed(!allCollapsed)}
-                      className={`text-xs font-medium px-4 py-2 transition-all duration-200 border ${
-                        allCollapsed
-                          ? 'bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30 text-blue-400 hover:border-blue-500/50'
-                          : 'bg-gray-600/50 hover:bg-gray-600/70 border-gray-500/30 text-gray-300 hover:border-gray-500/50'
-                      }`}
-                    >
-                      {allCollapsed ? '⊞ Expand All' : '⊟ Collapse All'}
-                    </Button>
-                  )}
-                </div>
-              </div>
-              
-              {formData.content.map((block, index) => (
-                <div
-                  key={block._key || index}
-                  className={`relative transition-all duration-200 ${
-                    draggedIndex === index ? 'opacity-50 scale-95 z-10' : ''
-                  } ${
-                    dragOverIndex === index && draggedIndex !== index 
-                      ? 'transform translate-y-1' 
-                      : ''
-                  }`}
-                  draggable
-                  onDragStart={(e) => handleDragStart(e, index)}
-                  onDragEnd={handleDragEnd}
-                  onDragOver={handleDragOver}
-                  onDragEnter={(e) => handleDragEnter(e, index)}
-                  onDragLeave={handleDragLeave}
-                  onDrop={(e) => handleDrop(e, index)}
-                >
-                  {/* Drop indicator */}
-                  {dragOverIndex === index && draggedIndex !== index && (
-                    <div className="absolute -top-1 left-0 right-0 h-0.5 bg-brand-red rounded-full z-20 animate-pulse" />
-                  )}
-                  
-                  <ContentBlockComponent
-                    block={block}
-                    index={index}
-                    onUpdate={(index, updates) => {
-                      const updatedContent = [...formData.content];
-                      updatedContent[index] = { ...updatedContent[index], ...updates };
-                      setFormData(prev => ({ ...prev, content: updatedContent }));
-                    }}
-                    onRemove={removeContentBlock}
-                    onMoveUp={() => {}}
-                    onMoveDown={() => {}}
-                    onDragStart={() => {}}
-                    onDragOver={() => {}}
-                    onDrop={() => {}}
-                    isDragging={draggedIndex === index}
-                    forceCollapsed={allCollapsed}
-                  />
-                </div>
-              ))}
-            </div>
-
-            {formData.content.length === 0 && (
-              <div className="text-center py-12 text-gray-400 border-2 border-dashed border-gray-600 rounded-lg">
-                <FileText className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                <h3 className="text-lg font-semibold mb-2">No content blocks yet</h3>
-                <p className="mb-4">Start building your article by adding content blocks above</p>
-                <Button onClick={addTextBlock} className="bg-blue-500 hover:bg-blue-600">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Your First Text Block
-                </Button>
-              </div>
-            )}
+            <SimpleEditorWrapper
+              key={`editor-${article._id || 'new'}`}
+              value={editorHTML}
+              onChange={(newHTML) => {
+                console.log('Editor onChange called, new HTML length:', newHTML.length);
+                console.log('New HTML preview:', newHTML.substring(0, 200));
+                setEditorHTML(newHTML);
+              }}
+              onUploadImage={uploadImageForEditor}
+            />
           </div>
 
+          {/* Tags */}
           <div className="space-y-2">
             <Label>Tags</Label>
             <div className="flex flex-wrap gap-2 mb-2">
@@ -1128,6 +1088,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, onSave, onCancel, up
             </div>
           </div>
 
+          {/* External Links */}
           <div className="space-y-2">
             <Label>External Links</Label>
             <div className="space-y-2 mb-2">
@@ -1150,6 +1111,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, onSave, onCancel, up
             </div>
           </div>
 
+          {/* Share Count */}
           <div className="space-y-2">
             <Label htmlFor="shareCount">Share Count</Label>
             <Input 
@@ -1162,6 +1124,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, onSave, onCancel, up
           </div>
         </TabsContent>
 
+        {/* PREVIEW (unchanged; now renders the single HTML block) */}
         <TabsContent value="preview" className="space-y-4">
           <div className="bg-gray-900 rounded-lg p-6 max-h-[70vh] overflow-y-auto">
             <div className="text-center mb-6">
@@ -1169,9 +1132,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, onSave, onCancel, up
               <p className="text-sm text-gray-400">This is how your article will appear on the reviews page</p>
             </div>
             
-            {/* Preview Content - matches ReviewDetail layout */}
             <div className="bg-gray-800 rounded-lg p-6">
-              {/* Category Tags */}
               {formData.categoryTags.length > 0 && (
                 <div className="flex gap-2 mb-4">
                   {formData.categoryTags.map((tag, index) => (
@@ -1185,19 +1146,16 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, onSave, onCancel, up
                 </div>
               )}
 
-              {/* Title */}
               <h1 className="text-3xl lg:text-4xl font-bold text-white mb-4 leading-tight">
                 {formData.title || 'Article Title'}
               </h1>
 
-              {/* Subtitle */}
               {formData.subtitle && (
                 <p className="text-xl text-gray-300 mb-6">
                   {formData.subtitle}
                 </p>
               )}
 
-              {/* Author and Meta Info */}
               <div className="flex flex-wrap items-center gap-6 text-sm text-gray-400 mb-6">
                 {formData.authorName && (
                   <div className="flex items-center gap-2">
@@ -1218,7 +1176,6 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, onSave, onCancel, up
                 </div>
               </div>
 
-              {/* Hero Image */}
               {formData.heroImage && (
                 <div className="mb-8">
                   <div className="relative aspect-[16/9] overflow-hidden rounded-lg">
@@ -1227,19 +1184,20 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, onSave, onCancel, up
                         src={formData.heroImage} 
                         alt={formData.heroImageAlt || formData.title}
                         className="w-full h-full object-cover"
+                        style={{ objectPosition: getObjectPosition(formData.heroImageFocusPoint) }}
                       />
                     ) : formData.heroImage instanceof File ? (
                       <img 
                         src={URL.createObjectURL(formData.heroImage)} 
                         alt={formData.heroImageAlt || formData.title}
                         className="w-full h-full object-cover"
+                        style={{ objectPosition: getObjectPosition(formData.heroImageFocusPoint) }}
                       />
                     ) : null}
                   </div>
                 </div>
               )}
 
-              {/* Author Bio */}
               {(formData.authorName || formData.authorRole || formData.authorImage) && (
                 <div className="mb-8 bg-gray-700/30 rounded-lg p-6 border border-gray-600/50">
                   <div className="flex gap-4">
@@ -1285,152 +1243,119 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, onSave, onCancel, up
                 </div>
               )}
 
-              {/* Article Content */}
-              <div className="prose prose-invert max-w-none">
-                {formData.content.length > 0 ? (
-                  formData.content.map((block, index) => {
-                    switch (block._type) {
-                      case 'block':
-                        const text = block.children?.[0]?.text || '';
-                        const style = block.style || 'normal';
-                        
-                        // Check if the text contains HTML (from rich text editor)
-                        const hasHTML = text && (text.includes('<') && text.includes('>'));
-                        
-                        if (hasHTML) {
-                          return (
-                            <div 
-                              key={index} 
-                              className="text-gray-300 leading-relaxed mb-4 font-secondary"
-                              dangerouslySetInnerHTML={{ __html: text }}
-                              style={{
-                                // Use consistent sans-serif font for all article content
-                                fontFamily: 'var(--font-secondary)',
-                                fontSize: '1.125rem',
-                                lineHeight: '1.7'
-                              }}
-                            />
-                          );
-                        } else if (style === 'h1') {
-                          return (
-                            <h1 key={index} className="text-3xl font-bold text-white mb-6 mt-8">
-                              {text}
-                            </h1>
-                          );
-                        } else if (style === 'h2') {
-                          return (
-                            <h2 key={index} className="text-2xl font-bold text-white mb-4 mt-6">
-                              {text}
-                            </h2>
-                          );
-                        } else if (style === 'h3') {
-                          return (
-                            <h3 key={index} className="text-xl font-bold text-white mb-3 mt-4">
-                              {text}
-                            </h3>
-                          );
-                        } else {
-                          return (
-                            <p key={index} className="text-gray-300 leading-relaxed mb-4 font-secondary" style={{ fontSize: '1.125rem', lineHeight: '1.7' }}>
-                              {text}
-                            </p>
-                          );
-                        }
-
-                      case 'spotifyEmbed':
-                        return (
-                          <div key={index} className="my-6">
-                            <div 
-                              dangerouslySetInnerHTML={{ __html: block.embedCode || '' }}
-                              className="rounded-lg overflow-hidden"
-                            />
-                          </div>
-                        );
-
-                      case 'pullQuote':
-                        const quoteText = block.text || '';
-                        const hasQuoteHTML = quoteText && (quoteText.includes('<') && quoteText.includes('>'));
-                        
-                        return (
-                          <blockquote key={index} className="border-l-4 border-red-500 pl-6 py-4 my-6 bg-gray-700/50 rounded-r-lg">
-                            {hasQuoteHTML ? (
-                              <div 
-                                className="text-xl italic text-gray-200 font-secondary"
-                                dangerouslySetInnerHTML={{ __html: quoteText }}
-                                style={{
-                                  // Use consistent sans-serif font for quotes
-                                  fontFamily: 'var(--font-secondary)',
-                                  fontSize: '1.25rem',
-                                  lineHeight: '1.6',
-                                }}
-                              />
-                            ) : (
-                              <p className="text-xl italic text-gray-200 font-secondary" style={{ fontSize: '1.25rem', lineHeight: '1.6' }}>
-                                "{quoteText}"
+              {/* Article Content - Match Editor Styling */}
+              <div className="simple-editor-wrapper" style={{ backgroundColor: '#0e0e11' }}>
+                <div className="simple-editor-content" style={{ backgroundColor: '#0e0e11' }}>
+                  <div className="tiptap ProseMirror simple-editor" style={{ backgroundColor: '#0e0e11', color: '#f0eef0' }}>
+                    {(() => {
+                      console.log('Preview rendering, editorHTML length:', editorHTML?.length || 0);
+                      console.log('Preview HTML preview:', editorHTML?.substring(0, 200) || 'empty');
+                      console.log('Number of images in HTML:', (editorHTML?.match(/<img/g) || []).length);
+                      return null;
+                    })()}
+                    {editorHTML ? (
+                      <div dangerouslySetInnerHTML={{ 
+                        __html: processMediaEmbeds(editorHTML) 
+                      }} />
+                    ) : formData.content.length > 0 ? (
+                      formData.content.map((block, index) => {
+                        switch (block._type) {
+                          case 'block': {
+                            const text = block.children?.[0]?.text || '';
+                            const hasHTML = text && (text.includes('<') && text.includes('>'));
+                            if (hasHTML) {
+                              return (
+                                <div 
+                                  key={index} 
+                                  dangerouslySetInnerHTML={{ __html: text }}
+                                />
+                              );
+                            }
+                            return (
+                              <p key={index}>
+                                {text}
                               </p>
-                            )}
-                          </blockquote>
-                        );
-
-                      case 'photoBlock':
-                        if (!block.photos || block.photos.length === 0) return null;
-                        
-                        const getGridClass = () => {
-                          switch (block.layout) {
-                            case 'sidebyside':
-                              return 'grid-cols-1 md:grid-cols-2';
-                            case '3column':
-                              return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
-                            default:
-                              return 'grid-cols-1';
+                            );
                           }
-                        };
-
-                        return (
-                          <div key={index} className={`my-8 grid gap-6 ${getGridClass()}`}>
-                            {block.photos.map((photo) => (
-                              <div key={photo._key} className="space-y-3">
-                                <div className="aspect-video overflow-hidden rounded-lg bg-gray-600 flex items-center justify-center">
-                                  {photo.file ? (
-                                    <img 
-                                      src={URL.createObjectURL(photo.file)} 
-                                      alt={photo.alt || 'Article photo'} 
-                                      className="w-full h-full object-cover"
-                                    />
-                                  ) : (photo.url || photo.assetRef) ? (
-                                    <img 
-                                      src={photo.url} 
-                                      alt={photo.alt || 'Article photo'} 
-                                      className="w-full h-full object-cover"
-                                    />
-                                  ) : (
-                                    <span className="text-gray-400 text-sm">Photo placeholder</span>
-                                  )}
-                                </div>
-                                {photo.caption && (
-                                  <p className="text-sm text-gray-400 italic text-center">
-                                    {photo.caption}
-                                  </p>
-                                )}
+                          case 'spotifyEmbed':
+                            return (
+                              <div key={index}>
+                                <div 
+                                  dangerouslySetInnerHTML={{ __html: block.embedCode || '' }}
+                                />
                               </div>
-                            ))}
-                          </div>
-                        );
-
-                      default:
-                        return null;
-                    }
-                  })
-                ) : (
-                  <div className="text-center py-8 text-gray-400">
-                    <p>No content blocks yet. Add some content in the Content tab to see the preview.</p>
+                            );
+                          case 'pullQuote': {
+                            const quoteText = block.text || '';
+                            const hasQuoteHTML = quoteText && (quoteText.includes('<') && quoteText.includes('>'));
+                            return (
+                              <blockquote key={index}>
+                                {hasQuoteHTML ? (
+                                  <div 
+                                    dangerouslySetInnerHTML={{ __html: quoteText }}
+                                  />
+                                ) : (
+                                  <p>"{quoteText}"</p>
+                                )}
+                              </blockquote>
+                            );
+                          }
+                          case 'photoBlock':
+                            if (!block.photos || block.photos.length === 0) return null;
+                            const getGridClass = () => {
+                              switch (block.layout) {
+                                case 'sidebyside': return 'grid-cols-1 md:grid-cols-2';
+                                case '3column': return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
+                                default: return 'grid-cols-1';
+                              }
+                            };
+                            return (
+                              <div key={index} className={`grid gap-6 ${getGridClass()}`}>
+                                {block.photos.map((photo) => (
+                                  <div key={photo._key}>
+                                    <div className="aspect-video overflow-hidden rounded-lg bg-gray-600 flex items-center justify-center">
+                                      {photo.file ? (
+                                        <img 
+                                          src={URL.createObjectURL(photo.file)} 
+                                          alt={photo.alt || 'Article photo'} 
+                                          className="w-full h-full object-cover"
+                                        />
+                                      ) : (photo.url || photo.assetRef) ? (
+                                        <img 
+                                          src={photo.url} 
+                                          alt={photo.alt || 'Article photo'} 
+                                          className="w-full h-full object-cover"
+                                        />
+                                      ) : (
+                                        <span className="text-gray-400 text-sm">Photo placeholder</span>
+                                      )}
+                                    </div>
+                                    {photo.caption && (
+                                      <p className="text-sm text-gray-400 italic text-center">
+                                        {photo.caption}
+                                      </p>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            );
+                          default:
+                            return null;
+                        }
+                      })
+                    ) : (
+                      <div className="text-center py-8 text-gray-400">
+                        <p>No content yet. Write in the Content tab to see the preview.</p>
+                      </div>
+                    )}
                   </div>
-                )}
+                </div>
               </div>
             </div>
           </div>
         </TabsContent>
 
+        {/* SEO */}
         <TabsContent value="seo" className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="metaDescription">Meta Description</Label>
@@ -1484,6 +1409,17 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, onSave, onCancel, up
           {uploading ? <><Upload className="w-4 h-4 mr-2 animate-pulse" />Uploading...</> : <><Save className="w-4 h-4 mr-2" />Save Article</>}
         </Button>
       </div>
+
+      {/* Hero Image Position Modal */}
+      <HeroImagePositionModal
+        isOpen={isHeroCropModalOpen}
+        onClose={() => {
+          setIsHeroCropModalOpen(false);
+          setHeroImageFile(null);
+        }}
+        imageFile={heroImageFile}
+        onCropComplete={handleHeroCropComplete}
+      />
     </form>
   );
 };

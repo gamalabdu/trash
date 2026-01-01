@@ -24,6 +24,7 @@ import NotFound from './components/NotFound/NotFound';
 import AdminPanel from './components/Admin/AdminPanel';
 import Reviews from './components/Reviews/Reviews';
 import ReviewDetail from './components/Reviews/ReviewDetail';
+import Billing from './components/Billing/SimpleBilling';
 import { WorksProvider } from './context/WorksContext';
 
 
@@ -68,6 +69,8 @@ function App() {
               <Route path="reviews" element={<Reviews />} />
               <Route path="reviews/:id" element={<ReviewDetail />} />
               <Route path="contact" element={<Contact />} />
+              <Route path="billing" element={<Billing />} />
+              <Route path="billing/:username" element={<Billing />} />
               <Route path="roster" element={<Roster />} />
               <Route path="/gamal-portfolio" element={<Portfolio />} />
               <Route path="/pitch-packet" element={<PitchPacket />} />

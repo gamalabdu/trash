@@ -3,9 +3,17 @@ import { useParams, Link, Navigate } from 'react-router-dom';
 import { Card, CardContent } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
-import { ArrowLeft, Clock, User, Calendar, Share2, ExternalLink } from 'lucide-react';
+import { ArrowLeft, Clock, User, Calendar, Share2, ExternalLink, RefreshCw } from 'lucide-react';
 import { FaInstagram, FaTwitter, FaSpotify, FaYoutube, FaSoundcloud, FaApple, FaTiktok, FaFacebook, FaLinkedin, FaGlobe, FaExternalLinkAlt } from 'react-icons/fa';
 import { sanityClient } from '../../utils/sanityClient';
+import '../ui/tiptap-templates/@/styles/_variables.scss';
+import '../ui/tiptap-templates/simple/simple-editor.scss';
+import '../ui/tiptap-templates/@/components/tiptap-node/quote-node/quote-node.scss';
+import '../ui/tiptap-templates/@/components/tiptap-node/blockquote-node/blockquote-node.scss';
+import '../ui/tiptap-templates/@/components/tiptap-node/image-node/image-node.scss';
+import '../ui/tiptap-templates/@/components/tiptap-node/paragraph-node/paragraph-node.scss';
+import '../ui/tiptap-templates/@/components/tiptap-node/spotify-node/spotify-node.scss';
+import '../ui/tiptap-templates/@/components/tiptap-node/youtube-node/youtube-node.scss';
 
 interface Article {
   _id: string;
@@ -13,6 +21,7 @@ interface Article {
   subtitle: string;
   heroImage?: string | null;
   heroImageAlt?: string;
+  heroImageFocusPoint?: { x: number; y: number };
   categoryTags: string[];
   authorName: string;
   authorRole: string;
@@ -55,6 +64,11 @@ const ReviewDetail: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const getObjectPosition = (focusPoint?: { x: number; y: number }) => {
+    if (!focusPoint) return 'center center';
+    return `${focusPoint.x * 100}% ${focusPoint.y * 100}%`;
+  };
+
   const getSocialIcon = (url: string) => {
     const urlLower = url.toLowerCase();
     
@@ -95,6 +109,18 @@ const ReviewDetail: React.FC = () => {
     }
   }, [id]);
 
+  // Force refresh when component mounts to ensure fresh data
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden && id) {
+        fetchArticle(id);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [id]);
+
   const fetchArticle = async (articleId: string) => {
     setLoading(true);
     setError(null);
@@ -109,7 +135,11 @@ const ReviewDetail: React.FC = () => {
             asset->{
               url
             },
-            alt
+            alt,
+            hotspot{
+              x,
+              y
+            }
           },
           categoryTags,
           authorName,
@@ -143,12 +173,22 @@ const ReviewDetail: React.FC = () => {
           metaDescription,
           keywords
         }
-      `, { id: articleId });
+      `, { 
+        id: articleId,
+        timestamp: Date.now()
+      }, {
+        cache: 'no-store',
+        useCdn: false
+      });
 
       if (!articleData) {
         setError('Article not found');
         return;
       }
+
+      console.log('Fetched article data:', articleData);
+      console.log('Hero image data:', articleData.heroImage);
+      console.log('Hero image URL:', articleData.heroImage?.asset?.url);
 
       const processedArticle: Article = {
         _id: articleData._id,
@@ -156,6 +196,10 @@ const ReviewDetail: React.FC = () => {
         subtitle: articleData.subtitle || '',
         heroImage: articleData.heroImage?.asset?.url || null,
         heroImageAlt: articleData.heroImage?.alt || '',
+        heroImageFocusPoint: articleData.heroImage?.hotspot ? {
+          x: articleData.heroImage.hotspot.x,
+          y: articleData.heroImage.hotspot.y
+        } : undefined,
         categoryTags: articleData.categoryTags || [],
         authorName: articleData.authorName || '',
         authorRole: articleData.authorRole || '',
@@ -204,7 +248,11 @@ const ReviewDetail: React.FC = () => {
             asset->{
               url
             },
-            alt
+            alt,
+            hotspot{
+              x,
+              y
+            }
           },
           categoryTags,
           authorName,
@@ -214,7 +262,11 @@ const ReviewDetail: React.FC = () => {
       `, { 
         currentId: currentArticle._id,
         tags: currentArticle.tags || [],
-        categoryTags: currentArticle.categoryTags || []
+        categoryTags: currentArticle.categoryTags || [],
+        timestamp: Date.now()
+      }, {
+        cache: 'no-store',
+        useCdn: false
       });
 
       // If no related articles found, try a more permissive query
@@ -237,7 +289,13 @@ const ReviewDetail: React.FC = () => {
             publishedDate,
             tags
           }
-        `, { currentId: currentArticle._id });
+        `, { 
+          currentId: currentArticle._id,
+          timestamp: Date.now()
+        }, {
+          cache: 'no-store',
+          useCdn: false
+        });
         
         finalRelatedData = fallbackData;
       }
@@ -248,6 +306,10 @@ const ReviewDetail: React.FC = () => {
         subtitle: article.subtitle || '',
         heroImage: article.heroImage?.asset?.url || null,
         heroImageAlt: article.heroImage?.alt || '',
+        heroImageFocusPoint: article.heroImage?.hotspot ? {
+          x: article.heroImage.hotspot.x,
+          y: article.heroImage.hotspot.y
+        } : undefined,
         categoryTags: article.categoryTags || [],
         authorName: article.authorName || '',
         authorRole: '',
@@ -291,118 +353,142 @@ const ReviewDetail: React.FC = () => {
     return `${minutes} MINUTE READ`;
   };
 
+  // Process Spotify and YouTube embeds similar to ArticleManager
+  const processMediaEmbeds = (html: string): string => {
+    if (!html) return '';
+    
+    console.log('Processing media embeds, input HTML length:', html.length);
+    console.log('Input HTML preview:', html.substring(0, 1000));
+    
+    let processed = html;
+    
+    // Process Spotify embeds
+    const spotifyRegex = /<div[^>]*data-type="spotify"[^>]*data-iframe-code="([^"]*)"[^>]*(?:\/>|>.*?<\/div>)/g;
+    processed = processed.replace(spotifyRegex, (match, iframeCode) => {
+        console.log('Found Spotify match:', match);
+        console.log('Iframe code:', iframeCode);
+        
+        // Decode HTML entities
+        const decodedIframeCode = iframeCode
+          .replace(/&lt;/g, '<')
+          .replace(/&gt;/g, '>')
+          .replace(/&quot;/g, '"')
+          .replace(/&#x27;/g, "'")
+          .replace(/&amp;/g, '&');
+        
+        console.log('Decoded iframe code:', decodedIframeCode);
+        
+        // Check for both escaped and unescaped iframe tags
+        if (decodedIframeCode && (decodedIframeCode.includes('<iframe') || decodedIframeCode.includes('&lt;iframe'))) {
+          console.log('Converting to HTML embed');
+          // Return the iframe code as actual HTML
+          return `<div class="spotify-embed-container">${decodedIframeCode}</div>`;
+        }
+        console.log('No valid iframe code found, returning original');
+        return match; // Return original if no valid iframe code
+      }
+    );
+    
+    // Process YouTube embeds
+    const youtubeRegex = /<div[^>]*data-type="youtube"[^>]*data-embed-code="([^"]*)"[^>]*(?:\/>|>.*?<\/div>)/g;
+    processed = processed.replace(youtubeRegex, (match, embedCode) => {
+        console.log('Found YouTube match:', match);
+        console.log('Embed code:', embedCode);
+        
+        // Decode HTML entities
+        const decodedEmbedCode = embedCode
+          .replace(/&lt;/g, '<')
+          .replace(/&gt;/g, '>')
+          .replace(/&quot;/g, '"')
+          .replace(/&#x27;/g, "'")
+          .replace(/&amp;/g, '&');
+        
+        console.log('Decoded embed code:', decodedEmbedCode);
+        
+        // Check for both escaped and unescaped iframe tags
+        if (decodedEmbedCode && (decodedEmbedCode.includes('<iframe') || decodedEmbedCode.includes('&lt;iframe'))) {
+          console.log('Converting to HTML embed');
+          // Return the embed code as actual HTML
+          return `<div class="youtube-embed-container">${decodedEmbedCode}</div>`;
+        }
+        console.log('No valid embed code found, returning original');
+        return match; // Return original if no valid embed code
+      }
+    );
+    
+    console.log('Processed HTML length:', processed.length);
+    console.log('Processed HTML preview:', processed.substring(0, 1000));
+    return processed;
+  };
+
   const renderContentBlock = (block: ContentBlock, index: number) => {
     switch (block._type) {
-      case 'block':
+      case 'block': {
         const text = block.children?.[0]?.text || '';
-        const style = block.style || 'normal';
-        
-        // Check if the text contains HTML (from rich text editor)
         const hasHTML = text && (text.includes('<') && text.includes('>'));
-        
         if (hasHTML) {
-          // Render rich text content with HTML
           return (
             <div 
               key={index} 
-              className="text-gray-300 font-secondary leading-relaxed mb-4"
               dangerouslySetInnerHTML={{ __html: text }}
-              style={{
-                // Use consistent sans-serif font for all article content
-                fontFamily: 'var(--font-secondary)',
-                fontSize: '1.125rem',
-                lineHeight: '1.7',
-              }}
             />
           );
-        } else if (style === 'h1') {
-          return (
-            <h1 key={index} className="text-3xl font-primary font-bold text-white mb-6 mt-8">
-              {text}
-            </h1>
-          );
-        } else if (style === 'h2') {
-          return (
-            <h2 key={index} className="text-2xl font-primary font-bold text-white mb-4 mt-6">
-              {text}
-            </h2>
-          );
-        } else if (style === 'h3') {
-          return (
-            <h3 key={index} className="text-xl font-primary font-bold text-white mb-3 mt-4">
-              {text}
-            </h3>
-          );
-        } else {
-          return (
-            <p key={index} className="text-gray-300 font-secondary leading-relaxed mb-4" style={{ fontSize: '1.125rem', lineHeight: '1.7' }}>
-              {text}
-            </p>
-          );
         }
-
+        return (
+          <p key={index}>
+            {text}
+          </p>
+        );
+      }
       case 'spotifyEmbed':
         return (
-          <div key={index} className="my-6">
+          <div key={index}>
             <div 
               dangerouslySetInnerHTML={{ __html: block.embedCode || '' }}
-              className="rounded-lg overflow-hidden"
             />
           </div>
         );
-
-      case 'pullQuote':
+      case 'pullQuote': {
         const quoteText = block.text || '';
         const hasQuoteHTML = quoteText && (quoteText.includes('<') && quoteText.includes('>'));
-        
         return (
-          <blockquote key={index} className="border-l-4 border-brand-red pl-6 py-4 my-6 bg-gray-800/50 rounded-r-lg">
+          <blockquote key={index}>
             {hasQuoteHTML ? (
               <div 
-                className="text-xl font-secondary italic text-gray-200"
                 dangerouslySetInnerHTML={{ __html: quoteText }}
-                style={{
-                  // Use consistent sans-serif font for quotes
-                  fontFamily: 'var(--font-secondary)',
-                  fontSize: '1.25rem',
-                  lineHeight: '1.6',
-                }}
               />
             ) : (
-              <p className="text-xl font-secondary italic text-gray-200" style={{ fontSize: '1.25rem', lineHeight: '1.6' }}>
-                "{quoteText}"
-              </p>
+              <p>"{quoteText}"</p>
             )}
           </blockquote>
         );
-
+      }
       case 'photoBlock':
         if (!block.photos || block.photos.length === 0) return null;
-        
         const getGridClass = () => {
           switch (block.layout) {
-            case 'sidebyside':
-              return 'grid-cols-1 md:grid-cols-2';
-            case '3column':
-              return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
-            default:
-              return 'grid-cols-1';
+            case 'sidebyside': return 'grid-cols-1 md:grid-cols-2';
+            case '3column': return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
+            default: return 'grid-cols-1';
           }
         };
-
         return (
-          <div key={index} className={`my-8 grid gap-6 ${getGridClass()}`}>
+          <div key={index} className={`grid gap-6 ${getGridClass()}`}>
             {block.photos.map((photo) => (
-              <div key={photo._key} className="space-y-3">
-                <div className="aspect-video overflow-hidden rounded-lg">
-                  <img 
-                    src={photo.asset?.url || photo.url} 
-                    alt={photo.alt || 'Article photo'} 
-                    className="w-full h-full object-cover"
-                  />
+              <div key={photo._key}>
+                <div className="aspect-video overflow-hidden rounded-lg bg-gray-600 flex items-center justify-center">
+                  {photo.asset?.url || photo.url ? (
+                    <img 
+                      src={photo.asset?.url || photo.url} 
+                      alt={photo.alt || 'Article photo'} 
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-gray-400 text-sm">Photo placeholder</span>
+                  )}
                 </div>
                 {photo.caption && (
-                  <p className="text-sm text-gray-400 font-secondary italic text-center">
+                  <p className="text-sm text-gray-400 italic text-center">
                     {photo.caption}
                   </p>
                 )}
@@ -410,7 +496,6 @@ const ReviewDetail: React.FC = () => {
             ))}
           </div>
         );
-
       default:
         return null;
     }
@@ -450,16 +535,25 @@ const ReviewDetail: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-brand-bg text-brand-text">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
         {/* Back Button */}
-        <div className="mb-8">
+        <div className="mb-8 flex justify-between items-center">
           <Link to="/reviews">
             <Button variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-700">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Reviews
             </Button>
           </Link>
+          <Button 
+            variant="outline" 
+            onClick={() => id && fetchArticle(id)}
+            className="border-gray-600 text-gray-300 hover:bg-gray-700"
+            disabled={loading}
+          >
+            <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
         </div>
 
         {/* Article Header */}
@@ -510,14 +604,19 @@ const ReviewDetail: React.FC = () => {
         </div>
 
         {/* Hero Image */}
-        {article.heroImage && (
-          <div className="mb-8">
-            <div className="relative aspect-[16/9] overflow-hidden rounded-lg group">
-              <img 
-                src={article.heroImage} 
-                alt={article.heroImageAlt || article.title}
-                className="w-full h-full object-cover"
-              />
+        {article.heroImage && (() => {
+          console.log('Rendering hero image with URL:', article.heroImage);
+          // Add cache-busting parameter to ensure fresh image
+          const imageUrl = `${article.heroImage}?t=${Date.now()}`;
+          return (
+            <div className="mb-8">
+              <div className="relative aspect-[16/9] overflow-hidden rounded-lg group">
+                <img 
+                  src={imageUrl} 
+                  alt={article.heroImageAlt || article.title}
+                  className="w-full h-full object-cover"
+                  style={{ objectPosition: getObjectPosition(article.heroImageFocusPoint) }}
+                />
               
               {/* Related Links Overlay */}
               {article.externalLinks && article.externalLinks.length > 0 && (
@@ -536,10 +635,11 @@ const ReviewDetail: React.FC = () => {
               )}
             </div>
           </div>
-        )}
+          );
+        })()}
 
         {/* Author Bio */}
-        <div className="mb-8 bg-gray-800/30 rounded-lg p-6 border border-gray-700/50">
+        <div className="mb-8 p-6 rounded-lg" style={{ backgroundColor: '#0e0e11' }}>
           <div className="flex gap-4">
             {article.authorImage && (
               <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
@@ -576,8 +676,29 @@ const ReviewDetail: React.FC = () => {
         </div>
 
         {/* Article Content */}
-        <div className="prose prose-invert max-w-none">
-          {article.content.map((block, index) => renderContentBlock(block, index))}
+        <div className="simple-editor-wrapper" style={{ backgroundColor: '#0e0e11' }}>
+          <div className="simple-editor-content" style={{ backgroundColor: '#0e0e11' }}>
+            <div className="tiptap ProseMirror simple-editor" style={{ backgroundColor: '#0e0e11', color: '#f0eef0' }}>
+              {(() => {
+                // Check if the first content block contains HTML (like editorHTML)
+                const firstBlock = article.content.find(b => b._type === 'block');
+                const htmlContent = firstBlock?.children?.[0]?.text;
+                const hasHTML = htmlContent && (htmlContent.includes('<') && htmlContent.includes('>'));
+                
+                if (hasHTML) {
+                  // Render HTML content directly (like ArticleManager preview)
+                  return (
+                    <div dangerouslySetInnerHTML={{ 
+                      __html: processMediaEmbeds(htmlContent) 
+                    }} />
+                  );
+                } else {
+                  // Fall back to rendering individual content blocks
+                  return article.content.map((block, index) => renderContentBlock(block, index));
+                }
+              })()}
+            </div>
+          </div>
         </div>
 
         {/* Subtle Divider */}
@@ -604,9 +725,10 @@ const ReviewDetail: React.FC = () => {
                       {relatedArticle.heroImage && (
                         <div className="aspect-[16/9] overflow-hidden rounded-t-lg">
                           <img 
-                            src={relatedArticle.heroImage} 
+                            src={`${relatedArticle.heroImage}?t=${Date.now()}`} 
                             alt={relatedArticle.heroImageAlt || relatedArticle.title}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            style={{ objectPosition: getObjectPosition(relatedArticle.heroImageFocusPoint) }}
                           />
                         </div>
                       )}

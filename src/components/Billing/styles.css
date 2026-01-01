@@ -1,0 +1,497 @@
+.billing-container {
+  min-height: 100dvh;
+  background: #1b1c1e;
+  color: #F0EEF0;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.billing-content {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.billing-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding-top: 2rem;
+}
+
+.billing-title {
+  font-family: var(--font-primary);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 400;
+  color: #F0EEF0;
+  margin-bottom: 1rem;
+  letter-spacing: 0.05em;
+}
+
+.billing-subtitle {
+  font-family: var(--font-secondary);
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: #888;
+  letter-spacing: 0.1em;
+}
+
+.billing-error {
+  background: rgba(249, 59, 59, 0.1);
+  border: 1px solid #f93b3b;
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #f93b3b;
+}
+
+.error-close {
+  background: none;
+  border: none;
+  color: #f93b3b;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.error-close:hover {
+  background: rgba(249, 59, 59, 0.2);
+}
+
+.subscription-status {
+  margin-bottom: 3rem;
+}
+
+.status-card {
+  background: #2a2a2a;
+  border-radius: 12px;
+  padding: 2rem;
+  border: 1px solid #3a3a3a;
+}
+
+.status-card h2 {
+  font-family: var(--font-primary);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin-bottom: 1.5rem;
+  color: #F0EEF0;
+}
+
+.status-info {
+  margin-bottom: 2rem;
+}
+
+.status-info p {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.status-info strong {
+  color: #888;
+  margin-right: 0.5rem;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status-badge.active {
+  background: rgba(74, 197, 79, 0.2);
+  color: #4ac54f;
+}
+
+.status-badge.canceled,
+.status-badge.past_due {
+  background: rgba(249, 59, 59, 0.2);
+  color: #f93b3b;
+}
+
+.cancel-notice {
+  color: #f93b3b;
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+.subscription-plans {
+  margin-bottom: 3rem;
+}
+
+.subscription-plans h2 {
+  font-family: var(--font-primary);
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #F0EEF0;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid #3a3a3a;
+  border-top-color: #f93b3b;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.plan-card {
+  background: #2a2a2a;
+  border-radius: 12px;
+  padding: 2rem;
+  border: 1px solid #3a3a3a;
+  transition: transform 0.2s, border-color 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.plan-card:hover {
+  transform: translateY(-4px);
+  border-color: #f93b3b;
+}
+
+.plan-name {
+  font-family: var(--font-primary);
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+  margin-bottom: 0.5rem;
+  color: #F0EEF0;
+}
+
+.plan-description {
+  color: #888;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+.plan-price {
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: baseline;
+}
+
+.price-amount {
+  font-family: var(--font-primary);
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: #F0EEF0;
+  font-weight: 400;
+}
+
+.price-interval {
+  font-size: 1rem;
+  color: #888;
+  margin-left: 0.5rem;
+}
+
+.manage-button,
+.subscribe-button,
+.secondary-button {
+  width: 100%;
+  padding: 1rem 2rem;
+  background: #f93b3b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-family: var(--font-secondary);
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.manage-button:hover,
+.subscribe-button:hover,
+.secondary-button:hover {
+  background: #d32f2f;
+  transform: translateY(-2px);
+}
+
+.manage-button:disabled,
+.subscribe-button:disabled,
+.secondary-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.secondary-button {
+  background: transparent;
+  border: 2px solid #f93b3b;
+  color: #f93b3b;
+}
+
+.secondary-button:hover {
+  background: rgba(249, 59, 59, 0.1);
+}
+
+.additional-actions {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.no-plans {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #888;
+}
+
+.no-plans p {
+  margin-bottom: 0.5rem;
+}
+
+.config-help {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.config-help code {
+  background: #2a2a2a;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  color: #f93b3b;
+}
+
+.subscription-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.cancel-button,
+.resume-button {
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  color: #f93b3b;
+  border: 2px solid #f93b3b;
+  border-radius: 6px;
+  font-family: var(--font-secondary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.cancel-button:hover {
+  background: rgba(249, 59, 59, 0.1);
+}
+
+.cancel-button.immediate {
+  color: #ff6b6b;
+  border-color: #ff6b6b;
+}
+
+.cancel-button.immediate:hover {
+  background: rgba(255, 107, 107, 0.1);
+}
+
+.resume-button {
+  color: #4ac54f;
+  border-color: #4ac54f;
+}
+
+.resume-button:hover {
+  background: rgba(74, 197, 79, 0.1);
+}
+
+.cancel-button:disabled,
+.resume-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.portal-container {
+  background: #2a2a2a;
+  border-radius: 12px;
+  border: 1px solid #3a3a3a;
+  overflow: hidden;
+  margin-top: 2rem;
+}
+
+.portal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #3a3a3a;
+}
+
+.portal-header h2 {
+  font-family: var(--font-primary);
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+  color: #F0EEF0;
+  margin: 0;
+}
+
+.portal-close {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s, color 0.2s;
+}
+
+.portal-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #F0EEF0;
+}
+
+.portal-iframe {
+  width: 100%;
+  min-height: 800px;
+  border: none;
+  display: block;
+}
+
+.billing-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 2rem;
+}
+
+.billing-subscription-card {
+  /* Left column - spans 7 columns */
+}
+
+.billing-purchases-card {
+  /* Right column - spans 5 columns */
+  background-color: #2a2b2d;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid #3a3a3a;
+}
+
+/* Custom scrollbar styling for purchases list */
+.purchases-scroll-container {
+  scrollbar-width: thin;
+  scrollbar-color: #f93b3b #2a2b2d;
+}
+
+.purchases-scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.purchases-scroll-container::-webkit-scrollbar-track {
+  background: #2a2b2d;
+  border-radius: 4px;
+}
+
+.purchases-scroll-container::-webkit-scrollbar-thumb {
+  background: #f93b3b;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.purchases-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #e12d2d;
+}
+
+/* Responsive breakpoints */
+@media screen and (max-width: 1200px) {
+  .billing-dashboard-grid {
+    gap: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .billing-dashboard-grid {
+    grid-template-columns: 1fr;
+    padding: 2rem 1.5rem !important;
+  }
+
+  .billing-subscription-card,
+  .billing-purchases-card {
+    grid-column: 1 / -1;
+  }
+
+  /* Ensure proper stacking order: Additional Purchases first, then Previous Purchases */
+  .billing-left-column {
+    grid-column: 1 / -1 !important;
+  }
+
+  .billing-right-column {
+    grid-column: 1 / -1 !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .billing-container {
+    padding: 1rem;
+  }
+
+  .billing-dashboard-grid {
+    padding: 1.5rem 1rem !important;
+    gap: 1.5rem;
+  }
+
+  .billing-header {
+    margin-bottom: 2rem;
+    padding-top: 1rem;
+  }
+
+  .status-card,
+  .plan-card {
+    padding: 1.5rem;
+  }
+
+  .plans-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .portal-iframe {
+    min-height: 600px;
+  }
+}
+

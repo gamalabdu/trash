@@ -7,7 +7,7 @@ import { Alert, AlertDescription } from '../../ui/alert';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../../ui/dialog';
 import { Badge } from '../../ui/badge';
 import { Progress } from '../../ui/progress';
-import { Plus, Edit, Trash2, RefreshCw, Music, Play, Upload, Save } from 'lucide-react';
+import { Edit, Trash2, RefreshCw, Music, Play, Upload, Save } from 'lucide-react';
 import { sanityClient } from '../../../utils/sanityClient';
 
 interface Song {
@@ -75,19 +75,6 @@ const SongsManager: React.FC = () => {
     setLoading(false);
   };
 
-  const handleAddSong = () => {
-    // Get next ID
-    const nextId = songs.length > 0 ? Math.max(...songs.map(s => s.id)) + 1 : 1;
-    
-    setEditingSong({
-      title: '',
-      artist: '',
-      id: nextId,
-      coverArt: null,
-      music: null
-    });
-    setIsDialogOpen(true);
-  };
 
   const handleEditSong = (song: Song) => {
     setEditingSong({ ...song });
@@ -204,13 +191,6 @@ const SongsManager: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-end">
-        <Button onClick={handleAddSong} className="bg-red-500 hover:bg-red-600">
-          <Plus className="w-4 h-4 mr-2" />
-          Add Song
-        </Button>
-      </div>
 
       {/* Messages */}
       {message && (
@@ -295,11 +275,7 @@ const SongsManager: React.FC = () => {
         <div className="text-center py-12">
           <Music className="w-12 h-12 text-gray-500 mx-auto mb-4" />
           <h3 className="text-lg font-semibold text-gray-400 mb-2">No songs found</h3>
-          <p className="text-gray-500 mb-4">Start by adding your first music track</p>
-          <Button onClick={handleAddSong} className="bg-red-500 hover:bg-red-600">
-            <Plus className="w-4 h-4 mr-2" />
-            Add Your First Song
-          </Button>
+          <p className="text-gray-500">No songs are currently available in the system.</p>
         </div>
       )}
 
