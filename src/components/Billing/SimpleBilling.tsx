@@ -491,7 +491,9 @@ const SimpleBilling: React.FC = () => {
       
       // We need to update createPortalSession to accept returnUrl
       // For now, we'll use the default behavior and update the API call
-      const serverUrl = process.env.REACT_APP_STRIPE_SERVERLESS_URL || 'http://localhost:3001/api';
+      // Auto-detect production URL, fallback to localhost for development
+      const serverUrl = process.env.REACT_APP_STRIPE_SERVERLESS_URL || 
+        (typeof window !== 'undefined' ? `${window.location.origin}/api` : 'http://localhost:3001/api');
       const response = await fetch(`${serverUrl}/create-portal-session`, {
         method: 'POST',
         headers: {

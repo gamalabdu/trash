@@ -1,6 +1,8 @@
 // Configuration - Set these in your .env file or directly here
 // This should be the base URL of your serverless functions (e.g., https://your-project.vercel.app/api)
-const STRIPE_SERVERLESS_BASE_URL = process.env.REACT_APP_STRIPE_SERVERLESS_URL || '';
+// In production, automatically uses current origin + /api if not set
+const STRIPE_SERVERLESS_BASE_URL = process.env.REACT_APP_STRIPE_SERVERLESS_URL || 
+  (typeof window !== 'undefined' ? `${window.location.origin}/api` : '');
 
 /**
  * Creates a Stripe Customer Portal session using a serverless function

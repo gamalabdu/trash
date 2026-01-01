@@ -89,12 +89,9 @@ const Billing: React.FC = () => {
   };
 
   const loadPlans = async () => {
-    const serverlessUrl = process.env.REACT_APP_STRIPE_SERVERLESS_URL;
-    
-    if (!serverlessUrl) {
-      setError('REACT_APP_STRIPE_SERVERLESS_URL not configured. Please deploy serverless functions and add the URL to your .env file.');
-      return;
-    }
+    // Auto-detect production URL, fallback to localhost for development
+    const serverlessUrl = process.env.REACT_APP_STRIPE_SERVERLESS_URL || 
+      (typeof window !== 'undefined' ? `${window.location.origin}/api` : 'http://localhost:3001/api');
 
     try {
       setLoading(true);
