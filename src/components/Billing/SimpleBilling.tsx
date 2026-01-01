@@ -173,68 +173,6 @@ const SimpleBilling: React.FC = () => {
 
       const customerData = await getCustomerByEmail(email.trim());
       
-      console.log('\n========== FRONTEND: CUSTOMER DATA RECEIVED ==========');
-      console.log('Full customer data received:', customerData);
-      console.log('\n[FRONTEND] Customer ID:', customerData?.customerId);
-      console.log('[FRONTEND] Customer Email:', customerData?.customerEmail);
-      console.log('[FRONTEND] Subscription:', customerData?.subscription);
-      if (customerData?.subscription) {
-        console.log('[FRONTEND] Subscription amount:', customerData.subscription.amount);
-        console.log('[FRONTEND] Subscription interval:', customerData.subscription.interval);
-        console.log('[FRONTEND] Subscription currency:', customerData.subscription.currency);
-      }
-      
-      console.log('\n[FRONTEND] oneTimePurchases in response:', customerData?.oneTimePurchases);
-      console.log('[FRONTEND] Type of oneTimePurchases:', typeof customerData?.oneTimePurchases);
-      console.log('[FRONTEND] Is array?', Array.isArray(customerData?.oneTimePurchases));
-      console.log('[FRONTEND] oneTimePurchases length:', customerData?.oneTimePurchases?.length || 0);
-      
-      // Log ALL products purchased (from debug data)
-      if (customerData?.debug?.allProductsPurchased) {
-        console.log('\n[FRONTEND] ========== ALL PRODUCTS PURCHASED BY CUSTOMER ==========');
-        console.log(`Total unique products: ${customerData.debug.allProductsPurchased.length}`);
-        
-        customerData.debug.allProductsPurchased.forEach((product: any, index: number) => {
-          console.log(`\n${index + 1}. ${product.productName}`);
-          console.log(`   Type: ${product.type}`);
-          console.log(`   Product ID: ${product.productId}`);
-          console.log(`   Price ID: ${product.priceId}`);
-          console.log(`   Amount: ${product.priceAmount ? (product.priceAmount / 100).toFixed(2) : 'N/A'} ${product.priceCurrency?.toUpperCase() || ''}`);
-          console.log(`   Interval: ${product.interval}`);
-          console.log(`   Created: ${new Date(product.created * 1000).toISOString()}`);
-        });
-        
-        console.log(`\n[FRONTEND] One-time products: ${customerData.debug.oneTimeProducts?.length || 0}`);
-        customerData.debug.oneTimeProducts?.forEach((p: any) => {
-          console.log(`  - ${p.productName} (${p.priceId})`);
-        });
-        
-        console.log(`\n[FRONTEND] Subscription products: ${customerData.debug.subscriptionProducts?.length || 0}`);
-        customerData.debug.subscriptionProducts?.forEach((p: any) => {
-          console.log(`  - ${p.productName} (${p.priceId})`);
-        });
-        
-        console.log('\n[FRONTEND] ========== END ALL PRODUCTS ==========');
-      }
-      
-      if (customerData?.oneTimePurchases && Array.isArray(customerData.oneTimePurchases) && customerData.oneTimePurchases.length > 0) {
-        console.log('\n[FRONTEND] One-time purchases details:');
-        customerData.oneTimePurchases.forEach((purchase: any, index: number) => {
-          console.log(`\n${index + 1}. Purchase ID: ${purchase.id}`);
-          console.log(`   Amount: ${purchase.amount ? (purchase.amount / 100).toFixed(2) : 'N/A'} ${purchase.currency?.toUpperCase() || ''}`);
-          console.log(`   Status: ${purchase.status}`);
-          console.log(`   Date: ${new Date(purchase.date * 1000).toISOString()}`);
-          console.log(`   Description: ${purchase.description || 'N/A'}`);
-          console.log(`   Receipt URL: ${purchase.receiptUrl || 'N/A'}`);
-          console.log(`   Invoice ID: ${purchase.invoiceId || 'N/A'}`);
-          console.log(`   Payment Intent ID: ${purchase.paymentIntentId || 'N/A'}`);
-        });
-      } else {
-        console.log('\n[FRONTEND] No one-time purchases found in response');
-      }
-      
-      console.log('\n========== END FRONTEND DEBUG ==========\n');
-      
       if (customerData && customerData.customerId) {
         setCustomerId(customerData.customerId);
         setCustomerEmail(customerData.customerEmail);
@@ -370,8 +308,14 @@ const SimpleBilling: React.FC = () => {
         }
       }
     } catch (err: any) {
-      console.error('Error looking up customer:', err);
-      setError(err.message || 'Failed to lookup customer. Please try again.');
+      // Don't log 404 errors (customer not found) - this is expected behavior
+      if (err.message && !err.message.includes('404') && !err.message.includes('No customer found')) {
+        console.error('Error looking up customer:', err);
+      }
+      // Only show error if it's not a 404 (customer not found is normal)
+      if (err.message && !err.message.includes('404') && !err.message.includes('No customer found')) {
+        setError(err.message || 'Failed to lookup customer. Please try again.');
+      }
         setCustomerId(null);
         setCustomerEmail(null);
         setSubscription(null);
@@ -547,7 +491,6 @@ const SimpleBilling: React.FC = () => {
     }
     
     try {
-      console.log('Loading plans from:', `${serverUrl}/get-products`);
       const response = await fetch(`${serverUrl}/get-products`);
       
       if (!response.ok) {
@@ -555,7 +498,6 @@ const SimpleBilling: React.FC = () => {
       }
       
       const data = await response.json();
-      console.log('Plans data received:', data);
       
       if (data.products && data.products.length > 0) {
         const transformedPlans: SubscriptionPlan[] = data.products.map((product: any) => ({
@@ -567,8 +509,6 @@ const SimpleBilling: React.FC = () => {
           interval: product.interval,
           priceId: product.priceId,
         }));
-        console.log('Transformed plans:', transformedPlans);
-        console.log('Plan priceIds:', transformedPlans.map(p => ({ name: p.name, priceId: p.priceId })));
         setPlans(transformedPlans);
         return;
       }

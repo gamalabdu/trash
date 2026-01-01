@@ -83,11 +83,21 @@ export default async function handler(req, res) {
     }
 
     if (!customer) {
+      // 404 is a valid business state (customer not found), not an error
+      // Log for analytics but don't treat as error
+      console.log(`[INFO] Customer lookup: No customer found for email: ${normalizedEmail}`);
+      
       return res.status(404).json({ 
-        message: 'No customer found with this email',
-        customerId: null,
-        subscription: null,
-        oneTimePurchases: [],
+        success: false,
+        error: {
+          code: 'CUSTOMER_NOT_FOUND',
+          message: 'No customer found with this email',
+        },
+        data: {
+          customerId: null,
+          subscription: null,
+          oneTimePurchases: [],
+        },
       });
     }
 
@@ -157,20 +167,38 @@ export default async function handler(req, res) {
       validPurchases = [];
     }
 
-    return res.json({
-      customerId: customerId,
-      customerEmail: customer.email,
-      subscription: subscriptionData,
-      oneTimePurchases: validPurchases || [],
+    // Success response with consistent structure
+    return res.status(200).json({
+      success: true,
+      data: {
+        customerId: customerId,
+        customerEmail: customer.email,
+        subscription: subscriptionData,
+        oneTimePurchases: validPurchases || [],
+      },
     });
   } catch (error) {
-    console.error('Error looking up customer by email:', error);
+    // Log actual errors (not 404s) for debugging
+    console.error('[ERROR] Customer lookup failed:', {
+      email: email,
+      error: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
+    });
+    
     return res.status(500).json({ 
-      message: error.message,
-      customerId: null,
-      customerEmail: null,
-      subscription: null,
-      oneTimePurchases: [],
+      success: false,
+      error: {
+        code: 'INTERNAL_ERROR',
+        message: 'An error occurred while looking up customer',
+        // Only expose detailed error in development
+        details: process.env.NODE_ENV === 'development' ? error.message : undefined,
+      },
+      data: {
+        customerId: null,
+        customerEmail: null,
+        subscription: null,
+        oneTimePurchases: [],
+      },
     });
   }
 }

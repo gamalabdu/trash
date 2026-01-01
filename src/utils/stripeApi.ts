@@ -102,18 +102,35 @@ export const getCustomerByEmail = async (email: string) => {
     });
 
     if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      
+      // 404 is a valid business state (customer not found), not an error
       if (response.status === 404) {
-        return null; // No customer found
+        return null; // Return null silently - this is expected behavior
       }
-      const error = await response.json();
-      throw new Error(error.message || 'Failed to lookup customer');
+      
+      // For other errors, throw with proper error structure
+      const errorMessage = errorData?.error?.message || errorData?.message || 'Failed to lookup customer';
+      throw new Error(errorMessage);
     }
 
     const data = await response.json();
-    return data;
+    // Handle both old format (direct data) and new format (wrapped in data property)
+    return data.data || data;
   } catch (error: any) {
-    console.error('Error looking up customer by email:', error);
-    throw new Error(error.message || 'Failed to lookup customer by email');
+    // Only log actual errors (not 404s) - 404 is expected behavior
+    // In production, avoid logging expected business states
+    if (process.env.NODE_ENV === 'development' && error.message && !error.message.includes('404')) {
+      console.error('Error looking up customer by email:', error);
+    }
+    
+    // If it's a 404, return null silently (expected behavior)
+    if (error.message && error.message.includes('404')) {
+      return null;
+    }
+    
+    // Re-throw actual errors
+    throw error;
   }
 };
 
