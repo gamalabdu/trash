@@ -90,8 +90,13 @@ const Billing: React.FC = () => {
 
   const loadPlans = async () => {
     // Auto-detect production URL, fallback to localhost for development
-    const serverlessUrl = process.env.REACT_APP_STRIPE_SERVERLESS_URL || 
-      (typeof window !== 'undefined' ? `${window.location.origin}/api` : 'http://localhost:3001/api');
+    let serverlessUrl = process.env.REACT_APP_STRIPE_SERVERLESS_URL;
+    if (!serverlessUrl && typeof window !== 'undefined') {
+      serverlessUrl = `${window.location.origin}/api`;
+    }
+    if (!serverlessUrl) {
+      serverlessUrl = 'http://localhost:3001/api';
+    }
 
     try {
       setLoading(true);

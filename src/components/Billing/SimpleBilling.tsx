@@ -492,8 +492,13 @@ const SimpleBilling: React.FC = () => {
       // We need to update createPortalSession to accept returnUrl
       // For now, we'll use the default behavior and update the API call
       // Auto-detect production URL, fallback to localhost for development
-      const serverUrl = process.env.REACT_APP_STRIPE_SERVERLESS_URL || 
-        (typeof window !== 'undefined' ? `${window.location.origin}/api` : 'http://localhost:3001/api');
+      let serverUrl = process.env.REACT_APP_STRIPE_SERVERLESS_URL;
+      if (!serverUrl && typeof window !== 'undefined') {
+        serverUrl = `${window.location.origin}/api`;
+      }
+      if (!serverUrl) {
+        serverUrl = 'http://localhost:3001/api';
+      }
       const response = await fetch(`${serverUrl}/create-portal-session`, {
         method: 'POST',
         headers: {
@@ -532,7 +537,14 @@ const SimpleBilling: React.FC = () => {
   };
 
   const loadPlans = async () => {
-    const serverUrl = process.env.REACT_APP_STRIPE_SERVERLESS_URL || 'http://localhost:3001/api';
+    // Auto-detect production URL, fallback to localhost for development
+    let serverUrl = process.env.REACT_APP_STRIPE_SERVERLESS_URL;
+    if (!serverUrl && typeof window !== 'undefined') {
+      serverUrl = `${window.location.origin}/api`;
+    }
+    if (!serverUrl) {
+      serverUrl = 'http://localhost:3001/api';
+    }
     
     try {
       console.log('Loading plans from:', `${serverUrl}/get-products`);
@@ -587,7 +599,14 @@ const SimpleBilling: React.FC = () => {
   };
 
   const handleSubscribe = async (priceId: string) => {
-    const serverUrl = process.env.REACT_APP_STRIPE_SERVERLESS_URL || 'http://localhost:3001/api';
+    // Auto-detect production URL, fallback to localhost for development
+    let serverUrl = process.env.REACT_APP_STRIPE_SERVERLESS_URL;
+    if (!serverUrl && typeof window !== 'undefined') {
+      serverUrl = `${window.location.origin}/api`;
+    }
+    if (!serverUrl) {
+      serverUrl = 'http://localhost:3001/api';
+    }
     
     try {
       setRedirecting(true);
