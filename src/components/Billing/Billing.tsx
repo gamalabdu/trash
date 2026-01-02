@@ -9,6 +9,7 @@ interface SubscriptionPlan {
   productName?: string;
   name: string;
   description?: string;
+  image?: string | null;
   price: number;
   currency: string;
   interval: 'month' | 'year' | 'one-time';
@@ -106,16 +107,22 @@ const Billing: React.FC = () => {
         const productsData = await getStripeProducts('all');
         if (productsData && productsData.products && productsData.products.length > 0) {
           // Transform Stripe API response to our plan format
-          const transformedPlans: SubscriptionPlan[] = productsData.products.map((product: any) => ({
-            id: product.id,
-            productId: product.productId,
-            name: product.productName,
-            description: product.productDescription,
-            price: product.price,
-            currency: product.currency,
-            interval: product.interval,
-            priceId: product.priceId,
-          }));
+          console.log('[BILLING] Raw products data from API:', productsData.products);
+          const transformedPlans: SubscriptionPlan[] = productsData.products.map((product: any) => {
+            console.log(`[BILLING] Product ${product.productName} - productImage:`, product.productImage);
+            return {
+              id: product.id,
+              productId: product.productId,
+              name: product.productName,
+              description: product.productDescription,
+              image: product.productImage || null,
+              price: product.price,
+              currency: product.currency,
+              interval: product.interval,
+              priceId: product.priceId,
+            };
+          });
+          console.log('[BILLING] Transformed plans:', transformedPlans);
           
           console.log('Loaded plans from Stripe API:', transformedPlans);
           setPlans(transformedPlans);
@@ -294,6 +301,27 @@ const Billing: React.FC = () => {
                   <div className="plans-grid">
                     {plans.map((plan) => (
                       <div key={plan.id} className="plan-card">
+                        {plan.image && (
+                          <img 
+                            src={plan.image} 
+                            alt={plan.name}
+                            className="plan-image"
+                            onError={(e) => {
+                              console.error(`[BILLING] Failed to load image for ${plan.name}:`, plan.image);
+                              e.currentTarget.style.display = 'none';
+                            }}
+                            onLoad={() => {
+                              console.log(`[BILLING] Successfully loaded image for ${plan.name}:`, plan.image);
+                            }}
+                            style={{
+                              width: '100%',
+                              height: '200px',
+                              objectFit: 'cover',
+                              borderRadius: '8px',
+                              marginBottom: '1rem',
+                            }}
+                          />
+                        )}
                         <h3 className="plan-name">{plan.name}</h3>
                         {plan.description && (
                           <p className="plan-description">{plan.description}</p>

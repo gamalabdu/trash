@@ -53,12 +53,40 @@ export default async function handler(req, res) {
           filteredPrices = productPrices.filter(p => p.type === 'one_time');
         }
 
+        // Debug: Log product images and type
+        const hasImages = product.images && product.images.length > 0;
+        const productType = product.type || 'not specified';
+        const imageFromMetadata = product.metadata?.image || product.metadata?.image_url || null;
+        
+        console.log(`[API] Product "${product.name}" (${product.id}):`);
+        console.log(`[API]   - Type: ${productType}`);
+        console.log(`[API]   - Images array:`, product.images);
+        console.log(`[API]   - Images count: ${product.images?.length || 0}`);
+        console.log(`[API]   - Metadata image:`, imageFromMetadata);
+        
+        // For service-type products, images might be in metadata instead
+        // Try images array first, then fall back to metadata
+        let productImage = null;
+        if (hasImages) {
+          productImage = product.images[0];
+          console.log(`[API]   - Using image from images array:`, productImage);
+        } else if (imageFromMetadata) {
+          productImage = imageFromMetadata;
+          console.log(`[API]   - Using image from metadata:`, productImage);
+        } else {
+          console.log(`[API]   - ⚠️  NO IMAGES FOUND (type: ${productType})`);
+          if (productType === 'service') {
+            console.log(`[API]   - Note: Service-type products may store images in metadata instead of images array`);
+          }
+        }
+
         // Return product with all its prices
         return filteredPrices.map(price => ({
           id: `${product.id}_${price.id}`,
           productId: product.id,
           productName: product.name,
           productDescription: product.description || '',
+          productImage: productImage,
           priceId: price.id,
           price: price.unit_amount,
           currency: price.currency,
@@ -69,7 +97,12 @@ export default async function handler(req, res) {
         }));
       })
       .flat()
-      .filter(item => item.priceId); // Only include products that have prices
+      .filter(item => item.priceId);
+    
+    // Debug: Log first product's image data
+    if (productsWithPrices.length > 0) {
+      console.log(`[API] Sample product image data:`, productsWithPrices[0].productImage);
+    } // Only include products that have prices
 
     return res.status(200).json({
       products: productsWithPrices,
@@ -131,6 +164,7 @@ exports.handler = async (event, context) => {
           productId: product.id,
           productName: product.name,
           productDescription: product.description || '',
+          productImage: product.images && product.images.length > 0 ? product.images[0] : null,
           priceId: price.id,
           price: price.unit_amount,
           currency: price.currency,

@@ -115,6 +115,39 @@ app.get('/', (req, res) => {
   res.json({ message: 'Stripe API Server Running', status: 'ok' });
 });
 
+// Test endpoint to check a specific product's images
+app.get('/api/test-product-images/:productId', async (req, res) => {
+  try {
+    const { productId } = req.params;
+    console.log(`[TEST] Fetching product ${productId} directly from Stripe...`);
+    
+    const product = await stripe.products.retrieve(productId);
+    
+    console.log(`[TEST] Product "${product.name}" (${product.id}):`);
+    console.log(`[TEST] - Type: ${product.type || 'not specified'}`);
+    console.log(`[TEST] - Images array:`, product.images);
+    console.log(`[TEST] - Images count:`, product.images?.length || 0);
+    console.log(`[TEST] - All product fields:`, Object.keys(product));
+    console.log(`[TEST] - Full product object:`, JSON.stringify(product, null, 2));
+    
+    res.json({
+      productId: product.id,
+      productName: product.name,
+      productType: product.type,
+      images: product.images || [],
+      imagesCount: product.images?.length || 0,
+      note: product.type !== 'good' ? '⚠️ Product type is not "good" - images may not be available for service-type products' : 'Product type is "good" - images should work',
+      fullProduct: product
+    });
+  } catch (error) {
+    console.error('[TEST] Error fetching product:', error);
+    res.status(500).json({ 
+      error: error.message,
+      message: 'Failed to fetch product from Stripe'
+    });
+  }
+});
+
 // Get Products
 app.get('/api/get-products', async (req, res) => {
   try {
@@ -139,6 +172,37 @@ app.get('/api/get-products', async (req, res) => {
     });
 
     console.log(`Found ${products.data.length} products`);
+    
+    // Debug: Log all product IDs and names with full image details
+    console.log(`[API] All products found:`);
+    products.data.forEach((product, index) => {
+      const imageCount = product.images?.length || 0;
+      console.log(`  ${index + 1}. "${product.name}" (${product.id})`);
+      console.log(`      - Active: ${product.active}`);
+      console.log(`      - Type: ${product.type || 'not specified'}`);
+      console.log(`      - Images count: ${imageCount}`);
+      console.log(`      - Images array:`, product.images);
+      console.log(`      - Full product keys:`, Object.keys(product));
+      if (imageCount > 0) {
+        console.log(`      - Image URLs:`, product.images);
+      } else {
+        console.log(`      ⚠️  NO IMAGES - Product type is "${product.type || 'not specified'}" - Images may only work for type="good"`);
+      }
+    });
+    
+    // Debug: Log first product's full details
+    if (products.data.length > 0) {
+      const firstProduct = products.data[0];
+      console.log(`[API] First product details:`);
+      console.log(`  - Name: "${firstProduct.name}"`);
+      console.log(`  - ID: ${firstProduct.id}`);
+      console.log(`  - Active: ${firstProduct.active}`);
+      console.log(`  - Images array:`, firstProduct.images);
+      console.log(`  - Images count:`, firstProduct.images?.length || 0);
+      if (firstProduct.images && firstProduct.images.length > 0) {
+        console.log(`  - First image URL:`, firstProduct.images[0]);
+      }
+    }
 
     const prices = await stripe.prices.list({
       active: true,
@@ -166,11 +230,39 @@ app.get('/api/get-products', async (req, res) => {
           filteredPrices = productPrices.filter(p => p.type === 'one_time');
         }
 
+        // Debug: Log product images and type
+        const hasImages = product.images && product.images.length > 0;
+        const productType = product.type || 'not specified';
+        const imageFromMetadata = product.metadata?.image || product.metadata?.image_url || null;
+        
+        console.log(`[API] Product "${product.name}" (${product.id}):`);
+        console.log(`[API]   - Type: ${productType}`);
+        console.log(`[API]   - Images array:`, product.images);
+        console.log(`[API]   - Images count: ${product.images?.length || 0}`);
+        console.log(`[API]   - Metadata image:`, imageFromMetadata);
+        
+        // For service-type products, images might be in metadata instead
+        // Try images array first, then fall back to metadata
+        let productImage = null;
+        if (hasImages) {
+          productImage = product.images[0];
+          console.log(`[API]   - Using image from images array:`, productImage);
+        } else if (imageFromMetadata) {
+          productImage = imageFromMetadata;
+          console.log(`[API]   - Using image from metadata:`, productImage);
+        } else {
+          console.log(`[API]   - ⚠️  NO IMAGES FOUND (type: ${productType})`);
+          if (productType === 'service') {
+            console.log(`[API]   - Note: Service-type products may store images in metadata instead of images array`);
+          }
+        }
+
         return filteredPrices.map(price => ({
           id: `${product.id}_${price.id}`,
           productId: product.id,
           productName: product.name,
           productDescription: product.description || '',
+          productImage: productImage,
           priceId: price.id,
           price: price.unit_amount,
           currency: price.currency,
@@ -184,10 +276,24 @@ app.get('/api/get-products', async (req, res) => {
       .filter(item => item.priceId);
 
     console.log(`Returning ${productsWithPrices.length} products with prices`);
+    // Debug: Log first product's image data
+    if (productsWithPrices.length > 0) {
+      console.log(`[API] Sample product (first) full object:`, JSON.stringify(productsWithPrices[0], null, 2));
+      console.log(`[API] Sample product image data:`, productsWithPrices[0].productImage);
+      console.log(`[API] Sample product has productImage field:`, 'productImage' in productsWithPrices[0]);
+    }
+    
+    // Ensure productImage is always included (even if null)
+    const productsWithImageField = productsWithPrices.map(p => ({
+      ...p,
+      productImage: p.productImage !== undefined ? p.productImage : null
+    }));
+    
+    console.log(`[API] Final response - first product productImage:`, productsWithImageField[0]?.productImage);
     
     res.json({
-      products: productsWithPrices,
-      count: productsWithPrices.length,
+      products: productsWithImageField,
+      count: productsWithImageField.length,
     });
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -668,7 +774,13 @@ app.get('/api/customer-by-email', async (req, res) => {
       const priceItem = subscriptionItem.price;
       const quantity = subscriptionItem.quantity || 1;
       const price = await stripe.prices.retrieve(priceId);
-      const product = await stripe.products.retrieve(price.product);
+      const productId = typeof price.product === 'string' ? price.product : price.product?.id;
+      const product = await stripe.products.retrieve(productId);
+
+      // Get product image
+      const hasImages = product.images && product.images.length > 0;
+      const imageFromMetadata = product.metadata?.image || product.metadata?.image_url || null;
+      const productImage = hasImages ? product.images[0] : (imageFromMetadata || null);
 
       // Get amount - try from retrieved price, fallback to subscription item price
       // Multiply by quantity to get total amount
@@ -683,6 +795,8 @@ app.get('/api/customer-by-email', async (req, res) => {
         currentPeriodEnd: subscription.current_period_end,
         currentPeriodStart: subscription.current_period_start,
         planName: product.name,
+        productId: productId,
+        productImage: productImage,
         cancelAtPeriodEnd: subscription.cancel_at_period_end,
         canceledAt: subscription.canceled_at,
         currency: subscription.currency,
@@ -757,6 +871,44 @@ app.get('/api/customer-by-email', async (req, res) => {
           // Extract receipt URL if available
           const receiptUrl = charge.receipt_url || null;
           
+          // Get product ID and image from invoice line items if available
+          let productId = null;
+          let productImage = null;
+          
+          if (invoiceId) {
+            try {
+              const invoice = await stripe.invoices.retrieve(invoiceId, {
+                expand: ['lines.data.price.product'],
+              });
+              
+              if (invoice.lines && invoice.lines.data && invoice.lines.data.length > 0) {
+                const firstLineItem = invoice.lines.data[0];
+                if (firstLineItem.price && typeof firstLineItem.price === 'object' && firstLineItem.price.product) {
+                  productId = typeof firstLineItem.price.product === 'string' 
+                    ? firstLineItem.price.product 
+                    : firstLineItem.price.product.id;
+                  
+                  // Fetch product to get image
+                  if (productId) {
+                    try {
+                      const product = await stripe.products.retrieve(productId);
+                      const hasImages = product.images && product.images.length > 0;
+                      const imageFromMetadata = product.metadata?.image || product.metadata?.image_url || null;
+                      productImage = hasImages ? product.images[0] : (imageFromMetadata || null);
+                    } catch (productErr) {
+                      console.error(`[CUSTOMER-BY-EMAIL] Error fetching product ${productId} for charge ${charge.id}:`, productErr.message);
+                    }
+                  }
+                }
+              }
+            } catch (invoiceErr) {
+              // If invoice doesn't exist or can't be retrieved, that's okay
+              if (!invoiceErr.message.includes('No such invoice')) {
+                console.error(`[CUSTOMER-BY-EMAIL] Error retrieving invoice ${invoiceId} for product lookup:`, invoiceErr.message);
+              }
+            }
+          }
+          
           chargePurchases.push({
             id: charge.id,
             amount: charge.amount,
@@ -767,6 +919,8 @@ app.get('/api/customer-by-email', async (req, res) => {
             receiptUrl: receiptUrl,
             invoiceId: invoiceId,
             paymentIntentId: paymentIntentId,
+            productId: productId,
+            productImage: productImage,
             billingDetails: charge.billing_details ? {
               name: charge.billing_details.name,
               email: charge.billing_details.email,
@@ -1096,7 +1250,13 @@ app.get('/api/customer/:customerId/subscription', async (req, res) => {
     const priceItem = subscriptionItem.price;
     const quantity = subscriptionItem.quantity || 1;
     const price = await stripe.prices.retrieve(priceId);
-    const product = await stripe.products.retrieve(price.product);
+    const productId = typeof price.product === 'string' ? price.product : price.product?.id;
+    const product = await stripe.products.retrieve(productId);
+
+    // Get product image
+    const hasImages = product.images && product.images.length > 0;
+    const imageFromMetadata = product.metadata?.image || product.metadata?.image_url || null;
+    const productImage = hasImages ? product.images[0] : (imageFromMetadata || null);
 
     // Get amount - try from retrieved price, fallback to subscription item price
     // Multiply by quantity to get total amount
@@ -1112,6 +1272,8 @@ app.get('/api/customer/:customerId/subscription', async (req, res) => {
       currentPeriodEnd: fullSubscription.current_period_end,
       currentPeriodStart: fullSubscription.current_period_start,
       planName: product.name,
+      productId: productId,
+      productImage: productImage,
       cancelAtPeriodEnd: fullSubscription.cancel_at_period_end,
       canceledAt: fullSubscription.canceled_at,
       currency: fullSubscription.currency,
@@ -1295,6 +1457,44 @@ app.get('/api/customer/:customerId/charges', async (req, res) => {
       // Extract receipt URL if available
       const receiptUrl = charge.receipt_url || null;
       
+      // Get product ID and image from invoice line items if available
+      let productId = null;
+      let productImage = null;
+      
+      if (invoiceId) {
+        try {
+          const invoice = await stripe.invoices.retrieve(invoiceId, {
+            expand: ['lines.data.price.product'],
+          });
+          
+          if (invoice.lines && invoice.lines.data && invoice.lines.data.length > 0) {
+            const firstLineItem = invoice.lines.data[0];
+            if (firstLineItem.price && typeof firstLineItem.price === 'object' && firstLineItem.price.product) {
+              productId = typeof firstLineItem.price.product === 'string' 
+                ? firstLineItem.price.product 
+                : firstLineItem.price.product.id;
+              
+              // Fetch product to get image
+              if (productId) {
+                try {
+                  const product = await stripe.products.retrieve(productId);
+                  const hasImages = product.images && product.images.length > 0;
+                  const imageFromMetadata = product.metadata?.image || product.metadata?.image_url || null;
+                  productImage = hasImages ? product.images[0] : (imageFromMetadata || null);
+                } catch (productErr) {
+                  console.error(`[CHARGES API] Error fetching product ${productId} for charge ${charge.id}:`, productErr.message);
+                }
+              }
+            }
+          }
+        } catch (invoiceErr) {
+          // If invoice doesn't exist or can't be retrieved, that's okay
+          if (!invoiceErr.message.includes('No such invoice')) {
+            console.error(`[CHARGES API] Error retrieving invoice ${invoiceId} for product lookup:`, invoiceErr.message);
+          }
+        }
+      }
+      
       processedCharges.push({
         id: charge.id,
         amount: charge.amount,
@@ -1305,6 +1505,8 @@ app.get('/api/customer/:customerId/charges', async (req, res) => {
         receiptUrl: receiptUrl,
         invoiceId: invoiceId,
         paymentIntentId: paymentIntentId,
+        productId: productId,
+        productImage: productImage,
         // Include billing details if available
         billingDetails: charge.billing_details ? {
           name: charge.billing_details.name,
@@ -1641,6 +1843,44 @@ app.get('/api/customer/:customerId/purchases', async (req, res) => {
       // Extract receipt URL if available
       const receiptUrl = charge.receipt_url || null;
       
+      // Get product ID and image from invoice line items if available
+      let productId = null;
+      let productImage = null;
+      
+      if (invoiceId) {
+        try {
+          const invoice = await stripe.invoices.retrieve(invoiceId, {
+            expand: ['lines.data.price.product'],
+          });
+          
+          if (invoice.lines && invoice.lines.data && invoice.lines.data.length > 0) {
+            const firstLineItem = invoice.lines.data[0];
+            if (firstLineItem.price && typeof firstLineItem.price === 'object' && firstLineItem.price.product) {
+              productId = typeof firstLineItem.price.product === 'string' 
+                ? firstLineItem.price.product 
+                : firstLineItem.price.product.id;
+              
+              // Fetch product to get image
+              if (productId) {
+                try {
+                  const product = await stripe.products.retrieve(productId);
+                  const hasImages = product.images && product.images.length > 0;
+                  const imageFromMetadata = product.metadata?.image || product.metadata?.image_url || null;
+                  productImage = hasImages ? product.images[0] : (imageFromMetadata || null);
+                } catch (productErr) {
+                  console.error(`[PURCHASES API] Error fetching product ${productId} for charge ${charge.id}:`, productErr.message);
+                }
+              }
+            }
+          }
+        } catch (invoiceErr) {
+          // If we already retrieved the invoice above, don't retrieve again
+          if (!invoiceErr.message.includes('No such invoice')) {
+            console.error(`[PURCHASES API] Error retrieving invoice ${invoiceId} for product lookup:`, invoiceErr.message);
+          }
+        }
+      }
+      
       processedPurchases.push({
         id: charge.id,
         type: purchaseType, // 'one-time' or 'subscription'
@@ -1653,6 +1893,8 @@ app.get('/api/customer/:customerId/purchases', async (req, res) => {
         invoiceId: invoiceId,
         paymentIntentId: paymentIntentId,
         subscriptionId: subscriptionId, // null for one-time purchases
+        productId: productId,
+        productImage: productImage,
         // Include billing details if available
         billingDetails: charge.billing_details ? {
           name: charge.billing_details.name,
@@ -1714,14 +1956,36 @@ app.get('/api/customer/:customerId/purchases', async (req, res) => {
         const amount = fullSession.amount_total || 0;
         const currency = fullSession.currency || 'usd';
         
-        // Get description from line items
+        // Get description and product info from line items
         let description = null;
+        let productId = null;
+        let productImage = null;
+        
         if (fullSession.line_items && fullSession.line_items.data && fullSession.line_items.data.length > 0) {
           const firstItem = fullSession.line_items.data[0];
           description = firstItem.description || 
             (firstItem.price && typeof firstItem.price === 'object' && firstItem.price.product 
               ? (typeof firstItem.price.product === 'object' ? firstItem.price.product.name : null)
               : null);
+          
+          // Extract product ID and fetch product image
+          if (firstItem.price && typeof firstItem.price === 'object' && firstItem.price.product) {
+            productId = typeof firstItem.price.product === 'string' 
+              ? firstItem.price.product 
+              : firstItem.price.product.id;
+            
+            // Fetch product to get image
+            if (productId) {
+              try {
+                const product = await stripe.products.retrieve(productId);
+                const hasImages = product.images && product.images.length > 0;
+                const imageFromMetadata = product.metadata?.image || product.metadata?.image_url || null;
+                productImage = hasImages ? product.images[0] : (imageFromMetadata || null);
+              } catch (productErr) {
+                console.error(`[PURCHASES API] Error fetching product ${productId} for image:`, productErr.message);
+              }
+            }
+          }
         }
         
         // Get payment intent ID
@@ -1759,6 +2023,8 @@ app.get('/api/customer/:customerId/purchases', async (req, res) => {
           invoiceId: invoiceId,
           paymentIntentId: paymentIntentId,
           subscriptionId: subscriptionId,
+          productId: productId,
+          productImage: productImage,
           checkoutSessionId: session.id, // Keep reference to checkout session
           billingDetails: fullSession.customer_details ? {
             name: fullSession.customer_details.name,
@@ -2141,14 +2407,36 @@ app.get('/api/customer/:customerId/checkout-sessions', async (req, res) => {
           expand: ['line_items.data.price.product', 'payment_intent'],
         });
         
-        // Get description from line items
+        // Get description and product info from line items
         let description = null;
+        let productId = null;
+        let productImage = null;
+        
         if (fullSession.line_items && fullSession.line_items.data && fullSession.line_items.data.length > 0) {
           const firstItem = fullSession.line_items.data[0];
           description = firstItem.description || 
             (firstItem.price && typeof firstItem.price === 'object' && firstItem.price.product 
               ? (typeof firstItem.price.product === 'object' ? firstItem.price.product.name : null)
               : null);
+          
+          // Extract product ID and fetch product image
+          if (firstItem.price && typeof firstItem.price === 'object' && firstItem.price.product) {
+            productId = typeof firstItem.price.product === 'string' 
+              ? firstItem.price.product 
+              : firstItem.price.product.id;
+            
+            // Fetch product to get image
+            if (productId) {
+              try {
+                const product = await stripe.products.retrieve(productId);
+                const hasImages = product.images && product.images.length > 0;
+                const imageFromMetadata = product.metadata?.image || product.metadata?.image_url || null;
+                productImage = hasImages ? product.images[0] : (imageFromMetadata || null);
+              } catch (productErr) {
+                console.error(`[CHECKOUT SESSIONS API] Error fetching product ${productId} for session ${fullSession.id}:`, productErr.message);
+              }
+            }
+          }
         }
         
         enrichedSessions.push({
@@ -2160,6 +2448,8 @@ app.get('/api/customer/:customerId/checkout-sessions', async (req, res) => {
           status: fullSession.payment_status === 'paid' ? 'succeeded' : fullSession.status,
           paymentStatus: fullSession.payment_status,
           description: description,
+          productId: productId,
+          productImage: productImage,
           customerId: fullSession.customer,
           customerEmail: fullSession.customer_details?.email || fullSession.customer_email,
           paymentIntentId: fullSession.payment_intent 

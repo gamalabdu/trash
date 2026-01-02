@@ -9,6 +9,7 @@ interface SubscriptionPlan {
   id: string;
   name: string;
   description?: string;
+  image?: string | null;
   price: number;
   currency: string;
   interval: 'month' | 'year' | 'one-time';
@@ -27,6 +28,8 @@ interface CustomerSubscription {
   customer: string;
   amount?: number; // Amount in cents
   interval?: string | null; // 'month', 'year', etc.
+  productId?: string;
+  productImage?: string | null;
 }
 
 interface OneTimePurchase {
@@ -39,6 +42,8 @@ interface OneTimePurchase {
   receiptUrl: string | null;
   invoiceId: string | null;
   paymentIntentId: string | null;
+  productId?: string;
+  productImage?: string | null;
   billingDetails: {
     name: string | null;
     email: string | null;
@@ -64,6 +69,8 @@ interface Purchase {
   invoiceId: string | null;
   paymentIntentId: string | null;
   subscriptionId: string | null;
+  productId?: string;
+  productImage?: string | null;
   billingDetails: {
     name: string | null;
     email: string | null;
@@ -481,6 +488,7 @@ const SimpleBilling: React.FC = () => {
   };
 
   const loadPlans = async () => {
+    console.log('[BILLING] loadPlans() called');
     // Auto-detect production URL, fallback to localhost for development
     let serverUrl = process.env.REACT_APP_STRIPE_SERVERLESS_URL;
     if (!serverUrl && typeof window !== 'undefined') {
@@ -490,6 +498,8 @@ const SimpleBilling: React.FC = () => {
       serverUrl = 'http://localhost:3001/api';
     }
     
+    console.log('[BILLING] Fetching products from:', `${serverUrl}/get-products`);
+    
     try {
       const response = await fetch(`${serverUrl}/get-products`);
       
@@ -498,17 +508,24 @@ const SimpleBilling: React.FC = () => {
       }
       
       const data = await response.json();
+      console.log('[BILLING] Full API response:', data);
       
       if (data.products && data.products.length > 0) {
-        const transformedPlans: SubscriptionPlan[] = data.products.map((product: any) => ({
-          id: product.id,
-          name: product.productName,
-          description: product.productDescription,
-          price: product.price,
-          currency: product.currency,
-          interval: product.interval,
-          priceId: product.priceId,
-        }));
+        console.log('[BILLING] Raw products data from API:', data.products);
+        const transformedPlans: SubscriptionPlan[] = data.products.map((product: any) => {
+          console.log(`[BILLING] Product ${product.productName} - productImage:`, product.productImage);
+          return {
+            id: product.id,
+            name: product.productName,
+            description: product.productDescription,
+            image: product.productImage || null,
+            price: product.price,
+            currency: product.currency,
+            interval: product.interval,
+            priceId: product.priceId,
+          };
+        });
+        console.log('[BILLING] Transformed plans:', transformedPlans);
         setPlans(transformedPlans);
         return;
       }
@@ -1147,6 +1164,22 @@ const SimpleBilling: React.FC = () => {
                     >
                   {subscription ? (
                     <>
+                      {subscription.productImage && (
+                        <img 
+                          src={subscription.productImage} 
+                          alt={subscription.planName || 'Subscription'}
+                          style={{
+                            width: '100%',
+                            height: '200px',
+                            objectFit: 'cover',
+                            borderRadius: '8px',
+                            marginBottom: '1.5rem',
+                          }}
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                          }}
+                        />
+                      )}
                       <div style={{
                         display: 'grid',
                         gridTemplateColumns: 'repeat(2, 1fr)',
@@ -1399,6 +1432,26 @@ const SimpleBilling: React.FC = () => {
                                 e.currentTarget.style.boxShadow = 'none';
                               }}
                             >
+                              {plan.image && (
+                                <img 
+                                  src={plan.image} 
+                                  alt={plan.name}
+                                  onError={(e) => {
+                                    console.error(`[BILLING] Failed to load image for ${plan.name}:`, plan.image);
+                                    e.currentTarget.style.display = 'none';
+                                  }}
+                                  onLoad={() => {
+                                    console.log(`[BILLING] Successfully loaded image for ${plan.name}:`, plan.image);
+                                  }}
+                                  style={{
+                                    width: '100%',
+                                    height: '200px',
+                                    objectFit: 'cover',
+                                    borderRadius: '8px',
+                                    marginBottom: '1rem',
+                                  }}
+                                />
+                              )}
                               <h3 style={{
                                 fontSize: '1.5rem',
                                 marginBottom: '0.75rem',
@@ -1495,6 +1548,9 @@ const SimpleBilling: React.FC = () => {
               // Create maps of payment intent IDs to checkout session data
               const paymentStatusMap = new Map<string, string>();
               const descriptionMap = new Map<string, string>();
+              const productIdMap = new Map<string, string>();
+              const productImageMap = new Map<string, string>();
+              
               if (checkoutSessions && checkoutSessions.length > 0) {
                 checkoutSessions.forEach((session: any) => {
                   if (session.paymentIntentId) {
@@ -1504,11 +1560,18 @@ const SimpleBilling: React.FC = () => {
                     if (session.description) {
                       descriptionMap.set(session.paymentIntentId, session.description);
                     }
+                    // Get product info from checkout session if available
+                    if (session.productId) {
+                      productIdMap.set(session.paymentIntentId, session.productId);
+                    }
+                    if (session.productImage) {
+                      productImageMap.set(session.paymentIntentId, session.productImage);
+                    }
                   }
                 });
               }
               
-              // Enrich purchases with payment status and description from checkout sessions
+              // Enrich purchases with payment status, description, and product info from checkout sessions
               const enrichedPurchases = purchases.map(purchase => {
                 const paymentStatus = purchase.paymentIntentId 
                   ? paymentStatusMap.get(purchase.paymentIntentId) 
@@ -1519,12 +1582,32 @@ const SimpleBilling: React.FC = () => {
                   ? descriptionMap.get(purchase.paymentIntentId) 
                   : null) || null;
                 
+                // Get product info from checkout session if purchase doesn't have it
+                const productId = purchase.productId || (purchase.paymentIntentId 
+                  ? productIdMap.get(purchase.paymentIntentId) 
+                  : null) || null;
+                
+                const productImage = purchase.productImage || (purchase.paymentIntentId 
+                  ? productImageMap.get(purchase.paymentIntentId) 
+                  : null) || null;
+                
+                // Debug: Log productImage for each purchase
+                console.log(`[BILLING] Purchase "${description}" - productImage:`, productImage, 'productId:', productId, 'from purchase:', purchase.productImage, 'from session:', purchase.paymentIntentId ? productImageMap.get(purchase.paymentIntentId) : 'no paymentIntentId');
+                
                 return {
                   ...purchase,
                   description: description,
                   paymentStatus: paymentStatus || null,
+                  // Use product info from purchase, or fallback to checkout session
+                  productImage: productImage,
+                  productId: productId,
                 };
               });
+              
+              // Debug: Log first enriched purchase
+              if (enrichedPurchases.length > 0) {
+                console.log(`[BILLING] First enriched purchase:`, enrichedPurchases[0]);
+              }
               
               // Component to handle scroll detection and indicators
               const PurchasesList = () => {
@@ -1585,6 +1668,22 @@ const SimpleBilling: React.FC = () => {
                       flexDirection: 'column',
                     }}
                   >
+                    {purchase.productImage && (
+                      <img 
+                        src={purchase.productImage} 
+                        alt={purchase.description || 'Product'}
+                        style={{
+                          width: '100%',
+                          height: '150px',
+                          objectFit: 'cover',
+                          borderRadius: '8px',
+                          marginBottom: '1rem',
+                        }}
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none';
+                        }}
+                      />
+                    )}
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
                       <h3 style={{
                         fontSize: '1rem',
@@ -1916,6 +2015,26 @@ const SimpleBilling: React.FC = () => {
                                 e.currentTarget.style.boxShadow = 'none';
                               }}
                             >
+                              {plan.image && (
+                                <img 
+                                  src={plan.image} 
+                                  alt={plan.name}
+                                  onError={(e) => {
+                                    console.error(`[BILLING] Failed to load image for ${plan.name}:`, plan.image);
+                                    e.currentTarget.style.display = 'none';
+                                  }}
+                                  onLoad={() => {
+                                    console.log(`[BILLING] Successfully loaded image for ${plan.name}:`, plan.image);
+                                  }}
+                                  style={{
+                                    width: '100%',
+                                    height: '200px',
+                                    objectFit: 'cover',
+                                    borderRadius: '8px',
+                                    marginBottom: '1rem',
+                                  }}
+                                />
+                              )}
                               <h3 style={{
                                 fontSize: '1.5rem',
                                 marginBottom: '0.75rem',
